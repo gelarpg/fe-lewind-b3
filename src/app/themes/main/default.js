@@ -13,9 +13,9 @@ export const mainTheme = {
 
     palette: {
         primary: {
-            main: '#7352C7',
+            main: '#007E03',
             light: '#A67FFB',
-            dark: '#5E3BB7',
+            dark: '#007E03',
             contrastText: '#FFF'
         },
         secondary: {
@@ -49,7 +49,7 @@ export const mainTheme = {
             contrastText: '#FFF'
         },
         text: {
-            primary: '#475259',
+            primary: '#263238',
             secondary: '#8595A6',
             disabled: '#A2B2C3',
         },
@@ -59,7 +59,7 @@ export const mainTheme = {
             default: '#F5F7FA',
         },
         action: {
-            active: '#475259',
+            active: '#263238',
             hover: '#F5F7FA',
         },
     },
@@ -160,7 +160,7 @@ export const mainTheme = {
             styleOverrides: {
                 root: {
                     borderRadius: 12,
-                    boxShadow: `0 0.5rem 1.25rem ${alpha('#7352C7', .175)}`
+                    boxShadow: `0 0.5rem 1.25rem ${alpha('#007E03', .175)}`
                 },
             },
         },
@@ -207,10 +207,43 @@ export const mainTheme = {
             styleOverrides: {
                 root: {
                     fontWeight: 400,
-                    letterSpacing: 1
+                    letterSpacing: 1,
+                    '&:hover': {
+                        backgroundColor: '#007E03'
+                    },
+                    disabled: {
+                        backgroundColor: alpha('#007E03', .5)
+                    },
+                    '&:disabled': {
+                        backgroundColor: alpha('#007E03', .5)
+                    }
                 },
                 sizeSmall: {
                     fontSize: '12px'
+                }
+            }
+        },
+        MuiListItemIcon: {
+            styleOverrides: {
+                root: {
+                    display: 'flex',
+                    alignItems: 'center'
+                }
+            }
+        },
+        MuiLoadingButton: {
+            styleOverrides: {
+                loadingIndicator: {
+                    color: '#ffffff',
+                    textTransform: 'none'
+                }
+            }
+        },
+        MuiFormHelperText: {
+            styleOverrides: {
+                root: {
+                    marginRight: 0,
+                    marginLeft: 0
                 }
             }
         },

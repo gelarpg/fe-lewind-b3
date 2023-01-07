@@ -46,16 +46,16 @@ export const sidebarTheme = {
         },
         nav: {
             action: {
-                active: '#7352C7',
-                hover: '#7352C7',
+                active: '#FFFFFF',
+                hover: '#FFFFFF',
             },
             background: {
-                active: alpha('#7352C7', .15),
-                hover: "#E9ECEF"
+                active: '#007E03',
+                hover: "#007E03"
             },
             tick: {
-                active: '#7352C7',
-                hover: "#ADB5BD"
+                active: '#007E03',
+                hover: "#007E03"
             }
         },
         divider : '#DEE2E6',
@@ -66,6 +66,15 @@ export const sidebarTheme = {
         action: {
             active: '#475259',
             hover: '#F5F7FA',
+        },
+    },
+    components: {
+        MuiListItemIcon: {
+            styleOverrides: {
+                root: {
+                    height: '20px'
+                },
+            }
         },
     }
 };

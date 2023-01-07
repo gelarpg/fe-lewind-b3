@@ -12,7 +12,7 @@ export const DrawerHeader = styled('div')(({theme}) => {
     return ({
         display: 'flex',
         alignItems: 'center',
-        padding: theme.spacing(2, !isMiniAndClosed ? 3.75 : 2.5),
+        padding: theme.spacing(2, !isMiniAndClosed ? 1.75 : 0.75),
         justifyContent: 'space-between',
         minHeight: '80px',
     })

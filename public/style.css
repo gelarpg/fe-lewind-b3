@@ -33,16 +33,16 @@
     0% {
         stroke-dasharray: 1, 200;
         stroke-dashoffset: 0;
-        stroke: #7352C7;
+        stroke: #007E03;
     }
     50% {
         stroke-dasharray: 89, 200;
         stroke-dashoffset: -35;
-        stroke: #7352C7;
+        stroke: #007E03;
     }
     100% {
         stroke-dasharray: 89, 200;
         stroke-dashoffset: -124;
-        stroke: #7352C7;
+        stroke: #007E03;
     }
 }

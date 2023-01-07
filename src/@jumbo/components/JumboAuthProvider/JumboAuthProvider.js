@@ -7,7 +7,7 @@ import {config} from "../../../app/config/main";
 import {AuthContext} from "@jumbo/components/JumboAuthProvider/JumboAuthContext";
 
 
-const storedToken = localStorage.getItem("token");
+const storedToken = localStorage.getItem("b3token");
 let firstTimePageLoad = true;
 
 const init = () => {

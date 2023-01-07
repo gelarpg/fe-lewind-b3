@@ -40,31 +40,31 @@ function App() {
                                         <JumboDialog/>
                                         <SnackbarProvider
                                             anchorOrigin={{
-                                                vertical: 'bottom',
+                                                vertical: 'top',
                                                 horizontal: 'right',
                                             }}
                                             maxSnack={3}>
-
-                                            <AppLayout>
-                                                <Suspense
-                                                    fallback={
-                                                        <Div
-                                                            sx={{
-                                                                display: 'flex',
-                                                                minWidth: 0,
-                                                                alignItems: 'center',
-                                                                alignContent: 'center',
-                                                                height: '100%',
-                                                            }}
-                                                        >
-                                                            <CircularProgress sx={{m: '-40px auto 0'}}/>
-                                                        </Div>
-                                                    }
-                                                >
-                                                    <AppRoutes/>
-                                                </Suspense>
-                                            </AppLayout>
-
+                                            {/* <JumboAuthProvider> */}
+                                                <AppLayout>
+                                                    <Suspense
+                                                        fallback={
+                                                            <Div
+                                                                sx={{
+                                                                    display: 'flex',
+                                                                    minWidth: 0,
+                                                                    alignItems: 'center',
+                                                                    alignContent: 'center',
+                                                                    height: '100%',
+                                                                }}
+                                                            >
+                                                                <CircularProgress sx={{m: '-40px auto 0'}}/>
+                                                            </Div>
+                                                        }
+                                                    >
+                                                        <AppRoutes/>
+                                                    </Suspense>
+                                                </AppLayout>
+                                            {/* </JumboAuthProvider> */}
                                         </SnackbarProvider>
                                     </JumboDialogProvider>
                                 </JumboRTL>

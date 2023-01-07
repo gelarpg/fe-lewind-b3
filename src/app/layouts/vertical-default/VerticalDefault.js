@@ -54,8 +54,8 @@ const VerticalDefault = ({children}) => {
             }}
         >
             {children}
-            <JumboCustomizer/>
-            <JumboCustomizerButton/>
+            {/* <JumboCustomizer/>
+            <JumboCustomizerButton/> */}
         </JumboLayout>
     );
 };

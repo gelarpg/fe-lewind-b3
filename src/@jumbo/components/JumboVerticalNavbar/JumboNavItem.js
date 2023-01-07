@@ -43,6 +43,7 @@ const JumboNavItem = ({item, isNested, translate}) => {
                 overflow: 'hidden',
                 borderRadius: isMiniAndClosed ? '50%' : '0 24px 24px 0',
                 margin: isMiniAndClosed ? '0 auto' : '0',
+                marginBottom: 1,
                 ...(isMiniAndClosed) ? {width: 40, height: 40, justifyContent: 'center'} : {},
                 ...(!isMiniAndClosed) ? {'&::before': menuBefore} : {},
                 '&:hover': {
@@ -76,7 +77,14 @@ const JumboNavItem = ({item, isNested, translate}) => {
                   }}
             >
 
-                <ListItemIcon sx={{minWidth: isMiniAndClosed ? 20 : 32, color: 'inherit'}}>
+                <ListItemIcon
+                    sx={{
+                        minWidth: isMiniAndClosed ? 20 : 32,
+                        display: 'flex',
+                        alignItems: 'center',
+                        color: 'inherit'
+                    }}
+                >
                     {
                         isNested ?
                             <CircleIcon sx={{fontSize: 6, ml: 1}}/>
