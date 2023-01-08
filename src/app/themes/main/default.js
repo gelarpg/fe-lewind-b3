@@ -56,7 +56,7 @@ export const mainTheme = {
         divider : '#DEE2E6',
         background: {
             paper: '#FFFFFF',
-            default: '#F5F7FA',
+            default: '#FFFFFF',
         },
         action: {
             active: '#263238',

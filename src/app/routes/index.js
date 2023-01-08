@@ -3,7 +3,6 @@ import Page from "@jumbo/shared/Page";
 
 import Home from "app/pages/Home";
 import Login from "app/pages/Login";
-import LAYOUT_NAMES from "app/layouts/layouts";
 import Submissions from "app/pages/Submissions";
 import Recaps from "app/pages/Recaps";
 import Users from "app/pages/Users";

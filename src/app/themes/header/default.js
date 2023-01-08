@@ -5,7 +5,7 @@ export const headerTheme = {
             styleOverrides: {
                 root: {
                     color: '#475259',
-                    background: '#F5F7FA'
+                    background: '#FFFFFF'
                 }
             }
         },
