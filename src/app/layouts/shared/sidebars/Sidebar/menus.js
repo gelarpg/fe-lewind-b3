@@ -42,6 +42,11 @@ const menus = [
             label: "Limbah",
             type: "nav-item",
           },
+          {
+            uri: "/clients",
+            label: "Client",
+            type: "nav-item",
+          },
         ],
       },
     ],

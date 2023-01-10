@@ -16,23 +16,27 @@ const columns = [
   },
   {
     dataIndex: "name",
-    title: "Nama Limbah",
+    title: "Nama Client",
     render: (name) => name,
   },
   {
-    dataIndex: "type",
-    title: "Jenis Limbah",
-    render: (type) => type,
+    dataIndex: "offeringNumber",
+    title: "Nomor Penawaran",
+    render: (offeringNumber) => offeringNumber,
   },
   {
-    dataIndex: "weightType",
-    title: "Berat Satuan",
-    render: (weightType) => weightType,
+    dataIndex: "transportCost",
+    title: "Biaya Transportasi",
+    render: (transportCost) => transportCost,
   },
   {
-    dataIndex: "price",
-    title: "Harga Satuan",
-    render: (price) => price,
+    dataIndex: "address",
+    title: "Alamat",
+    render: (address) => (
+      <Typography variant="body1" noWrap sx={{ maxWidth: 200 }}>
+        {address}
+      </Typography>
+    ),
   },
   {
     dataIndex: "action",
@@ -47,13 +51,13 @@ const columns = [
 ];
 
 const datas = Array.from(Array(25)).map((x, idx) => ({
-  name: "Limbah Cair",
-  type: "Oli Bekas",
-  weightType: "Kg",
-  price: "-",
+  name: "PT. GreenFields Indonesia",
+  offeringNumber: "302/PBL/LWD/IV/2020",
+  transportCost: 7500000,
+  address: "Jl. Soekarno Hatta No 23 Desa Babakan Ciparay Kec. Babakan Ciparay Kab. Babakan Kota Bandung Jawa Barat",
 }));
 
-const Wastes = () => {
+const Clients = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -85,4 +89,4 @@ const Wastes = () => {
   );
 };
 
-export default Wastes;
+export default Clients;

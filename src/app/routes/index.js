@@ -9,6 +9,7 @@ import Users from "app/pages/Users";
 import Vehicles from "app/pages/Master/Vehicles";
 import Wastes from "app/pages/Master/Wastes";
 import Drivers from "app/pages/Master/Drivers";
+import Clients from "app/pages/Master/Clients";
 import Invoices from "app/pages/Invoices";
 
 /**
@@ -51,6 +52,10 @@ const routesForAuthenticatedOnly = [
   {
     path: "/drivers",
     element: <Page component={Drivers} />,
+  },
+  {
+    path: "/clients",
+    element: <Page component={Clients} />,
   },
   {
     path: "/invoices",
