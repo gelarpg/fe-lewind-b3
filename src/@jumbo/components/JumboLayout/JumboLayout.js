@@ -11,15 +11,17 @@ import Div from "@jumbo/shared/Div";
 import useJumboLayoutHeader from "@jumbo/hooks/useJumboLayoutHeader";
 import useJumboLayoutRoot from "@jumbo/hooks/useJumboLayoutRoot";
 import useJumboLayoutContent from "@jumbo/hooks/useJumboLayoutContent";
+import { useLocation } from 'react-router-dom';
 
 const JumboLayout = (props) => {
     const {sidebarOptions} = useJumboLayoutSidebar();
     const {headerOptions} = useJumboLayoutHeader();
     const {rootOptions} = useJumboLayoutRoot();
     const {contentOptions} = useJumboLayoutContent();
+    const location = useLocation();
 
     const contentMargin = React.useMemo(() => {
-        if (sidebarOptions?.variant === SIDEBAR_VARIANTS.TEMPORARY) {
+        if (sidebarOptions?.variant === SIDEBAR_VARIANTS.TEMPORARY || (location.pathname === '/login')) {
             return 0;
         } else if (sidebarOptions?.view === SIDEBAR_VIEWS.MINI) {
             return sidebarOptions?.minWidth;
@@ -32,6 +34,7 @@ const JumboLayout = (props) => {
         sidebarOptions?.view,
         sidebarOptions?.style,
         sidebarOptions?.variant,
+        location,
     ]);
 
     const headerHeightProps = React.useMemo(() => {

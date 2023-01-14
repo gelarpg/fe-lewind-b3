@@ -1,5 +1,5 @@
 import styled from "@mui/material/styles/styled";
-import IconButton from "@mui/material/IconButton";
+import { IconButton, Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -20,6 +20,18 @@ const IconButtonEdit = styled(IconButton)({
   },
 });
 
+const GreyButton = styled(Button)({
+  backgroundColor: "#e9ecef",
+  borderColor: "#ddd",
+  borderRadius: "5px",
+  "&:hover, &:focus": {
+    backgroundColor: "#e9ecef",
+    borderColor: "#ddd",
+  },
+  color: "#2b2b2b",
+  textTransform: "none",
+});
+
 const CustomEditIconButton = (props) => {
   return (
     <IconButtonEdit aria-label="edit" type="button" {...props}>
@@ -36,4 +48,4 @@ const CustomDeleteIconButton = (props) => {
   );
 };
 
-export { CustomEditIconButton, CustomDeleteIconButton };
+export { CustomEditIconButton, CustomDeleteIconButton, GreyButton };

@@ -54,7 +54,7 @@ const JumboNavItem = ({item, isNested, translate}) => {
                             backgroundColor: theme => theme.palette.nav.tick.hover,
                         }} : {}
                 },
-                ...(location.pathname === item.uri) ? {
+                ...((location.pathname === "/" && item.uri === "/dashboard") || location.pathname === item.uri || location.pathname.includes(item.uri)) ? {
                     color: theme => theme.palette.nav.action.active,
                     backgroundColor: theme => theme.palette.nav.background.active,
                     ...(!isMiniAndClosed) ? {'&::before': {

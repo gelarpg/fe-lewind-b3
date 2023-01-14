@@ -16,6 +16,7 @@ import JumboRTL from "@jumbo/JumboRTL/JumboRTL";
 import Div from "@jumbo/shared/Div";
 import {CircularProgress} from "@mui/material";
 import JumboAuthProvider from "@jumbo/components/JumboAuthProvider";
+import { AxiosInterceptor } from "./services/AxiosInterceptor";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -45,25 +46,27 @@ function App() {
                                             }}
                                             maxSnack={3}>
                                             {/* <JumboAuthProvider> */}
-                                                <AppLayout>
-                                                    <Suspense
-                                                        fallback={
-                                                            <Div
-                                                                sx={{
-                                                                    display: 'flex',
-                                                                    minWidth: 0,
-                                                                    alignItems: 'center',
-                                                                    alignContent: 'center',
-                                                                    height: '100%',
-                                                                }}
-                                                            >
-                                                                <CircularProgress sx={{m: '-40px auto 0'}}/>
-                                                            </Div>
-                                                        }
-                                                    >
-                                                        <AppRoutes/>
-                                                    </Suspense>
-                                                </AppLayout>
+                                                <AxiosInterceptor>
+                                                    <AppLayout>
+                                                        <Suspense
+                                                            fallback={
+                                                                <Div
+                                                                    sx={{
+                                                                        display: 'flex',
+                                                                        minWidth: 0,
+                                                                        alignItems: 'center',
+                                                                        alignContent: 'center',
+                                                                        height: '100%',
+                                                                    }}
+                                                                >
+                                                                    <CircularProgress sx={{m: '-40px auto 0'}}/>
+                                                                </Div>
+                                                            }
+                                                        >
+                                                            <AppRoutes/>
+                                                        </Suspense>
+                                                    </AppLayout>
+                                                </AxiosInterceptor>
                                             {/* </JumboAuthProvider> */}
                                         </SnackbarProvider>
                                     </JumboDialogProvider>

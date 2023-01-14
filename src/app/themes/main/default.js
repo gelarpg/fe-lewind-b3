@@ -216,10 +216,22 @@ export const mainTheme = {
                     },
                     '&:disabled': {
                         backgroundColor: alpha('#007E03', .5)
-                    }
+                    },
+                    textTransform: 'none'
                 },
                 sizeSmall: {
                     fontSize: '12px'
+                }
+            }
+        },
+        MuiTextField: {
+            styleOverrides: {
+                root: {
+                    '& .MuiInput-underline': {
+                        '&:before': {
+                            borderBottom: '1px solid #E0E0E0'
+                        },
+                    },
                 }
             }
         },
@@ -238,6 +250,18 @@ export const mainTheme = {
                     textTransform: 'none'
                 }
             }
+        },
+        MuiDataGrid: {
+            styleOverrides: {
+                cellContent: {
+                    display: '-webkit-box',
+                    WebkitLineClamp: 3,
+                    overflow: 'hidden',
+                    WebkitBoxOrient: 'vertical',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'normal',
+                },
+            },
         },
         MuiFormHelperText: {
             styleOverrides: {

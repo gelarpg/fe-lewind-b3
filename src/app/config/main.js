@@ -5,7 +5,7 @@ import {sidebarTheme} from "../themes/sidebar/default";
 import {footerTheme} from "../themes/footer/default";
 import LAYOUT_NAMES from "../layouts/layouts";
 import {createJumboTheme} from "@jumbo/utils";
-import baseAxios from "app/services/config";
+import baseAxios from "app/services/AxiosInterceptor";
 import axios from "axios";
 
 const getAuthUserService = async () => {
@@ -30,7 +30,7 @@ const config = {
       axiosObject: baseAxios,
       fallbackPath: "/login",
       getAuthUserService: getAuthUserService,
-      redirectNotAuthenticatedPath: "/login",
+      redirectNotAuthenticatedPath: "/dashboard",
     },
 };
 

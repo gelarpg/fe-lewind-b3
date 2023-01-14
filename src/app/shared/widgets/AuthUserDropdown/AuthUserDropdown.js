@@ -61,13 +61,13 @@ const AuthUserDropdown = () => {
                             </ListItemIcon>
                             <ListItemText primary="Edit Profile" sx={{my: 0}}/>
                         </ListItemButton>
-                        <ListItemButton>
+                        {/* <ListItemButton>
                             <ListItemIcon sx={{minWidth: 36}}>
                                 <RepeatOutlinedIcon/>
                             </ListItemIcon>
                             <ListItemText onClick={() => navigate("/samples/content-layout")} primary="Switch User"
                                           sx={{my: 0}}/>
-                        </ListItemButton>
+                        </ListItemButton> */}
                         <ListItemButton onClick={onLogout}>
                             <ListItemIcon sx={{minWidth: 36}}>
                                 <LogoutIcon/>
