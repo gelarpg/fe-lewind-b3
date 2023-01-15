@@ -1,46 +1,63 @@
 import React, { useEffect, useState } from 'react';
 import baseAxios from 'app/services/AxiosInterceptor';
-import useIsFirstRender from './useIsFirstRender';
+import axios from 'axios';
+import usePrevious from './usePrevious';
+import {isEqual, isEmpty} from 'lodash';
 
 const useFetch = (configObject) => {
-  const { axiosInstance = baseAxios, method, url, requestConfig = {} } = configObject;
+  const { axiosInstance = baseAxios, url, requestConfig = {} } = configObject;
 
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
-  const [config, setConfig] = useState(requestConfig);
+  const [config, setConfig] = useState({});
 
-  const isFirst = useIsFirstRender();
-
-  const controller = new AbortController();
+  const prevConfig = usePrevious(config)
 
   const refetch = (newConfig) => {
     setConfig((curr) => ({ ...curr, ...newConfig }));
   };
 
-  const fetch = async () => {
-    setLoading(true);
-    try {
-      const { data: response } = await axiosInstance[method.toLowerCase()](url, {
-        ...config,
-        signal: controller.signal,
-      });
-      if (response?.meta?.success) {
-        setData(response.data);
+  const fetch = async (configOptions, source, isMounted) => {
+    if (isMounted) {
+      setLoading(true);
+      try {
+        const { data: response } = await axiosInstance.get(url, {
+          ...configOptions,
+          cancelToken: source.token,
+        });
+        if (response?.meta?.success) {
+          setData(response.data);
+        }
+      } catch (error) {
+        const errorMessage = error?.response?.data?.meta?.message ?? error?.response?.data?.message ?? 'Something went wrong';
+        setError(errorMessage);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      const errorMessage = error?.response?.data?.meta?.message ?? error?.response?.data?.message ?? 'Something went wrong';
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (!isFirst) {
-      fetch();
+    let isMounted = true;
+    const source = axios.CancelToken.source();
+    fetch(requestConfig, source, isMounted);
+    return () => {
+      isMounted = false;
+      source.cancel();
     }
-    return () => controller.abort();
+  }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+    const source = axios.CancelToken.source();
+    if (!isEmpty(config) && !isEqual(config, prevConfig)) {
+      fetch(config, source, isMounted);
+    }
+    return () => {
+      isMounted = false;
+      source.cancel();
+    }
   }, [config]);
 
   return { data, isLoading, error, refetch };

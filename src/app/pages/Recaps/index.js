@@ -6,15 +6,16 @@ import React, {
   useEffect,
   useMemo,
 } from "react";
-import { Button, Box, Typography } from "@mui/material";
-import {
-  CustomEditIconButton,
-  CustomDeleteIconButton,
-} from "app/components/CustomIconButton";
+import { Box, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { CustomEditIconButton } from "app/components/CustomIconButton";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import useFetch from "app/hooks/useFetch";
 import useAxiosFunction from "app/hooks/useAxiosFunction";
+import usePrevious from "app/hooks/usePrevious";
+import { isEqual } from "lodash";
+import DatepickerComponent from "app/components/DatepickerComponent";
+import moment from "moment";
 
 const Recaps = () => {
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
@@ -24,12 +25,12 @@ const Recaps = () => {
     error: errorRecapsData,
     refetch,
   } = useFetch({
-    method: "get",
     url: "/orders",
     requestConfig: {
       params: {
         page: 1,
         limit: 10,
+        filter: "pengajuan",
       },
     },
   });
@@ -43,7 +44,9 @@ const Recaps = () => {
   const [requestParam, setRequestParam] = useState({
     page: 1,
     limit: 10,
+    filter: "pengajuan",
   });
+  const prevParam = usePrevious(requestParam);
 
   const columns = useMemo(() => {
     return [
@@ -126,9 +129,11 @@ const Recaps = () => {
   }, []);
 
   useEffect(() => {
-    refetch({
-      params: requestParam,
-    });
+    if (!isEqual(prevParam, requestParam)) {
+      refetch({
+        params: requestParam,
+      });
+    }
   }, [requestParam]);
 
   const onChangePage = useCallback((event, page) => {
@@ -151,15 +156,40 @@ const Recaps = () => {
 
   return (
     <Fragment>
-      {/* <Box display="flex" justifyContent="flex-end" mb={4}>
-        <Button
-          type="button"
-          variant="contained"
-          onClick={() => navigate(`/orders/new`)}
-        >
-          Tambah Data
-        </Button>
-      </Box> */}
+      <Box display="flex" mb={4} alignItems="center">
+        <Box flex={3}>
+          <ToggleButtonGroup
+            color="primary"
+            value={requestParam.filter}
+            exclusive
+            onChange={(event, value) =>
+              setRequestParam((curr) => ({
+                ...curr,
+                filter: value,
+              }))
+            }
+          >
+            <ToggleButton value="pengajuan">Pengajuan</ToggleButton>
+            <ToggleButton value="process">Proses</ToggleButton>
+            <ToggleButton value="waiting_pickup">Waiting Pickup</ToggleButton>
+            <ToggleButton value="cancelled">Dibatalkan</ToggleButton>
+            <ToggleButton value="done">Selesai</ToggleButton>
+          </ToggleButtonGroup>
+        </Box>
+        <Box flex={1}>
+          <DatepickerComponent
+            value={requestParam?.date ?? null}
+            onChange={(val) =>
+              setRequestParam((curr) => ({
+                ...curr,
+                date: val,
+              }))
+            }
+            disableFuture
+            placeholder="Pilih Tanggal"
+          />
+        </Box>
+      </Box>
       <DataGrid
         ref={tableRef}
         disableColumnMenu

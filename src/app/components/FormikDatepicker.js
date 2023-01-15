@@ -1,26 +1,30 @@
 import React from 'react';
+import { useField, useFormikContext } from 'formik';
 import { TextField } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
-const DatepickerComponent = ({
-  onChange,
-  value,
-  ...props
-}) => {
+const FormikDatepicker = (props) => {
+  const { setFieldValue } = useFormikContext();
+  const [field, meta] = useField(props);
+  const errorText = meta.error && meta.touched ? meta.error : '';
+
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <DesktopDatePicker
-          onChange={onChange}
-          value={value}
+          onChange={(value) => setFieldValue(field.name, value)}
+          value={field.value}
           renderInput={(params) => {
             return (
               <TextField
-                variant="outlined"
+                variant="standard"
+                name={field.name}
                 fullWidth
                 {...params}
+                error={!!errorText}
+                helperText={errorText}
               />
             );
           }}
@@ -31,4 +35,4 @@ const DatepickerComponent = ({
   );
 };
 
-export default DatepickerComponent;
+export default FormikDatepicker;

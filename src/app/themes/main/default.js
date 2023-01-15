@@ -224,6 +224,61 @@ export const mainTheme = {
                 }
             }
         },
+        MuiButtonBase: {
+            styleOverrides: {
+                root: {
+                    '&.MuiToggleButton-root': {
+                        padding: '5px 8px',
+                    },
+                    '&.MuiToggleButtonGroup-root.MuiToggleButtonGroup-grouped': {
+                        margin: '8px',
+                        color: '#C7C7C7',
+                        backgroundColor: '#FFFFFF',
+                        border: '1px solid #C4C4C4',
+                        borderRadius: '4px',
+                        '&:hover': {
+                            color: '#C7C7C7',
+                            backgroundColor: '#FFFFFF',
+                        }
+                    },
+                    '&.MuiToggleButton-root.Mui-selected': {
+                        color: '#fff',
+                        borderRadius: '4px',
+                        border: '1px solid #007E03',
+                        backgroundColor: '#007E03',
+                        '&:hover': {
+                            color: '#fff',
+                            backgroundColor: '#007E03'
+                        }
+                    }
+                }
+            }
+        },
+        MuiToggleButtonGroup: {
+            styleOverrides: {
+                grouped: {
+                    margin: '8px',
+                    color: '#C7C7C7',
+                    backgroundColor: '#FFFFFF',
+                    border: '1px solid #C4C4C4',
+                    borderRadius: '4px',
+                    textTransform: 'none',
+                    '&:hover': {
+                        color: '#C7C7C7',
+                        backgroundColor: '#FFFFFF',
+                    },
+                    '&:not(:last-of-type)': {
+                        borderTopRightRadius: '4px',
+                        borderBottomRightRadius: '4px'
+                    },
+                    '&:not(:first-of-type)': {
+                        borderTopLeftRadius: '4px',
+                        borderBottomLeftRadius: '4px',
+                        borderLeft: '1px solid #C4C4C4',
+                    },
+                }
+            }
+        },
         MuiTextField: {
             styleOverrides: {
                 root: {

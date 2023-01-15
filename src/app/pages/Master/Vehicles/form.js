@@ -9,7 +9,9 @@ import { GreyButton } from "app/components/CustomIconButton";
 import FormikNumberInput from "app/components/FormikNumberInput";
 import FormikReactSelect from "app/components/FormikReactSelect";
 import FormikUploadFile from "app/components/FormikUploadFile";
+import FormikDatepicker from "app/components/FormikDatepicker";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 
 const validationSchema = yup.object({
   name: yup.string().required("Nama kendaraan harus diisi"),
@@ -114,12 +116,10 @@ const CustomForm = ({
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                 Tahun Kendaraan
               </Typography>
-              <FormikNumberInput
-                disabled={isDetail}
-                variant="standard"
-                size="small"
-                fullWidth
+              <FormikDatepicker
+                views={["year"]}
                 name="year"
+                shouldDisableYear={(year) => moment(year).isAfter(moment())}
               />
             </Box>
             <Box flex={1} mb={3}>

@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useMemo,
 } from "react";
-import { Button, Box, Typography } from "@mui/material";
+import { Button, Box, Typography, ToggleButtonGroup, ToggleButton } from "@mui/material";
 import {
   CustomEditIconButton,
   CustomDeleteIconButton,
@@ -15,6 +15,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import useFetch from "app/hooks/useFetch";
 import useAxiosFunction from "app/hooks/useAxiosFunction";
+import usePrevious from "app/hooks/usePrevious";
+import {isEqual} from "lodash";
 
 const Invoices = () => {
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
@@ -24,7 +26,6 @@ const Invoices = () => {
     error: errorInvoicesData,
     refetch,
   } = useFetch({
-    method: "get",
     url: "/invoices",
     requestConfig: {
       params: {
@@ -43,7 +44,9 @@ const Invoices = () => {
   const [requestParam, setRequestParam] = useState({
     page: 1,
     limit: 10,
+    filter: 'waiting_payment',
   });
+  const prevParam = usePrevious(requestParam);
 
   const columns = useMemo(() => {
     return [
@@ -126,9 +129,11 @@ const Invoices = () => {
   }, []);
 
   useEffect(() => {
-    refetch({
-      params: requestParam,
-    });
+    if (!isEqual(prevParam, requestParam)) {
+      refetch({
+        params: requestParam,
+      });
+    }
   }, [requestParam]);
 
   const onChangePage = useCallback((event, page) => {
@@ -151,15 +156,20 @@ const Invoices = () => {
 
   return (
     <Fragment>
-      {/* <Box display="flex" justifyContent="flex-end" mb={4}>
-        <Button
-          type="button"
-          variant="contained"
-          onClick={() => navigate(`/invoices/new`)}
+      <Box display="flex" mb={4}>
+        <ToggleButtonGroup
+          color="primary"
+          value={requestParam?.filter}
+          exclusive
+          onChange={(event, value) => setRequestParam(curr => ({
+            ...curr,
+            filter: value
+          }))}
         >
-          Tambah Data
-        </Button>
-      </Box> */}
+          <ToggleButton value="waiting_payment">Menunggu Pembayaran</ToggleButton>
+          <ToggleButton value="paid">Dibayar</ToggleButton>
+        </ToggleButtonGroup>
+      </Box>
       <DataGrid
         ref={tableRef}
         disableColumnMenu

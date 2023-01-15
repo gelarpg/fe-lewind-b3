@@ -15,6 +15,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import useFetch from "app/hooks/useFetch";
 import useAxiosFunction from "app/hooks/useAxiosFunction";
+import usePrevious from "app/hooks/usePrevious";
+import {isEqual} from "lodash";
 
 const Wastes = () => {
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
@@ -24,7 +26,6 @@ const Wastes = () => {
     error: errorWastesData,
     refetch,
   } = useFetch({
-    method: "get",
     url: "/waste",
     requestConfig: {
       params: {
@@ -44,6 +45,7 @@ const Wastes = () => {
     page: 1,
     limit: 10,
   });
+  const prevParam = usePrevious(requestParam);
 
   const columns = useMemo(() => {
     return [
@@ -116,9 +118,11 @@ const Wastes = () => {
   }, []);
 
   useEffect(() => {
-    refetch({
-      params: requestParam,
-    });
+    if (!isEqual(prevParam, requestParam)) {
+      refetch({
+        params: requestParam,
+      });
+    }
   }, [requestParam]);
 
   const deleteData = (id) => {
