@@ -4,14 +4,12 @@ import { Box } from "@mui/material";
 import moment from "moment";
 
 import useAxiosFunction from "app/hooks/useAxiosFunction";
-import CustomSnackbar from "app/components/CustomSnackbar";
+import useNotif from "app/hooks/useNotif";
 import CustomForm from "./form";
 
 const NewWaste = () => {
+  const [notif, sendNotification] = useNotif();
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
-
-  const [message, setMessage] = useState("");
-  const [isOpenSnackbar, setOpenSnackbar] = useState(false);
 
   const onSubmitData = (payload) => {
     const temp = {
@@ -25,20 +23,13 @@ const NewWaste = () => {
         data: temp,
       },
       onSuccess: () => {
-        setMessage("Data limbah berhasil ditambahkan");
-        setOpenSnackbar(true);
+        sendNotification({msg: 'Data limbah berhasil ditambahkan', variant: 'success'});
       },
     });
   };
 
   return (
     <Box>
-      <CustomSnackbar
-        isOpen={isOpenSnackbar}
-        onClose={() => setOpenSnackbar(false)}
-        message={message}
-        severity={error ? "error" : "success"}
-      />
       <Box p={5} mx={4}>
         <CustomForm
           onSubmit={onSubmitData}

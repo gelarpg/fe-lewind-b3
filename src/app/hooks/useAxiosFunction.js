@@ -22,10 +22,24 @@ const useAxiosFunction = () => {
       const ctrl = new AbortController();
       setController(ctrl);
 
-      const { data: response } = await axiosInstance[method.toLowerCase()](url, {
-        ...requestConfig,
-        signal: ctrl.signal,
-      });
+      let response = {};
+      if (method.toLowerCase() === 'post') {
+        const {
+          data: dataToSend,
+          ...rest
+        } = requestConfig;
+        const { data: responseTemp } = await axiosInstance.post(url, dataToSend, {
+          ...rest,
+          signal: ctrl.signal,
+        });
+        response = responseTemp;
+      } else {
+        const { data: responseTemp } = await axiosInstance[method.toLowerCase()](url, {
+          ...requestConfig,
+          signal: ctrl.signal,
+        });
+        response = responseTemp;
+      }
       if (response?.meta?.success) {
         setData(response.data);
         if (onSuccess) onSuccess(response.data)

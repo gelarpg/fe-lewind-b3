@@ -1,5 +1,6 @@
+import {useState, Fragment} from 'react'
 import styled from "@mui/material/styles/styled";
-import { IconButton, Button } from "@mui/material";
+import { IconButton, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -40,11 +41,34 @@ const CustomEditIconButton = (props) => {
   );
 };
 
-const CustomDeleteIconButton = (props) => {
+const CustomDeleteIconButton = ({ onClick, ...props }) => {
+  const [isShow, setShow] = useState(false);
   return (
-    <IconButtonDelete aria-label="delete" type="button" {...props}>
-      <DeleteIcon sx={{ color: "white" }} />
-    </IconButtonDelete>
+    <Fragment>
+      <IconButtonDelete aria-label="delete" type="button" {...props} onClick={() => setShow(true)}>
+        <DeleteIcon sx={{ color: 'white' }} />
+      </IconButtonDelete>
+      <Dialog open={isShow} onClose={() => setShow(false)}>
+        <DialogTitle>Konfirmasi</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Apakah Anda yakin ingin menghapus data ini?</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <GreyButton type="button" variant="outlined" color="secondary" onClick={() => setShow(false)}>
+            Batal
+          </GreyButton>
+          <Button
+            variant="contained"
+            onClick={() => {
+              setShow(false);
+              if (onClick) onClick();
+            }}
+            autoFocus>
+            Ya
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Fragment>
   );
 };
 

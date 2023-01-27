@@ -1,18 +1,12 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-
-import moment from 'moment';
-
 import useAxiosFunction from 'app/hooks/useAxiosFunction';
-import CustomSnackbar from 'app/components/CustomSnackbar';
 import CustomForm from './form';
-
+import useNotif from "app/hooks/useNotif";
 
 const NewDriver = () => {
+  const [notif, sendNotification] = useNotif();
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
-
-  const [message, setMessage] = useState('');
-  const [isOpenSnackbar, setOpenSnackbar] = useState(false);
 
   const onSubmitData = (payload) => {
     const temp = {
@@ -25,20 +19,13 @@ const NewDriver = () => {
         data: temp,
       },
       onSuccess: () => {
-        setMessage('Data driver berhasil ditambahkan');
-        setOpenSnackbar(true);
+        sendNotification({msg: 'Data driver berhasil ditambahkan', variant: 'success'});
       },
     });
   };
 
   return (
     <Box>
-      <CustomSnackbar
-        isOpen={isOpenSnackbar}
-        onClose={() => setOpenSnackbar(false)}
-        message={message}
-        severity={error ? 'error' : 'success'}
-      />
       <Box p={5} mx={4}>
           <CustomForm
             onSubmit={onSubmitData}

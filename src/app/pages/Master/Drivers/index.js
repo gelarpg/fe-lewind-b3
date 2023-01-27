@@ -17,9 +17,11 @@ import { useNavigate } from "react-router-dom";
 import useFetch from "app/hooks/useFetch";
 import useAxiosFunction from "app/hooks/useAxiosFunction";
 import usePrevious from "app/hooks/usePrevious";
+import useNotif from "app/hooks/useNotif";
 import {isEqual} from "lodash";
 
 const Drivers = () => {
+  const [notif, sendNotification] = useNotif();
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
   const {
     isLoading: isLoadingList,
@@ -133,10 +135,20 @@ const Drivers = () => {
       method: "delete",
       url: `/driver/delete/${id}`,
       onSuccess: () => {
-        setRequestParam((curr) => ({
-          ...curr,
-          page: 1,
-        }));
+        sendNotification({msg: 'Data berhasil dihapus', variant: 'success'})
+        if (requestParam.page === 1) {
+          refetch({
+            params: {
+              page: 1,
+              limit: requestParam.limit
+            },
+          });
+        } else {
+          setRequestParam((curr) => ({
+            ...curr,
+            page: 1,
+          }));
+        }
       },
     });
   };
