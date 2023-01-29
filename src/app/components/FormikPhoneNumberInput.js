@@ -1,12 +1,13 @@
 import React,{useEffect, useState} from 'react';
 import { useField } from 'formik';
-import { NumericFormat } from 'react-number-format';
+import { PatternFormat } from 'react-number-format';
 import { TextField } from '@mui/material';
 import { usePropagateRef } from "app/hooks/usePropagateRefs";
 
-const FormikNumberInput = (props) => {
+const FormikPhoneNumberInput = (props) => {
   const [field, meta] = useField(props);
   const [fieldValue, setFieldValue] = useState(field.value);
+  const [formattedValue, setFormattedValue] = useState('');
   const { disablePerformance, loading, ...otherProps } = props;
 
   usePropagateRef({
@@ -35,7 +36,7 @@ const FormikNumberInput = (props) => {
       field.onChange({
         target: {
           name: props.name,
-          value: props.type === "number" ? parseInt(val, 10) : val,
+          value: formattedValue,
         },
       });
     }, 0);
@@ -57,13 +58,13 @@ const FormikNumberInput = (props) => {
   const errorText = meta.error && meta.touched ? meta.error : '';
 
   return (
-    <NumericFormat
+    <PatternFormat
       {...otherProps}
       {...performanceProps}
-      decimalScale={4}
-      allowNegative={false}
-      thousandSeparator="."
-      decimalSeparator=","
+      type="tel"
+      format="+62 ### #########" 
+      mask="_" 
+      onValueChange={value => setFormattedValue(value.value)}
       customInput={TextField}
       helperText={errorText}
       error={!!errorText}
@@ -71,4 +72,4 @@ const FormikNumberInput = (props) => {
   );
 };
 
-export default React.memo(FormikNumberInput);
+export default React.memo(FormikPhoneNumberInput);

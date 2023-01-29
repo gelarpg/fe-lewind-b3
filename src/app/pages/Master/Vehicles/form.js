@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Box, Stack } from "@mui/material";
+import { Typography, Box, Stack, Grid } from "@mui/material";
 import * as yup from "yup";
 import { Form, Formik } from "formik";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -15,9 +15,19 @@ import moment from "moment";
 
 const validationSchema = yup.object({
   name: yup.string().required("Nama kendaraan harus diisi"),
-  no_police: yup.string().required("No polisi harus diisi"),
+  no_police: yup
+    .string()
+    .required("No polisi harus diisi")
+    .matches(
+      /^[A-Z]{1,2}\s{1}\d{0,4}\s{0,1}[A-Z]{0,3}$/,
+      "Nomor polisi tidak valid"
+    ),
   year: yup.string().required("Tahun kendaraan harus diisi"),
-  capacity: yup.string().required("Kapasitas angkut harus diisi"),
+  capacity: yup
+    .number()
+    .integer("Kapasitas angkut harus berupa angka")
+    .required("Kapasitas angkut harus diisi")
+    .min(1, "Kapasitas angkut minimal 1"),
   fuel_type: yup.string().required("Jenis bahan bakar harus diisi"),
   transportation_type_id: yup
     .object()
@@ -32,6 +42,36 @@ const validationSchema = yup.object({
       return true;
     })
     .nullable(),
+  pdf_stnk: yup
+    .mixed()
+    .nullable()
+    .required("Harap masukkan attachment")
+    .test("fileSize", "Attachment maksimal 5MB", (value) => {
+      return !value || (value && value.size <= 5000000);
+    })
+    .test(
+      "fileFormat",
+      "Attachment harus dalam format .pdf atau .png atau .jpeg",
+      (value) =>
+        !value ||
+        (value &&
+          ["application/pdf", "image/png", "image/jpeg"].includes(value.type))
+    ),
+  pdf_surat_jalan: yup
+    .mixed()
+    .nullable()
+    .required("Harap masukkan attachment")
+    .test("fileSize", "Attachment maksimal 5MB", (value) => {
+      return !value || (value && value.size <= 5000000);
+    })
+    .test(
+      "fileFormat",
+      "Attachment harus dalam format .pdf atau .png atau .jpeg",
+      (value) =>
+        !value ||
+        (value &&
+          ["application/pdf", "image/png", "image/jpeg"].includes(value.type))
+    ),
 });
 
 const CustomForm = ({
@@ -46,6 +86,7 @@ const CustomForm = ({
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
+      validateOnMount={false}
       onSubmit={(data, { setSubmitting }) => {
         setSubmitting(true);
         onSubmit(data);
@@ -72,33 +113,33 @@ const CustomForm = ({
                 Jenis Kendaraan
               </Typography>
               <FormikReactSelect
-                  isSearchable={false}
-                  isDisabled={isDetail}
-                  name="transportation_type_id"
-                  placeholder="Pilih Jenis Kendaraan"
-                  options={[
-                    {
-                      value: 1,
-                      label: "Hino",
-                    },
-                    {
-                      value: 2,
-                      label: "Hino",
-                    },
-                    {
-                      value: 3,
-                      label: "Hino",
-                    },
-                    {
-                      value: 4,
-                      label: "Hino",
-                    },
-                    {
-                      value: 5,
-                      label: "Hino",
-                    },
-                  ]}
-                />
+                isSearchable={false}
+                isDisabled={isDetail}
+                name="transportation_type_id"
+                placeholder="Pilih Jenis Kendaraan"
+                options={[
+                  {
+                    value: 1,
+                    label: "Hino",
+                  },
+                  {
+                    value: 2,
+                    label: "Hino",
+                  },
+                  {
+                    value: 3,
+                    label: "Hino",
+                  },
+                  {
+                    value: 4,
+                    label: "Hino",
+                  },
+                  {
+                    value: 5,
+                    label: "Hino",
+                  },
+                ]}
+              />
             </Box>
             <Box flex={1} mb={3}>
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
@@ -127,11 +168,13 @@ const CustomForm = ({
                 Kapasitas Angkut
               </Typography>
               <FormikNumberInput
-                disabled={isDetail}
                 variant="standard"
+                disabled={isDetail}
                 size="small"
                 fullWidth
                 name="capacity"
+                type="tel"
+                min={1}
               />
             </Box>
             <Box flex={1} mb={3}>
@@ -146,8 +189,8 @@ const CustomForm = ({
                 name="fuel_type"
               />
             </Box>
-            <Stack spacing={3} direction="row" alignItems="end" mb={3}>
-              <Box flex={1}>
+            <Grid container spacing={3} direction="row" alignItems="end" mb={3}>
+              <Grid item xs={5}>
                 <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                   No STNK Kendaraan
                 </Typography>
@@ -156,17 +199,15 @@ const CustomForm = ({
                   disabled={isDetail}
                   size="small"
                   fullWidth
-                  name="no_stnk"
+                  name="stnk"
                 />
-              </Box>
-              <FormikUploadFile
-                name="pdf_no_stnk"
-                label="Upload PDF"
-              />
-              <Box flex={1}></Box>
-            </Stack>
-            <Stack spacing={3} direction="row" alignItems="end" mb={3}>
-              <Box flex={1}>
+              </Grid>
+              <Grid item xs={7}>
+                <FormikUploadFile name="pdf_stnk" disabled={isDetail} />
+              </Grid>
+            </Grid>
+            <Grid container spacing={3} direction="row" alignItems="end" mb={3}>
+              <Grid item xs={5}>
                 <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                   Surat Jalan
                 </Typography>
@@ -177,13 +218,11 @@ const CustomForm = ({
                   fullWidth
                   name="surat_jalan"
                 />
-              </Box>
-              <FormikUploadFile
-                name="pdf_surat_jalan"
-                label="Upload PDF"
-              />
-              <Box flex={1}></Box>
-            </Stack>
+              </Grid>
+              <Grid item xs={7}>
+                <FormikUploadFile name="pdf_surat_jalan" disabled={isDetail} />
+              </Grid>
+            </Grid>
           </Box>
           <Box display="flex" alignItems="center" justifyContent="end">
             <GreyButton

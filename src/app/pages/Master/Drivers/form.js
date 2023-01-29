@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Box, Stack } from "@mui/material";
+import { Typography, Box, Stack, Grid } from "@mui/material";
 import * as yup from "yup";
 import { Form, Formik } from "formik";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -7,14 +7,50 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import JumboTextField from "@jumbo/components/JumboFormik/JumboTextField";
 import { GreyButton } from "app/components/CustomIconButton";
 import FormikNumberInput from "app/components/FormikNumberInput";
+import FormikPhoneNumberInput from "app/components/FormikPhoneNumberInput";
 import FormikUploadFile from "app/components/FormikUploadFile";
 import { useNavigate } from "react-router-dom";
 
 const validationSchema = yup.object({
   name: yup.string().required("Nama kendaraan harus diisi"),
-  age: yup.string().required("Umur harus diisi"),
+  age: yup
+    .number()
+    .integer("Umur harus berupa angka")
+    .required("Umur harus diisi")
+    .min(18, "Umur minimal 18 Tahun")
+    .max(50, "Umur minimal 50 Tahun"),
   phone_number: yup.string().required("No telepon harus diisi"),
-  address: yup.string().required("Kapasitas angkut harus diisi"),
+  address: yup.string().required("Alamat harus diisi"),
+  pdf_nik: yup
+    .mixed()
+    .nullable()
+    .required("Harap masukkan attachment")
+    .test("fileSize", "Attachment maksimal 5MB", (value) => {
+      return !value || (value && value.size <= 5000000);
+    })
+    .test(
+      "fileFormat",
+      "Attachment harus dalam format .pdf atau .png atau .jpeg",
+      (value) =>
+        !value ||
+        (value &&
+          ["application/pdf", "image/png", "image/jpeg"].includes(value.type))
+    ),
+  pdf_sim: yup
+    .mixed()
+    .nullable()
+    .required("Harap masukkan attachment")
+    .test("fileSize", "Attachment maksimal 5MB", (value) => {
+      return !value || (value && value.size <= 5000000);
+    })
+    .test(
+      "fileFormat",
+      "Attachment harus dalam format .pdf atau .png atau .jpeg",
+      (value) =>
+        !value ||
+        (value &&
+          ["application/pdf", "image/png", "image/jpeg"].includes(value.type))
+    ),
 });
 
 const CustomForm = ({
@@ -29,13 +65,14 @@ const CustomForm = ({
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
+      validateOnMount={false}
       onSubmit={(data, { setSubmitting }) => {
         setSubmitting(true);
         onSubmit(data);
         setSubmitting(false);
       }}
     >
-      {({ isSubmitting, values, setFieldValue }) => (
+      {({ isSubmitting }) => (
         <Form style={{ textAlign: "left" }} noValidate autoComplete="off">
           <Box mb={4}>
             <Box flex={1} mb={3}>
@@ -55,20 +92,23 @@ const CustomForm = ({
                 Umur
               </Typography>
               <FormikNumberInput
-                disabled={isDetail}
                 variant="standard"
+                disabled={isDetail}
                 size="small"
                 fullWidth
                 name="age"
+                type="tel"
+                min={17}
+                max={50}
               />
             </Box>
             <Box flex={1} mb={3}>
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                 No Telepon
               </Typography>
-              <FormikNumberInput
-                disabled={isDetail}
+              <FormikPhoneNumberInput
                 variant="standard"
+                disabled={isDetail}
                 size="small"
                 fullWidth
                 name="phone_number"
@@ -86,8 +126,8 @@ const CustomForm = ({
                 name="address"
               />
             </Box>
-            <Stack spacing={3} direction="row" alignItems="end" mb={3}>
-              <Box flex={1}>
+            <Grid container spacing={3} direction="row" alignItems="end" mb={3}>
+              <Grid item xs={5}>
                 <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                   NIK
                 </Typography>
@@ -98,15 +138,13 @@ const CustomForm = ({
                   fullWidth
                   name="nik"
                 />
-              </Box>
-              <FormikUploadFile
-                name="pdf_no_stnk"
-                label="Upload PDF"
-              />
-              <Box flex={1}></Box>
-            </Stack>
-            <Stack spacing={3} direction="row" alignItems="end" mb={3}>
-              <Box flex={1}>
+              </Grid>
+              <Grid item xs={7}>
+                <FormikUploadFile name="pdf_nik" disabled={isDetail} />
+              </Grid>
+            </Grid>
+            <Grid container spacing={3} direction="row" alignItems="end" mb={3}>
+              <Grid item xs={5}>
                 <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                   SIM
                 </Typography>
@@ -117,13 +155,11 @@ const CustomForm = ({
                   fullWidth
                   name="sim"
                 />
-              </Box>
-              <FormikUploadFile
-                name="pdf_surat_jalan"
-                label="Upload PDF"
-              />
-              <Box flex={1}></Box>
-            </Stack>
+              </Grid>
+              <Grid item xs={7}>
+                <FormikUploadFile name="pdf_sim" disabled={isDetail} />
+              </Grid>
+            </Grid>
           </Box>
           <Box display="flex" alignItems="center" justifyContent="end">
             <GreyButton

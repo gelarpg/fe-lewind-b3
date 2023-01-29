@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import * as yup from "yup";
 import { Form, Formik } from "formik";
 
-import { Card, CardContent, Typography, Stack, Link } from "@mui/material";
+import { Card, CardContent, Typography, Stack, Link, InputAdornment, IconButton } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 import Div from "@jumbo/shared/Div";
 import JumboTextField from "@jumbo/components/JumboFormik/JumboTextField";
 import logo from "app/assets/icons/logo.svg";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const validationSchema = yup.object({
   email: yup
@@ -22,6 +24,7 @@ const validationSchema = yup.object({
 const Login = () => {
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [showPwd, setShowPwd] = useState(false);
 
   const onSignIn = async () => {
     setLoading(true);
@@ -94,7 +97,7 @@ const Login = () => {
           </Div>
           <Div>
             <Formik
-              validateOnChange={true}
+              
               initialValues={{
                 email: "",
                 password: "",
@@ -122,7 +125,17 @@ const Login = () => {
                     <JumboTextField
                       fullWidth
                       name="password"
-                      type="password"
+                      type={showPwd ? 'text' : 'password'}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton onClick={() => setShowPwd((curr) => !curr)}>
+                              {showPwd && <VisibilityIcon />}
+                              {!showPwd && <VisibilityOffIcon />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
                     />
                   </Div>
                   <Typography textAlign={"right"} variant={"body1"} mb={2}>
@@ -142,7 +155,7 @@ const Login = () => {
                     Login
                   </LoadingButton>
                   <Typography textAlign={"center"} variant={"body1"} mb={1}>
-                    Don't have an account?
+                    Don't have an account? &nbsp;
                     <Link underline="none" href="#">
                       Sign up now
                     </Link>

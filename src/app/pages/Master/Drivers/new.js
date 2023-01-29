@@ -12,16 +12,17 @@ const NewDriver = () => {
     const temp = {
       ...payload,
     };
-    axiosFetch({
-      method: 'post',
-      url: '/driver/create',
-      requestConfig: {
-        data: temp,
-      },
-      onSuccess: () => {
-        sendNotification({msg: 'Data driver berhasil ditambahkan', variant: 'success'});
-      },
-    });
+    console.log(payload)
+    // axiosFetch({
+    //   method: 'post',
+    //   url: '/driver/create',
+    //   requestConfig: {
+    //     data: temp,
+    //   },
+    //   onSuccess: () => {
+    //     sendNotification({msg: 'Data driver berhasil ditambahkan', variant: 'success'});
+    //   },
+    // });
   };
 
   return (
@@ -35,6 +36,8 @@ const NewDriver = () => {
               age: "",
               phone_number: "",
               address: "",
+              pdf_no_stnk: null,
+              pdf_surat_jalan: null
             }}
           />
       </Box>

@@ -10,10 +10,10 @@ import FormikNumberInput from "app/components/FormikNumberInput";
 import { useNavigate } from "react-router-dom";
 
 const validationSchema = yup.object({
-  name: yup.string().required("Nama limbah harus diisi"),
-  address: yup.string().required("Jenis limbah harus diisi"),
-  offer_number: yup.string().required("Berat satuan harus diisi"),
-  transaction_fee: yup.string().required("Harga satuan harus diisi"),
+  name: yup.string().required("Nama client harus diisi"),
+  address: yup.string().required("Alamat harus diisi"),
+  offer_number: yup.string().required("Nomor penawaran harus diisi"),
+  transaction_fee: yup.string().required("Biaya transaksi harus diisi"),
 });
 
 const CustomForm = ({
@@ -28,6 +28,7 @@ const CustomForm = ({
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
+      validateOnMount={false}
       onSubmit={(data, { setSubmitting }) => {
         setSubmitting(true);
         onSubmit(data);

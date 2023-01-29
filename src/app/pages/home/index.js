@@ -1,11 +1,19 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Stack, Card, CardContent, Typography } from "@mui/material";
+import {
+  Stack,
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Grid,
+} from "@mui/material";
 import { groupBy, isEmpty } from "lodash";
 import * as am4core from "@amcharts/amcharts4/core";
 import moment from "moment";
 import Div from "@jumbo/shared/Div";
 import CustomPieChart from "app/components/CustomPieChart";
 import CustomGroupedBarChart from "app/components/CustomGroupedBarChart";
+import DatepickerComponent from "app/components/DatepickerComponent";
 
 const transactionsStatus = [
   { name: "Dibayar", value: 43, color: "#5273E8" },
@@ -73,26 +81,26 @@ const submissionsData = [
 
 const wastesBarData = [
   {
-    label: 'Oli Bekas',
+    label: "Oli Bekas",
     value: 5,
   },
   {
-    label: 'Obat Sisa Produksi',
+    label: "Obat Sisa Produksi",
     value: 6,
   },
   {
-    label: 'Dross Alumunium',
+    label: "Dross Alumunium",
     value: 4,
   },
   {
-    label: 'Kandungan Besi',
+    label: "Kandungan Besi",
     value: 7,
   },
   {
-    label: 'Borongan',
+    label: "Borongan",
     value: 6,
   },
-]
+];
 
 const gradientSubmissionColor = new am4core.LinearGradient();
 gradientSubmissionColor.addColor(am4core.color("#43BDF1"));
@@ -106,6 +114,8 @@ gradientWastesColor.cy = am4core.percent(100);
 gradientWastesColor.rotation = 90;
 
 const Home = () => {
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [submissionChartData, setSubmissionChartData] = useState([]);
   const [submissionOriginalData, setSubmissionOriginalData] = useState({});
   const [submissionProcess, setSubmissionProcess] = useState([]);
@@ -119,7 +129,7 @@ const Home = () => {
       category: "wastesItem_" + index,
       tooltipMsg: x.label,
       labelToShow: x.label,
-      value: x.value
+      value: x.value,
     }));
     return chartDatas;
   }, []);
@@ -148,24 +158,35 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    const { originalDatas, chartDatas } = getSubmissionChartData(submissionsData);
+    const { originalDatas, chartDatas } =
+      getSubmissionChartData(submissionsData);
     setSubmissionChartData(chartDatas);
     setSubmissionOriginalData(originalDatas);
 
-    const { originalDatas: newOriginalData, chartDatas: newChartData } = getSubmissionChartData(submissionsData);
+    const { originalDatas: newOriginalData, chartDatas: newChartData } =
+      getSubmissionChartData(submissionsData);
     setSubmissionProcess(newChartData);
     setSubmissionOriginalProcess(newOriginalData);
 
     const wastesChart = getWastesChartData();
     setWastesChartData(wastesChart);
-
   }, []);
 
   return (
     <Div xs={{ width: "100%" }}>
-      <Div xs={{ width: "100%" }} mb={3}>
-        <Typography variant="h1">Datepicker</Typography>
-      </Div>
+      <Grid container spacing={2} mb={4} alignItems="center">
+        <Grid item>
+          <DatepickerComponent placeholder="Start Date" disableFuture value={startDate} onChange={setStartDate} />
+        </Grid>
+        <Grid item>
+          <DatepickerComponent placeholder="End Date" disableFuture value={endDate} onChange={setEndDate} minDate={moment(startDate).toDate()} />
+        </Grid>
+        <Grid item>
+          <Button type="button" variant="contained" disabled={!startDate || !endDate}>
+            Filter
+          </Button>
+        </Grid>
+      </Grid>
       <Stack direction="row" spacing={2} mb={4}>
         <Card sx={{ width: "100%" }}>
           <CardContent>
@@ -257,14 +278,15 @@ const Home = () => {
                 Hingga hari ini
               </Typography>
             </Div>
-            {submissionProcess.length && !isEmpty(submissionOriginalProcess) && (
-              <CustomGroupedBarChart
-                chartId="submissionProcess"
-                generatedData={submissionProcess}
-                originalData={submissionOriginalProcess}
-                chartColor={gradientSubmissionColor}
-              />
-            )}
+            {submissionProcess.length &&
+              !isEmpty(submissionOriginalProcess) && (
+                <CustomGroupedBarChart
+                  chartId="submissionProcess"
+                  generatedData={submissionProcess}
+                  originalData={submissionOriginalProcess}
+                  chartColor={gradientSubmissionColor}
+                />
+              )}
           </CardContent>
         </Card>
       </Stack>
@@ -315,14 +337,15 @@ const Home = () => {
                 Hingga hari ini
               </Typography>
             </Div>
-            {submissionProcess.length && !isEmpty(submissionOriginalProcess) && (
-              <CustomGroupedBarChart
-                chartId="wastesProcess"
-                generatedData={submissionProcess}
-                originalData={submissionOriginalProcess}
-                chartColor={gradientWastesColor}
-              />
-            )}
+            {submissionProcess.length &&
+              !isEmpty(submissionOriginalProcess) && (
+                <CustomGroupedBarChart
+                  chartId="wastesProcess"
+                  generatedData={submissionProcess}
+                  originalData={submissionOriginalProcess}
+                  chartColor={gradientWastesColor}
+                />
+              )}
           </CardContent>
         </Card>
       </Stack>

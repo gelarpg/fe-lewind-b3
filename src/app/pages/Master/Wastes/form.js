@@ -28,6 +28,7 @@ const CustomForm = ({
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
+      validateOnMount={false}
       onSubmit={(data, { setSubmitting }) => {
         setSubmitting(true);
         onSubmit(data);
