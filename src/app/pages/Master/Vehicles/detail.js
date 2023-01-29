@@ -41,7 +41,7 @@ const DetailVehicle = () => {
             no_police: "",
             year: "",
             capacity: "",
-            fuel_type: "",
+            fuel_type: null,
             transportation_type_id: null,
             }}
           />

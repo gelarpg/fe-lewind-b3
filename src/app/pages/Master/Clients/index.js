@@ -16,11 +16,10 @@ import { useNavigate } from "react-router-dom";
 import useFetch from "app/hooks/useFetch";
 import useAxiosFunction from "app/hooks/useAxiosFunction";
 import usePrevious from "app/hooks/usePrevious";
-import useNotif from "app/hooks/useNotif";
+import { withSnackbar } from "app/components/SnackbarComponent";
 import {isEqual} from "lodash";
 
-const Clients = () => {
-  const [notif, sendNotification] = useNotif();
+const Clients = (props) => {
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
   const {
     isLoading: isLoadingList,
@@ -132,7 +131,7 @@ const Clients = () => {
       method: "delete",
       url: `/clients/delete/${id}`,
       onSuccess: () => {
-        sendNotification({msg: 'Data berhasil dihapus', variant: 'success'})
+        props.snackbarShowMessage('Data berhasil dihapus');
         if (requestParam.page === 1) {
           refetch({
             params: {
@@ -202,4 +201,4 @@ const Clients = () => {
   );
 };
 
-export default Clients;
+export default withSnackbar(Clients);

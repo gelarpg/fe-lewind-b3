@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { Box } from '@mui/material';
 import useAxiosFunction from 'app/hooks/useAxiosFunction';
 import CustomForm from './form';
-import useNotif from "app/hooks/useNotif";
+import { withSnackbar } from "app/components/SnackbarComponent";
 
-const NewDriver = () => {
-  const [notif, sendNotification] = useNotif();
+const NewDriver = (props) => {
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
 
   const onSubmitData = (payload) => {
@@ -20,7 +19,7 @@ const NewDriver = () => {
     //     data: temp,
     //   },
     //   onSuccess: () => {
-    //     sendNotification({msg: 'Data driver berhasil ditambahkan', variant: 'success'});
+    //     props.snackbarShowMessage('Data driver berhasil ditambahkan');
     //   },
     // });
   };
@@ -45,4 +44,4 @@ const NewDriver = () => {
   );
 };
 
-export default NewDriver;
+export default withSnackbar(NewDriver);

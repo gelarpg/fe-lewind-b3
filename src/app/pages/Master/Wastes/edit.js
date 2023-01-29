@@ -3,14 +3,13 @@ import { Box } from "@mui/material";
 
 import useFetch from 'app/hooks/useFetch';
 import useAxiosFunction from "app/hooks/useAxiosFunction";
-import useNotif from "app/hooks/useNotif";
+import { withSnackbar } from "app/components/SnackbarComponent";
 import { useNavigate, useParams } from 'react-router-dom';
 import CustomForm from "./form";
 
-const EditWaste = () => {
+const EditWaste = (props) => {
   const navigate = useNavigate();
   const params = useParams();
-  const [notif, sendNotification] = useNotif();
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
 
   const {
@@ -32,7 +31,7 @@ const EditWaste = () => {
         data: temp,
       },
       onSuccess: () => {
-        sendNotification({msg: 'Data limbah berhasil diubah', variant: 'success'});
+        props.snackbarShowMessage('Data limbah berhasil diubah');
         navigate('/wastes');
       },
     });
@@ -56,4 +55,4 @@ const EditWaste = () => {
   );
 };
 
-export default EditWaste;
+export default withSnackbar(EditWaste);

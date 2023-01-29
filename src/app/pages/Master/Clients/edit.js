@@ -3,14 +3,13 @@ import { Box } from "@mui/material";
 
 import useFetch from 'app/hooks/useFetch';
 import useAxiosFunction from "app/hooks/useAxiosFunction";
-import useNotif from "app/hooks/useNotif";
+import { withSnackbar } from "app/components/SnackbarComponent";
 import { useNavigate, useParams } from 'react-router-dom';
 import CustomForm from "./form";
 
-const EditClient = () => {
+const EditClient = (props) => {
   const navigate = useNavigate();
   const params = useParams();
-  const [notif, sendNotification] = useNotif();
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
 
   const {
@@ -32,7 +31,7 @@ const EditClient = () => {
         data: temp,
       },
       onSuccess: () => {
-        sendNotification({msg: 'Data client berhasil diubah', variant: 'success'});
+        props.snackbarShowMessage('Data client berhasil diubah');
         navigate('/clients');
       },
     });
@@ -56,4 +55,4 @@ const EditClient = () => {
   );
 };
 
-export default EditClient;
+export default withSnackbar(EditClient);

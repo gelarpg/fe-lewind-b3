@@ -4,11 +4,10 @@ import { Box } from "@mui/material";
 import moment from "moment";
 
 import useAxiosFunction from "app/hooks/useAxiosFunction";
-import useNotif from "app/hooks/useNotif";
+import { withSnackbar } from "app/components/SnackbarComponent";
 import CustomForm from "./form";
 
-const NewSubmission = () => {
-  const [notif, sendNotification] = useNotif();
+const NewSubmission = (props) => {
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
 
   const onSubmitData = (payload) => {
@@ -23,7 +22,7 @@ const NewSubmission = () => {
         data: temp,
       },
       onSuccess: () => {
-        sendNotification({msg: 'Data pengajuan berhasil ditambahkan', variant: 'success'});
+        props.snackbarShowMessage('Data pengajuan berhasil ditambahkan');
       },
     });
   };
@@ -46,4 +45,4 @@ const NewSubmission = () => {
   );
 };
 
-export default NewSubmission;
+export default withSnackbar(NewSubmission);

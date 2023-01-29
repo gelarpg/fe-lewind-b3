@@ -4,17 +4,17 @@ import { Box } from "@mui/material";
 import moment from "moment";
 
 import useAxiosFunction from "app/hooks/useAxiosFunction";
-import useNotif from "app/hooks/useNotif";
+import { withSnackbar } from "app/components/SnackbarComponent";
 import CustomForm from "./form";
 
-const NewVehicle = () => {
-  const [notif, sendNotification] = useNotif();
+const NewVehicle = (props) => {
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
 
   const onSubmitData = (payload) => {
     const temp = {
       ...payload,
       transportation_type_id: payload.transportation_type_id.value,
+      fuel_type: payload.fuel_type.value,
     };
     axiosFetch({
       method: "post",
@@ -23,7 +23,7 @@ const NewVehicle = () => {
         data: temp,
       },
       onSuccess: () => {
-        sendNotification({msg: 'Data kendaraan berhasil ditambahkan', variant: 'success'});
+        props.snackbarShowMessage('Data kendaraan berhasil ditambahkan');
       },
     });
   };
@@ -39,7 +39,7 @@ const NewVehicle = () => {
             no_police: "",
             year: "",
             capacity: "",
-            fuel_type: "",
+            fuel_type: null,
             transportation_type_id: null,
           }}
         />
@@ -48,4 +48,4 @@ const NewVehicle = () => {
   );
 };
 
-export default NewVehicle;
+export default withSnackbar(NewVehicle);

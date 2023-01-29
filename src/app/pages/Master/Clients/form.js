@@ -60,6 +60,8 @@ const CustomForm = ({
                 size="small"
                 fullWidth
                 name="address"
+                multiline
+                rows={3}
               />
             </Box>
             <Box flex={1} mb={3}>

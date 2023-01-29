@@ -3,14 +3,13 @@ import { Box } from "@mui/material";
 
 import useFetch from 'app/hooks/useFetch';
 import useAxiosFunction from "app/hooks/useAxiosFunction";
-import useNotif from "app/hooks/useNotif";
+import { withSnackbar } from "app/components/SnackbarComponent";
 import { useNavigate, useParams } from 'react-router-dom';
 import CustomForm from "./form";
 
-const EditDriver = () => {
+const EditDriver = (props) => {
   const navigate = useNavigate();
   const params = useParams();
-  const [notif, sendNotification] = useNotif();
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
 
   const {
@@ -32,7 +31,7 @@ const EditDriver = () => {
         data: temp,
       },
       onSuccess: () => {
-        sendNotification({msg: 'Data driver berhasil diubah', variant: 'success'});
+        props.snackbarShowMessage('Data driver berhasil diubah');
         navigate('/drivers');
       },
     });
@@ -56,4 +55,4 @@ const EditDriver = () => {
   );
 };
 
-export default EditDriver;
+export default withSnackbar(EditDriver);

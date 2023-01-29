@@ -3,14 +3,13 @@ import { Box } from "@mui/material";
 
 import useFetch from 'app/hooks/useFetch';
 import useAxiosFunction from "app/hooks/useAxiosFunction";
-import useNotif from "app/hooks/useNotif";
+import { withSnackbar } from "app/components/SnackbarComponent";
 import { useNavigate, useParams } from 'react-router-dom';
 import CustomForm from "./form";
 
-const EditVehicles = () => {
+const EditVehicles = (props) => {
   const navigate = useNavigate();
   const params = useParams();
-  const [notif, sendNotification] = useNotif();
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
 
   const {
@@ -24,6 +23,8 @@ const EditVehicles = () => {
   const onSubmitData = (payload) => {
     const temp = {
       ...payload,
+      transportation_type_id: payload.transportation_type_id.value,
+      fuel_type: payload.fuel_type.value,
     };
     axiosFetch({
       method: "put",
@@ -32,7 +33,7 @@ const EditVehicles = () => {
         data: temp,
       },
       onSuccess: () => {
-        sendNotification({msg: 'Data kendaraan berhasil diubah', variant: 'success'});
+        props.snackbarShowMessage('Data kendaraan berhasil diubah');
         navigate('/vehicles');
       },
     });
@@ -49,7 +50,7 @@ const EditVehicles = () => {
             no_police: "",
             year: "",
             capacity: "",
-            fuel_type: "",
+            fuel_type: null,
             transportation_type_id: null,
           }}
         />
@@ -58,4 +59,4 @@ const EditVehicles = () => {
   );
 };
 
-export default EditVehicles;
+export default withSnackbar(EditVehicles);

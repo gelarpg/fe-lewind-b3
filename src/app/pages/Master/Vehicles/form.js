@@ -13,6 +13,37 @@ import FormikDatepicker from "app/components/FormikDatepicker";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 
+const fuelTypeArr = [
+  {
+    value: 'Premium',
+    label: "Premium",
+  },
+  {
+    value: 'Pertalite',
+    label: "Pertalite",
+  },
+  {
+    value: 'Pertamina Dex',
+    label: "Pertamina Dex",
+  },
+  {
+    value: 'Dexlite',
+    label: "Dexlite",
+  },
+  {
+    value: 'Solar',
+    label: "Solar",
+  },
+  {
+    value: 'Pertamax',
+    label: "Pertamax",
+  },
+  {
+    value: 'Pertamax Turbo',
+    label: "Pertamax Turbo",
+  },
+];
+
 const validationSchema = yup.object({
   name: yup.string().required("Nama kendaraan harus diisi"),
   no_police: yup
@@ -28,7 +59,19 @@ const validationSchema = yup.object({
     .integer("Kapasitas angkut harus berupa angka")
     .required("Kapasitas angkut harus diisi")
     .min(1, "Kapasitas angkut minimal 1"),
-  fuel_type: yup.string().required("Jenis bahan bakar harus diisi"),
+  fuel_type: yup
+    .object()
+    .shape({
+      label: yup.string().required(),
+      value: yup.string().required(),
+    })
+    .test("required", "Jenis bahan bakar harus diisi", (value, ctx) => {
+      if (!value) return false;
+      else if (value !== null && value.value && value.label)
+        return !!value.value && !!value.label;
+      return true;
+    })
+    .nullable(),
   transportation_type_id: yup
     .object()
     .shape({
@@ -181,12 +224,12 @@ const CustomForm = ({
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                 Jenis Bahan Bakar
               </Typography>
-              <JumboTextField
-                variant="standard"
-                disabled={isDetail}
-                size="small"
-                fullWidth
+              <FormikReactSelect
+                isSearchable={false}
+                isDisabled={isDetail}
                 name="fuel_type"
+                placeholder="Pilih Jenis Bahan Bakar"
+                options={fuelTypeArr}
               />
             </Box>
             <Grid container spacing={3} direction="row" alignItems="end" mb={3}>

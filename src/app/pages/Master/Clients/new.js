@@ -2,11 +2,10 @@ import React from "react";
 import { Box } from "@mui/material";
 
 import useAxiosFunction from "app/hooks/useAxiosFunction";
-import useNotif from "app/hooks/useNotif";
+import { withSnackbar } from "app/components/SnackbarComponent";
 import CustomForm from "./form";
 
-const NewClient = () => {
-  const [notif, sendNotification] = useNotif();
+const NewClient = (props) => {
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
 
   const onSubmitData = (payload) => {
@@ -21,7 +20,7 @@ const NewClient = () => {
         data: temp,
       },
       onSuccess: () => {
-        sendNotification({msg: 'Data client berhasil ditambahkan', variant: 'success'});
+        props.snackbarShowMessage('Data client berhasil ditambahkan');
       },
     });
   };
@@ -44,4 +43,4 @@ const NewClient = () => {
   );
 };
 
-export default NewClient;
+export default withSnackbar(NewClient);

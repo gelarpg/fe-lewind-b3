@@ -124,6 +124,8 @@ const CustomForm = ({
                 size="small"
                 fullWidth
                 name="address"
+                multiline
+                rows={3}
               />
             </Box>
             <Grid container spacing={3} direction="row" alignItems="end" mb={3}>

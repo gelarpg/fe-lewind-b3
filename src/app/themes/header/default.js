@@ -61,7 +61,7 @@ export const headerTheme = {
             contrastText: '#FFF'
         },
         success: {
-            main: '#3BD2A2',
+            main: '#007E03',
             light: '#78FFD3',
             dark: '#00A073',
             contrastText: '#FFF'

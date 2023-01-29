@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, InputAdornment } from "@mui/material";
 import * as yup from "yup";
 import { Form, Formik } from "formik";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -62,7 +62,7 @@ const CustomForm = ({
                 name="type"
               />
             </Box>
-            <Box flex={1} mb={3}>
+            <Box flex={1} mb={3} width={'50%'}>
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                 Berat Satuan
               </Typography>
@@ -72,6 +72,13 @@ const CustomForm = ({
                 size="small"
                 fullWidth
                 name="weight_unit"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Typography variant={"body1"}>Kg</Typography>
+                    </InputAdornment>
+                  ),
+                }}
               />
             </Box>
             <Box flex={1} mb={3}>
