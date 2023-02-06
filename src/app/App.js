@@ -45,7 +45,7 @@ function App() {
                                                 horizontal: 'right',
                                             }}
                                             maxSnack={3}>
-                                            {/* <JumboAuthProvider> */}
+                                            <JumboAuthProvider>
                                                 <AxiosInterceptor>
                                                     <AppLayout>
                                                         <Suspense
@@ -67,7 +67,7 @@ function App() {
                                                         </Suspense>
                                                     </AppLayout>
                                                 </AxiosInterceptor>
-                                            {/* </JumboAuthProvider> */}
+                                            </JumboAuthProvider>
                                         </SnackbarProvider>
                                     </JumboDialogProvider>
                                 </JumboRTL>

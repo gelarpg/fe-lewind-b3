@@ -3,25 +3,30 @@ import { Box } from '@mui/material';
 import useAxiosFunction from 'app/hooks/useAxiosFunction';
 import CustomForm from './form';
 import { withSnackbar } from "app/components/SnackbarComponent";
+import { useNavigate } from "react-router-dom";
 
 const NewDriver = (props) => {
+  const navigate = useNavigate();
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
 
   const onSubmitData = (payload) => {
-    const temp = {
-      ...payload,
-    };
-    console.log(payload)
-    // axiosFetch({
-    //   method: 'post',
-    //   url: '/driver/create',
-    //   requestConfig: {
-    //     data: temp,
-    //   },
-    //   onSuccess: () => {
-    //     props.snackbarShowMessage('Data driver berhasil ditambahkan');
-    //   },
-    // });
+    const temp = {};
+    temp.name = payload.name;
+    temp.age = payload.age;
+    temp.phone_number = payload.phone_number;
+    temp.address = payload.address;
+
+    axiosFetch({
+      method: 'post',
+      url: '/driver/create',
+      requestConfig: {
+        data: temp,
+      },
+      onSuccess: () => {
+        props.snackbarShowMessage('Data driver berhasil ditambahkan');
+        navigate('/drivers');
+      },
+    });
   };
 
   return (

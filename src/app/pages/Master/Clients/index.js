@@ -107,8 +107,8 @@ const Clients = (props) => {
   }, [currentPage, rowsPerPage]);
 
   useEffect(() => {
-    if (clientsData?.drivers && clientsData?.paginator) {
-      setDatas(clientsData.drivers);
+    if (clientsData?.clients && clientsData?.paginator) {
+      setDatas(clientsData.clients);
       setPagination(clientsData.paginator);
       if (tableRef && tableRef.current) tableRef.current.scrollIntoView();
     }

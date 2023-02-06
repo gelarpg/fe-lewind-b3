@@ -6,8 +6,10 @@ import moment from "moment";
 import useAxiosFunction from "app/hooks/useAxiosFunction";
 import { withSnackbar } from "app/components/SnackbarComponent";
 import CustomForm from "./form";
+import { useNavigate } from "react-router-dom";
 
 const NewVehicle = (props) => {
+  const navigate = useNavigate();
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
 
   const onSubmitData = (payload) => {
@@ -24,6 +26,7 @@ const NewVehicle = (props) => {
       },
       onSuccess: () => {
         props.snackbarShowMessage('Data kendaraan berhasil ditambahkan');
+        navigate('/vehicles');
       },
     });
   };

@@ -107,8 +107,8 @@ const Wastes = (props) => {
   }, [currentPage, rowsPerPage]);
 
   useEffect(() => {
-    if (wastesData?.drivers && wastesData?.paginator) {
-      setDatas(wastesData.drivers);
+    if (wastesData?.waste && wastesData?.paginator) {
+      setDatas(wastesData.waste);
       setPagination(wastesData.paginator);
       if (tableRef && tableRef.current) tableRef.current.scrollIntoView();
     }

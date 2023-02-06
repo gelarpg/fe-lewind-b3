@@ -6,8 +6,10 @@ import moment from "moment";
 import useAxiosFunction from "app/hooks/useAxiosFunction";
 import { withSnackbar } from "app/components/SnackbarComponent";
 import CustomForm from "./form";
+import { useNavigate } from "react-router-dom";
 
 const NewWaste = (props) => {
+  const navigate = useNavigate();
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
 
   const onSubmitData = (payload) => {
@@ -23,6 +25,7 @@ const NewWaste = (props) => {
       },
       onSuccess: () => {
         props.snackbarShowMessage('Data limbah berhasil ditambahkan');
+        navigate('/wastes');
       },
     });
   };
