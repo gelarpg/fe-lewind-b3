@@ -37,10 +37,10 @@ const DetailWaste = () => {
             isLoading={isLoadingDetail}
             isDetail={true}
             initialValues={{
-              name: "",
-              type: "",
-              weight_unit: "",
-              price_unit: "",
+              name: wasteDetail?.name ?? "",
+              type: wasteDetail?.type ?? "",
+              weight_unit: wasteDetail?.weight_unit ?? "",
+              price_unit: wasteDetail?.price_unit?.toString()?.replace(/[$.]+/g, ',') ?? '',
             }}
           />
         ) : null}

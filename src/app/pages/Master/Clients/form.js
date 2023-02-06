@@ -6,6 +6,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 
 import JumboTextField from "@jumbo/components/JumboFormik/JumboTextField";
 import { GreyButton } from "app/components/CustomIconButton";
+import FormikWasteSelection from "app/components/FormikWasteSelection";
 import FormikNumberInput from "app/components/FormikNumberInput";
 import { useNavigate } from "react-router-dom";
 
@@ -14,6 +15,19 @@ const validationSchema = yup.object({
   address: yup.string().required("Alamat harus diisi"),
   offer_number: yup.string().required("Nomor penawaran harus diisi"),
   transaction_fee: yup.string().required("Biaya transaksi harus diisi"),
+  waste_id: yup
+    .object()
+    .shape({
+      label: yup.string().required(),
+      value: yup.string().required(),
+    })
+    .test("required", "Jenis limbah harus diisi", (value, ctx) => {
+      if (!value) return false;
+      else if (value !== null && value.value && value.label)
+        return !!value.value && !!value.label;
+      return true;
+    })
+    .nullable(),
 });
 
 const CustomForm = ({
@@ -86,6 +100,15 @@ const CustomForm = ({
                 size="small"
                 fullWidth
                 name="transaction_fee"
+              />
+            </Box>
+            <Box flex={1} mb={3}>
+              <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+                Jenis Limbah
+              </Typography>
+              <FormikWasteSelection
+                name="waste_id"
+                placeholder="Pilih Jenis Limbah"
               />
             </Box>
           </Box>

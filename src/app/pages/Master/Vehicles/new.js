@@ -16,7 +16,6 @@ const NewVehicle = (props) => {
     const temp = {
       ...payload,
       transportation_type_id: payload.transportation_type_id.value,
-      fuel_type: payload.fuel_type.value,
     };
     axiosFetch({
       method: "post",
@@ -42,7 +41,7 @@ const NewVehicle = (props) => {
             no_police: "",
             year: "",
             capacity: "",
-            fuel_type: null,
+            fuel_type: "",
             transportation_type_id: null,
           }}
         />

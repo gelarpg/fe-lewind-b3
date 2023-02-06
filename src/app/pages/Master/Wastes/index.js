@@ -71,14 +71,14 @@ const Wastes = (props) => {
         sortable: false,
       },
       {
-        field: "weightType",
+        field: "weight_unit",
         headerName: "Berat Satuan",
         width: 150,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
-        field: "price",
+        field: "price_unit",
         headerName: "Harga Satuan",
         width: 150,
         valueFormatter: (params) => params?.value ?? "-",

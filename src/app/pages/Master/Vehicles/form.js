@@ -59,19 +59,20 @@ const validationSchema = yup.object({
     .integer("Kapasitas angkut harus berupa angka")
     .required("Kapasitas angkut harus diisi")
     .min(1, "Kapasitas angkut minimal 1"),
-  fuel_type: yup
-    .object()
-    .shape({
-      label: yup.string().required(),
-      value: yup.string().required(),
-    })
-    .test("required", "Jenis bahan bakar harus diisi", (value, ctx) => {
-      if (!value) return false;
-      else if (value !== null && value.value && value.label)
-        return !!value.value && !!value.label;
-      return true;
-    })
-    .nullable(),
+  fuel_type: yup.string().required("Jenis bahan bakar harus diisi"),
+  // fuel_type: yup
+  //   .object()
+  //   .shape({
+  //     label: yup.string().required(),
+  //     value: yup.string().required(),
+  //   })
+  //   .test("required", "Jenis bahan bakar harus diisi", (value, ctx) => {
+  //     if (!value) return false;
+  //     else if (value !== null && value.value && value.label)
+  //       return !!value.value && !!value.label;
+  //     return true;
+  //   })
+  //   .nullable(),
   transportation_type_id: yup
     .object()
     .shape({
@@ -85,36 +86,36 @@ const validationSchema = yup.object({
       return true;
     })
     .nullable(),
-  pdf_stnk: yup
-    .mixed()
-    .nullable()
-    .required("Harap masukkan attachment")
-    .test("fileSize", "Attachment maksimal 5MB", (value) => {
-      return !value || (value && value.size <= 5000000);
-    })
-    .test(
-      "fileFormat",
-      "Attachment harus dalam format .pdf atau .png atau .jpeg",
-      (value) =>
-        !value ||
-        (value &&
-          ["application/pdf", "image/png", "image/jpeg"].includes(value.type))
-    ),
-  pdf_surat_jalan: yup
-    .mixed()
-    .nullable()
-    .required("Harap masukkan attachment")
-    .test("fileSize", "Attachment maksimal 5MB", (value) => {
-      return !value || (value && value.size <= 5000000);
-    })
-    .test(
-      "fileFormat",
-      "Attachment harus dalam format .pdf atau .png atau .jpeg",
-      (value) =>
-        !value ||
-        (value &&
-          ["application/pdf", "image/png", "image/jpeg"].includes(value.type))
-    ),
+  // pdf_stnk: yup
+  //   .mixed()
+  //   .nullable()
+  //   .required("Harap masukkan attachment")
+  //   .test("fileSize", "Attachment maksimal 5MB", (value) => {
+  //     return !value || (value && value.size <= 5000000);
+  //   })
+  //   .test(
+  //     "fileFormat",
+  //     "Attachment harus dalam format .pdf atau .png atau .jpeg",
+  //     (value) =>
+  //       !value ||
+  //       (value &&
+  //         ["application/pdf", "image/png", "image/jpeg"].includes(value.type))
+  //   ),
+  // pdf_surat_jalan: yup
+  //   .mixed()
+  //   .nullable()
+  //   .required("Harap masukkan attachment")
+  //   .test("fileSize", "Attachment maksimal 5MB", (value) => {
+  //     return !value || (value && value.size <= 5000000);
+  //   })
+  //   .test(
+  //     "fileFormat",
+  //     "Attachment harus dalam format .pdf atau .png atau .jpeg",
+  //     (value) =>
+  //       !value ||
+  //       (value &&
+  //         ["application/pdf", "image/png", "image/jpeg"].includes(value.type))
+  //   ),
 });
 
 const CustomForm = ({
@@ -224,13 +225,20 @@ const CustomForm = ({
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                 Jenis Bahan Bakar
               </Typography>
-              <FormikReactSelect
+              <JumboTextField
+                variant="standard"
+                disabled={isDetail}
+                size="small"
+                fullWidth
+                name="fuel_type"
+              />
+              {/* <FormikReactSelect
                 isSearchable={false}
                 isDisabled={isDetail}
                 name="fuel_type"
                 placeholder="Pilih Jenis Bahan Bakar"
                 options={fuelTypeArr}
-              />
+              /> */}
             </Box>
             <Grid container spacing={3} direction="row" alignItems="end" mb={3}>
               <Grid item xs={5}>

@@ -13,6 +13,7 @@ const NewClient = (props) => {
   const onSubmitData = (payload) => {
     const temp = {
       ...payload,
+      waste_id: payload.waste_id.value,
       transaction_fee: Number(payload.transaction_fee.replace(/[$.]+/g, '').replace(/[$,]+/g, '.')),
     };
     axiosFetch({
@@ -39,6 +40,7 @@ const NewClient = (props) => {
             address: "",
             offer_number: "",
             transaction_fee: "",
+            waste_id: null,
           }}
         />
       </Box>

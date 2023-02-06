@@ -44,10 +44,10 @@ const EditDriver = (props) => {
           onSubmit={onSubmitData}
           isLoading={isLoading}
           initialValues={{
-            name: "",
-              age: "",
-              phone_number: "",
-              address: "",
+            name: driverDetail?.name ?? "",
+            age: driverDetail?.age ??  "",
+            phone_number: driverDetail?.phone_number ??  "",
+            address: driverDetail?.address ??  "",
           }}
         />
       </Box>

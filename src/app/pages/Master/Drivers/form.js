@@ -21,36 +21,36 @@ const validationSchema = yup.object({
     .max(50, "Umur minimal 50 Tahun"),
   phone_number: yup.string().required("No telepon harus diisi"),
   address: yup.string().required("Alamat harus diisi"),
-  pdf_nik: yup
-    .mixed()
-    .nullable()
-    .required("Harap masukkan attachment")
-    .test("fileSize", "Attachment maksimal 5MB", (value) => {
-      return !value || (value && value.size <= 5000000);
-    })
-    .test(
-      "fileFormat",
-      "Attachment harus dalam format .pdf atau .png atau .jpeg",
-      (value) =>
-        !value ||
-        (value &&
-          ["application/pdf", "image/png", "image/jpeg"].includes(value.type))
-    ),
-  pdf_sim: yup
-    .mixed()
-    .nullable()
-    .required("Harap masukkan attachment")
-    .test("fileSize", "Attachment maksimal 5MB", (value) => {
-      return !value || (value && value.size <= 5000000);
-    })
-    .test(
-      "fileFormat",
-      "Attachment harus dalam format .pdf atau .png atau .jpeg",
-      (value) =>
-        !value ||
-        (value &&
-          ["application/pdf", "image/png", "image/jpeg"].includes(value.type))
-    ),
+  // pdf_nik: yup
+  //   .mixed()
+  //   .nullable()
+  //   .required("Harap masukkan attachment")
+  //   .test("fileSize", "Attachment maksimal 5MB", (value) => {
+  //     return !value || (value && value.size <= 5000000);
+  //   })
+  //   .test(
+  //     "fileFormat",
+  //     "Attachment harus dalam format .pdf atau .png atau .jpeg",
+  //     (value) =>
+  //       !value ||
+  //       (value &&
+  //         ["application/pdf", "image/png", "image/jpeg"].includes(value.type))
+  //   ),
+  // pdf_sim: yup
+  //   .mixed()
+  //   .nullable()
+  //   .required("Harap masukkan attachment")
+  //   .test("fileSize", "Attachment maksimal 5MB", (value) => {
+  //     return !value || (value && value.size <= 5000000);
+  //   })
+  //   .test(
+  //     "fileFormat",
+  //     "Attachment harus dalam format .pdf atau .png atau .jpeg",
+  //     (value) =>
+  //       !value ||
+  //       (value &&
+  //         ["application/pdf", "image/png", "image/jpeg"].includes(value.type))
+  //   ),
 });
 
 const CustomForm = ({

@@ -44,10 +44,11 @@ const EditClient = (props) => {
           onSubmit={onSubmitData}
           isLoading={isLoading}
           initialValues={{
-            name: "",
-            address: "",
-            offer_number: "",
-            transaction_fee: "",
+            name: clientDetail?.name ?? "",
+            address: clientDetail?.address ?? "",
+            offer_number: clientDetail?.offer_number ?? "",
+            transaction_fee: clientDetail?.transaction_fee?.toString()?.replace(/[$.]+/g, ',') ?? '',
+            waste_id: clientDetail?.waste_id ? {value: clientDetail?.waste_id, label: clientDetail?.waste_name} : null,
           }}
         />
       </Box>

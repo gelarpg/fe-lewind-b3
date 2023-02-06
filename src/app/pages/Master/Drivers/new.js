@@ -40,8 +40,8 @@ const NewDriver = (props) => {
               age: "",
               phone_number: "",
               address: "",
-              pdf_no_stnk: null,
-              pdf_surat_jalan: null
+              // pdf_no_stnk: null,
+              // pdf_surat_jalan: null
             }}
           />
       </Box>

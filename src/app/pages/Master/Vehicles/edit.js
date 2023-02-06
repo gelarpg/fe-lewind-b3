@@ -24,7 +24,7 @@ const EditVehicles = (props) => {
     const temp = {
       ...payload,
       transportation_type_id: payload.transportation_type_id.value,
-      fuel_type: payload.fuel_type.value,
+      fuel_type: payload.fuel_type,
     };
     axiosFetch({
       method: "put",
@@ -46,12 +46,12 @@ const EditVehicles = (props) => {
           onSubmit={onSubmitData}
           isLoading={isLoading}
           initialValues={{
-            name: "",
-            no_police: "",
-            year: "",
-            capacity: "",
-            fuel_type: null,
-            transportation_type_id: null,
+            name: vehicleDetail?.name ?? "",
+            no_police: vehicleDetail?.no_police ?? "",
+            year: vehicleDetail?.year ?? "",
+            capacity: vehicleDetail?.capacity ?? "",
+            fuel_type: vehicleDetail?.fuel_type ?? "",
+            transportation_type_id: vehicleDetail?.transportation_type_id ? {value: vehicleDetail?.transportation_type_id, label: vehicleDetail?.transportation_type_name} : null,
           }}
         />
       </Box>
