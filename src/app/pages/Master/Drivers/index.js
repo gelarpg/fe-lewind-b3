@@ -28,7 +28,7 @@ const Drivers = (props) => {
     error: errorDriversData,
     refetch,
   } = useFetch({
-    url: "/dirver",
+    url: "/driver",
     requestConfig: {
       params: {
         page: 1,
@@ -62,7 +62,7 @@ const Drivers = (props) => {
       {
         field: "name",
         headerName: "Nama",
-        width: 150,
+        width: 200,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
@@ -110,8 +110,8 @@ const Drivers = (props) => {
   }, [currentPage, rowsPerPage]);
 
   useEffect(() => {
-    if (driversData?.drivers && driversData?.paginator) {
-      setDatas(driversData.drivers);
+    if (driversData?.driver && driversData?.paginator) {
+      setDatas(driversData.driver);
       setPagination(driversData.paginator);
       if (tableRef && tableRef.current) tableRef.current.scrollIntoView();
     }

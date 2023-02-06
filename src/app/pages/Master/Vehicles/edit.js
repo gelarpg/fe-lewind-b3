@@ -6,6 +6,7 @@ import useAxiosFunction from "app/hooks/useAxiosFunction";
 import { withSnackbar } from "app/components/SnackbarComponent";
 import { useNavigate, useParams } from 'react-router-dom';
 import CustomForm from "./form";
+import moment from "moment";
 
 const EditVehicles = (props) => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const EditVehicles = (props) => {
     data: vehicleDetail,
     error: errorDetail,
   } = useFetch({
-    url: `/transportation/${params.id}`,
+    url: `/transportation/detail/${params.id}`,
   });
 
   const onSubmitData = (payload) => {
@@ -25,6 +26,7 @@ const EditVehicles = (props) => {
       ...payload,
       transportation_type_id: payload.transportation_type_id.value,
       fuel_type: payload.fuel_type,
+      year: moment(payload.year).format('YYYY')
     };
     axiosFetch({
       method: "put",

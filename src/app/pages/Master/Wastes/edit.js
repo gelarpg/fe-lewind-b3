@@ -17,12 +17,13 @@ const EditWaste = (props) => {
     data: wasteDetail,
     error: errorDetail,
   } = useFetch({
-    url: `/waste/${params.id}`,
+    url: `/waste/detail/${params.id}`,
   });
 
   const onSubmitData = (payload) => {
     const temp = {
       ...payload,
+      price_unit: Number(payload.price_unit.replace(/[$.]+/g, '').replace(/[$,]+/g, '.')),
     };
     axiosFetch({
       method: "put",

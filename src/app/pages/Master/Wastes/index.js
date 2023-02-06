@@ -59,14 +59,14 @@ const Wastes = (props) => {
       {
         field: "name",
         headerName: "Nama Limbah",
-        width: 150,
+        width: 200,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
         field: "type",
         headerName: "Jenis Limbah",
-        width: 150,
+        width: 200,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
@@ -80,8 +80,13 @@ const Wastes = (props) => {
       {
         field: "price_unit",
         headerName: "Harga Satuan",
-        width: 150,
-        valueFormatter: (params) => params?.value ?? "-",
+        width: 200,
+        valueFormatter: (params) => {
+          return `${new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+          }).format(params.value)}`;
+        },
         sortable: false,
       },
       {
@@ -93,7 +98,7 @@ const Wastes = (props) => {
             <CustomEditIconButton
               size="small"
               sx={{ mr: 2 }}
-              onClick={() => navigate(`/vehicles/${params.row.id}/edit`)}
+              onClick={() => navigate(`/wastes/${params.row.id}/edit`)}
             />,
             <CustomDeleteIconButton
               size="small"

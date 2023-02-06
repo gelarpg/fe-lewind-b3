@@ -33,6 +33,16 @@ const useAxiosFunction = () => {
           signal: ctrl.signal,
         });
         response = responseTemp;
+      } else if (method.toLowerCase() === 'put') {
+        const {
+          data: dataToSend,
+          ...rest
+        } = requestConfig;
+        const { data: responseTemp } = await axiosInstance.put(url, dataToSend, {
+          ...rest,
+          signal: ctrl.signal,
+        });
+        response = responseTemp;
       } else {
         const { data: responseTemp } = await axiosInstance[method.toLowerCase()](url, {
           ...requestConfig,

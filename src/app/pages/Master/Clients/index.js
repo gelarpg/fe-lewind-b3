@@ -59,28 +59,33 @@ const Clients = (props) => {
       {
         field: "name",
         headerName: "Nama Client",
-        width: 150,
+        width: 200,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
-        field: "offeringNumber",
+        field: "offer_number",
         headerName: "Nomor Penawaran",
-        width: 150,
+        width: 200,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
-        field: "transportCost",
+        field: "transaction_fee",
         headerName: "Biaya Transportasi",
-        width: 150,
-        valueFormatter: (params) => params?.value ?? "-",
+        width: 200,
+        valueFormatter: (params) => {
+          return `${new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+          }).format(params.value)}`;
+        },
         sortable: false,
       },
       {
         field: "address",
         headerName: "Alamat",
-        width: 150,
+        width: 200,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },

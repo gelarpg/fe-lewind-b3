@@ -13,7 +13,7 @@ const DetailVehicle = () => {
     data: vehicleDetail,
     error: errorDetail,
   } = useFetch({
-    url: `/transportation/${params.id}`,
+    url: `/transportation/detail/${params.id}`,
   });
 
   return (

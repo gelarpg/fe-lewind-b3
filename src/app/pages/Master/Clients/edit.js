@@ -17,7 +17,7 @@ const EditClient = (props) => {
     data: clientDetail,
     error: errorDetail,
   } = useFetch({
-    url: `/clients/${params.id}`,
+    url: `/clients/detail/${params.id}`,
   });
 
   const onSubmitData = (payload) => {

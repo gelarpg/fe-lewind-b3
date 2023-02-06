@@ -13,7 +13,7 @@ const DetailClient = () => {
     data: clientDetail,
     error: errorDetail,
   } = useFetch({
-    url: `/clients/${params.id}`,
+    url: `/clients/detail/${params.id}`,
   });
 
   return (

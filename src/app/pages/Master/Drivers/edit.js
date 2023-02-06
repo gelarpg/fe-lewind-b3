@@ -17,7 +17,7 @@ const EditDriver = (props) => {
     data: driverDetail,
     error: errorDetail,
   } = useFetch({
-    url: `/driver/${params.id}`,
+    url: `/driver/detail/${params.id}`,
   });
 
   const onSubmitData = (payload) => {

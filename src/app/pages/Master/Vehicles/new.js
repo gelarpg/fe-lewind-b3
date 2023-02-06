@@ -16,6 +16,7 @@ const NewVehicle = (props) => {
     const temp = {
       ...payload,
       transportation_type_id: payload.transportation_type_id.value,
+      year: moment(payload.year).format('YYYY')
     };
     axiosFetch({
       method: "post",

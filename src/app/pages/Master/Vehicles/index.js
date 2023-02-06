@@ -60,19 +60,19 @@ const Vehicles = (props) => {
       {
         field: "name",
         headerName: "Nama Kendaraan",
-        width: 150,
+        width: 200,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
-        field: "type",
+        field: "transportation_type",
         headerName: "Jenis Kendaraan",
-        width: 150,
+        width: 200,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
-        field: "police_number",
+        field: "no_police",
         headerName: "No Pol",
         width: 150,
         valueFormatter: (params) => params?.value ?? "-",
@@ -134,6 +134,7 @@ const Vehicles = (props) => {
       onSuccess: () => {
         props.snackbarShowMessage('Data berhasil dihapus')
         if (requestParam.page === 1) {
+          console.log('aduuuh 01')
           refetch({
             params: {
               page: 1,
@@ -141,6 +142,7 @@ const Vehicles = (props) => {
             },
           });
         } else {
+          console.log('aduuuh 02')
           setRequestParam((curr) => ({
             ...curr,
             page: 1,

@@ -41,6 +41,7 @@ const CustomForm = ({
   return (
     <Formik
       initialValues={initialValues}
+      enableReinitialize={true}
       validationSchema={validationSchema}
       validateOnMount={false}
       onSubmit={(data, { setSubmitting }) => {
@@ -127,7 +128,6 @@ const CustomForm = ({
                 variant="contained"
                 sx={{ ml: 3 }}
                 loading={isSubmitting || isLoading}
-                loadingIndicator="Loading ..."
               >
                 Simpan
               </LoadingButton>

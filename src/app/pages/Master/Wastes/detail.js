@@ -13,7 +13,7 @@ const DetailWaste = () => {
     data: wasteDetail,
     error: errorDetail,
   } = useFetch({
-    url: `/waste/${params.id}`,
+    url: `/waste/detail/${params.id}`,
   });
 
   return (
