@@ -34,7 +34,7 @@ const JumboNavSection = ({item, translate}) => {
                         lineHeight: 'normal',
                         textTransform: 'uppercase',
                         bgcolor: 'transparent',
-                        p: theme => theme.spacing(3.75, 3.75, 1.875)
+                        p: theme => theme.spacing(3, 3.75, 1.875)
                     }}
                 >
                     {label}

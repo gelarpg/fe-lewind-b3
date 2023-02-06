@@ -1,7 +1,7 @@
 import {config} from "../../../app/config/main";
 
 export const storeToken = (token) => {
-    localStorage.setItem('token', token);
+    localStorage.setItem('b3token', token);
     if(!config?.authSetting?.axiosObject)
         throw Error("axiosObject need to be set under authSettings inside app/config/main.js");
     else
@@ -9,7 +9,7 @@ export const storeToken = (token) => {
 };
 
 export const removeToken = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('b3token');
     if(!config?.authSetting?.axiosObject)
         throw Error("axiosObject need to be set under authSettings inside app/config/main.js");
     else

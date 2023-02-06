@@ -5,10 +5,12 @@ import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import {Drawer, Toolbar} from "@mui/material";
 import {SIDEBAR_STYLES, SIDEBAR_VARIANTS, SIDEBAR_VIEWS} from "@jumbo/utils/constants/layout";
 import Div from "@jumbo/shared/Div";
+import { useLocation } from 'react-router-dom';
 
 const JumboLayoutSidebar = ({children, headerHeightProps}) => {
     const {sidebarTheme} = useJumboSidebarTheme();
     const {sidebarOptions, setSidebarOptions} = useJumboLayoutSidebar();
+    const location = useLocation()
 
     const handleClose = React.useCallback(() => {
         setSidebarOptions({
@@ -29,7 +31,7 @@ const JumboLayoutSidebar = ({children, headerHeightProps}) => {
     }, [sidebarOptions?.view]);
 
 
-    if (sidebarOptions?.hide) {
+    if (sidebarOptions?.hide || (location.pathname === '/login')) {
         return null;
     }
 

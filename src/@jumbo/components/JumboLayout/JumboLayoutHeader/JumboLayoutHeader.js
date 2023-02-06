@@ -58,6 +58,7 @@ const JumboLayoutHeader = ({children, sx}) => {
                     width: {sm: `calc(100% - ${headerMarginLeft}px)`},
                     ml: {sm: `${headerMarginLeft}px`},
                     transition: theme => theme.transitions.create(['width']),
+                    borderBottom: '5px solid rgba(217, 217, 217, 0.4)',
                     zIndex: (theme) =>
                         (sidebarOptions?.variant === SIDEBAR_VARIANTS.TEMPORARY || sidebarOptions?.style === SIDEBAR_STYLES.FULL_HEIGHT)
                             ? theme.zIndex.drawer - 1 : theme.zIndex.drawer + 1,

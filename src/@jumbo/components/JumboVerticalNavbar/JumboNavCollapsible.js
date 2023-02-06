@@ -78,6 +78,7 @@ const JumboNavCollapsible = ({item, translate}) => {
                     p: theme => !isMiniAndClosed ? theme.spacing(1, 3.75) : 0,
                     borderRadius: isMiniAndClosed ? '50%' : '0 24px 24px 0',
                     margin: isMiniAndClosed ? '0 auto' : '0',
+                    mb: 1,
                     ...(isMiniAndClosed) ? {width: 40, height: 40, justifyContent: 'center'} : {},
                     overflow: 'hidden',
                     '&:hover': {

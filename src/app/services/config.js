@@ -1,10 +1,12 @@
-import baseAxios from "axios";
+import axios from "axios";
+import useSwalWrapper from "@jumbo/vendors/sweetalert2/hooks";
 
-const axios = baseAxios.create({
-    headers: {
-        'Content-Type': 'application/json'
-    }
+const baseAxios = axios.create({
+  baseURL: process.env.REACT_APP_API_BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 //todo: define interceptors and other configuration like baseURL, headers etc. here
-export default axios;
+export default baseAxios;

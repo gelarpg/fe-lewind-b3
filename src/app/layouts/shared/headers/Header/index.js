@@ -50,7 +50,7 @@ const Header = () => {
                 sidebarOptions?.style === SIDEBAR_STYLES.CLIPPED_UNDER_HEADER &&
                 <Logo sx={{mr: 3}} mode={headerTheme.type ?? "light"}/>
             }
-            {
+            {/* {
                 showDropdownSearch &&
                 <Slide in={dropdownSearchVisibility}>
                     <Div
@@ -100,15 +100,15 @@ const Header = () => {
                         maxWidth: {xs: 240, md: 320}
                     }}
                 />
-            }
+            } */}
             <Stack direction="row" alignItems="center" spacing={1.25} sx={{ml: "auto"}}>
-                {
+                {/* {
                     showDropdownSearch &&
                     <JumboIconButton elevation={25} onClick={() => setDropdownSearchVisibility(true)}>
                         <SearchIcon fontSize={"small"}/>
                     </JumboIconButton>
-                }
-                <MessagesDropdown/>
+                } */}
+                {/* <MessagesDropdown/> */}
                 <NotificationsDropdown/>
                 <AuthUserDropdown/>
             </Stack>
