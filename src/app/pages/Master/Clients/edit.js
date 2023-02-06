@@ -23,6 +23,8 @@ const EditClient = (props) => {
   const onSubmitData = (payload) => {
     const temp = {
       ...payload,
+      waste_id: payload.waste_id.value,
+      transaction_fee: Number(payload.transaction_fee.replace(/[$.]+/g, '').replace(/[$,]+/g, '.')),
     };
     axiosFetch({
       method: "put",

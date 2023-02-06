@@ -45,7 +45,7 @@ const FormikPoldaSelection = ({
     if (wasteData?.paginator && wasteData.waste) {
       setOptions((curr) => [
         ...curr,
-        ...wasteData.waste.map((x) => ({ value: x.id, label: x.name })),
+        ...wasteData.waste.map((x) => ({ value: x.id, label: x.type })),
       ]);
       NEXT_PAGE = wasteData?.paginator?.nextPage;
       setPagination(wasteData.paginator);

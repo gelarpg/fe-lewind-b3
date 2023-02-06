@@ -101,6 +101,7 @@ const CustomForm = ({
                 type="tel"
                 min={17}
                 max={50}
+                inputProps={{maxLength:2}}
               />
             </Box>
             <Box flex={1} mb={3}>

@@ -15,31 +15,31 @@ import moment from "moment";
 
 const fuelTypeArr = [
   {
-    value: 'Premium',
+    value: "Premium",
     label: "Premium",
   },
   {
-    value: 'Pertalite',
+    value: "Pertalite",
     label: "Pertalite",
   },
   {
-    value: 'Pertamina Dex',
+    value: "Pertamina Dex",
     label: "Pertamina Dex",
   },
   {
-    value: 'Dexlite',
+    value: "Dexlite",
     label: "Dexlite",
   },
   {
-    value: 'Solar',
+    value: "Solar",
     label: "Solar",
   },
   {
-    value: 'Pertamax',
+    value: "Pertamax",
     label: "Pertamax",
   },
   {
-    value: 'Pertamax Turbo',
+    value: "Pertamax Turbo",
     label: "Pertamax Turbo",
   },
 ];
@@ -53,9 +53,15 @@ const validationSchema = yup.object({
       /^[A-Z]{1,2}\s{1}\d{0,4}\s{0,1}[A-Z]{0,3}$/,
       "Nomor polisi tidak valid"
     ),
-  year: yup.string().required("Tahun kendaraan harus diisi"),
+  year: yup
+    .string()
+    .required("Tahun kendaraan harus diisi")
+    .test("max", "Tahun kendaraan maksimal tahun ini", (value) => {
+      return Number(moment(value).format('YYYY')) <= Number(moment().format("YYYY"));
+    }),
   capacity: yup
     .number()
+    .typeError("Kapasitas angkut tidak valid")
     .integer("Kapasitas angkut harus berupa angka")
     .required("Kapasitas angkut harus diisi")
     .min(1, "Kapasitas angkut minimal 1"),
