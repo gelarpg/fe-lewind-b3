@@ -98,7 +98,7 @@ const Clients = (props) => {
             <CustomEditIconButton
               size="small"
               sx={{ mr: 2 }}
-              onClick={() => navigate(`/vehicles/${params.row.id}/edit`)}
+              onClick={() => navigate(`/clients/${params.row.id}/edit`)}
             />,
             <CustomDeleteIconButton
               size="small"
