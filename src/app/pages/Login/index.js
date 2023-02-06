@@ -10,6 +10,9 @@ import JumboTextField from "@jumbo/components/JumboFormik/JumboTextField";
 import logo from "app/assets/icons/logo.svg";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import baseAxios from 'app/services/AxiosInterceptor';
+import useJumboAuth from '@jumbo/hooks/useJumboAuth';
+import { useNavigate } from 'react-router-dom';
 
 const validationSchema = yup.object({
   email: yup
@@ -22,14 +25,23 @@ const validationSchema = yup.object({
 });
 
 const Login = () => {
+  const { setAuthToken } = useJumboAuth();
+  const navigate = useNavigate();
+  
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showPwd, setShowPwd] = useState(false);
 
-  const onSignIn = async () => {
+  const onSignIn = async (email, password) => {
     setLoading(true);
     try {
+      const { data } = await baseAxios.post('/login', { email, password });
+      if (data?.meta?.success) {
+        setAuthToken(data?.data?.token);
+        navigate('/dashboard');
+      }
     } catch (error) {
+      console.log(error);
       setErrorMessage(error?.response?.data?.meta?.message);
     } finally {
       setLoading(false);
