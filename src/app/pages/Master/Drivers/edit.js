@@ -24,6 +24,10 @@ const EditDriver = (props) => {
     const temp = {
       ...payload,
     };
+    temp.name = payload.name;
+    temp.age = payload.age;
+    temp.phone_number = payload.phone_number.replace(/\s+/g,"").replace(/_/g, "");
+    temp.address = payload.address;
     axiosFetch({
       method: "put",
       url: `/driver/edit/${params.id}`,
@@ -46,7 +50,7 @@ const EditDriver = (props) => {
           initialValues={{
             name: driverDetail?.name ?? "",
             age: driverDetail?.age ??  "",
-            phone_number: driverDetail?.phone_number ??  "",
+            phone_number: driverDetail?.phone_number?.replace('+62', '') ??  "",
             address: driverDetail?.address ??  "",
           }}
         />

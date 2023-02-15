@@ -15,6 +15,7 @@ const validationSchema = yup.object({
   name: yup.string().required("Nama kendaraan harus diisi"),
   age: yup
     .number()
+    .typeError("Umur tidak valid")
     .integer("Umur harus berupa angka")
     .required("Umur harus diisi")
     .min(18, "Umur minimal 18 Tahun")

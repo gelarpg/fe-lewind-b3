@@ -13,7 +13,7 @@ const NewDriver = (props) => {
     const temp = {};
     temp.name = payload.name;
     temp.age = payload.age;
-    temp.phone_number = payload.phone_number;
+    temp.phone_number = payload.phone_number.replace(/\s+/g,"").replace(/_/g, "");
     temp.address = payload.address;
 
     axiosFetch({
