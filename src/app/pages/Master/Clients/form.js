@@ -118,7 +118,7 @@ const CustomForm = ({
               type="button"
               variant="outlined"
               color="secondary"
-              onClick={() => navigate("/wastes")}
+              onClick={() => navigate("/clients")}
             >
               Batal
             </GreyButton>

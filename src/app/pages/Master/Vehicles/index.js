@@ -7,7 +7,6 @@ import React, {
   useMemo,
 } from "react";
 import { Button, Box, Typography } from "@mui/material";
-import CustomTableComponent from "app/components/CustomTableComponent";
 import {
   CustomEditIconButton,
   CustomDeleteIconButton,

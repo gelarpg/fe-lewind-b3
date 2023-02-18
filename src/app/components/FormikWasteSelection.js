@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Select from 'react-select';
-import { debounce } from 'lodash';
 import useAxiosFunction from 'app/hooks/useAxiosFunction';
 import useJumboAuth from '@jumbo/hooks/useJumboAuth';
 import { Box, FormHelperText } from '@mui/material';
@@ -9,7 +8,7 @@ import { alpha } from "@mui/material";
 
 let NEXT_PAGE = null;
 
-const FormikPoldaSelection = ({
+const FormikWasteSelection = ({
   placeholder = 'Pilih Jenis Limbah',
   isDisabled,
   ...props
@@ -21,7 +20,6 @@ const FormikPoldaSelection = ({
   const { authUser } = useJumboAuth();
 
   const [options, setOptions] = useState([]);
-  const [pagination, setPagination] = useState({});
   const [query, setQuery] = useState({
     page: 1,
     limit: 50,
@@ -48,7 +46,6 @@ const FormikPoldaSelection = ({
         ...wasteData.waste.map((x) => ({ value: x.id, label: x.type })),
       ]);
       NEXT_PAGE = wasteData?.paginator?.nextPage;
-      setPagination(wasteData.paginator);
     }
   }, [wasteData]);
 
@@ -57,13 +54,13 @@ const FormikPoldaSelection = ({
       setOptions([]);
       setQuery((curr) => ({ ...curr, page: 1 }));
     }
-  }, []);
+  }, [query]);
 
   const onMenuScrollToBottom = useCallback(() => {
     if (NEXT_PAGE) {
       setQuery((curr) => ({ ...curr, page: NEXT_PAGE }));
     }
-  }, [NEXT_PAGE]);
+  }, []);
 
   return (
     <Box display="flex" flexDirection="column" flex={1}>
@@ -108,4 +105,4 @@ const FormikPoldaSelection = ({
   );
 };
 
-export default FormikPoldaSelection;
+export default React.memo(FormikWasteSelection);

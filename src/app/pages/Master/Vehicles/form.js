@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Box, Stack, Grid } from "@mui/material";
+import { Typography, Box, Grid } from "@mui/material";
 import * as yup from "yup";
 import { Form, Formik } from "formik";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -12,37 +12,6 @@ import FormikUploadFile from "app/components/FormikUploadFile";
 import FormikDatepicker from "app/components/FormikDatepicker";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-
-const fuelTypeArr = [
-  {
-    value: "Premium",
-    label: "Premium",
-  },
-  {
-    value: "Pertalite",
-    label: "Pertalite",
-  },
-  {
-    value: "Pertamina Dex",
-    label: "Pertamina Dex",
-  },
-  {
-    value: "Dexlite",
-    label: "Dexlite",
-  },
-  {
-    value: "Solar",
-    label: "Solar",
-  },
-  {
-    value: "Pertamax",
-    label: "Pertamax",
-  },
-  {
-    value: "Pertamax Turbo",
-    label: "Pertamax Turbo",
-  },
-];
 
 const validationSchema = yup.object({
   name: yup.string().required("Nama kendaraan harus diisi"),
@@ -66,19 +35,6 @@ const validationSchema = yup.object({
     .required("Kapasitas angkut harus diisi")
     .min(1, "Kapasitas angkut minimal 1"),
   fuel_type: yup.string().required("Jenis bahan bakar harus diisi"),
-  // fuel_type: yup
-  //   .object()
-  //   .shape({
-  //     label: yup.string().required(),
-  //     value: yup.string().required(),
-  //   })
-  //   .test("required", "Jenis bahan bakar harus diisi", (value, ctx) => {
-  //     if (!value) return false;
-  //     else if (value !== null && value.value && value.label)
-  //       return !!value.value && !!value.label;
-  //     return true;
-  //   })
-  //   .nullable(),
   transportation_type_id: yup
     .object()
     .shape({
@@ -164,32 +120,10 @@ const CustomForm = ({
                 Jenis Kendaraan
               </Typography>
               <FormikReactSelect
-                isSearchable={false}
                 isDisabled={isDetail}
                 name="transportation_type_id"
                 placeholder="Pilih Jenis Kendaraan"
-                options={[
-                  {
-                    value: 1,
-                    label: "Hino",
-                  },
-                  {
-                    value: 2,
-                    label: "Hino",
-                  },
-                  {
-                    value: 3,
-                    label: "Hino",
-                  },
-                  {
-                    value: 4,
-                    label: "Hino",
-                  },
-                  {
-                    value: 5,
-                    label: "Hino",
-                  },
-                ]}
+                url="/transportation/list/type"
               />
             </Box>
             <Box flex={1} mb={3}>
@@ -239,13 +173,6 @@ const CustomForm = ({
                 fullWidth
                 name="fuel_type"
               />
-              {/* <FormikReactSelect
-                isSearchable={false}
-                isDisabled={isDetail}
-                name="fuel_type"
-                placeholder="Pilih Jenis Bahan Bakar"
-                options={fuelTypeArr}
-              /> */}
             </Box>
             <Grid container spacing={3} direction="row" alignItems="end" mb={3}>
               <Grid item xs={5}>

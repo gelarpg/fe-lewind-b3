@@ -35,4 +35,4 @@ const FormikDatepicker = (props) => {
   );
 };
 
-export default FormikDatepicker;
+export default React.memo(FormikDatepicker);

@@ -22,4 +22,4 @@ const FormikNumberInput = (props) => {
   );
 };
 
-export default FormikNumberInput;
+export default React.memo(FormikNumberInput);
