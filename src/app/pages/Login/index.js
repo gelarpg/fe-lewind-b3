@@ -1,18 +1,27 @@
 import React, { useState } from "react";
 import * as yup from "yup";
-import { Form, Formik } from "formik";
 
-import { Card, CardContent, Typography, Stack, Link, InputAdornment, IconButton } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Stack,
+  Link,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 import Div from "@jumbo/shared/Div";
 import JumboTextField from "@jumbo/components/JumboFormik/JumboTextField";
 import logo from "app/assets/icons/logo.svg";
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import baseAxios from 'app/services/AxiosInterceptor';
-import useJumboAuth from '@jumbo/hooks/useJumboAuth';
-import { useNavigate } from 'react-router-dom';
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import baseAxios from "app/services/AxiosInterceptor";
+import useJumboAuth from "@jumbo/hooks/useJumboAuth";
+import { useNavigate } from "react-router-dom";
+import { useForm, FormProvider } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const validationSchema = yup.object({
   email: yup
@@ -27,18 +36,26 @@ const validationSchema = yup.object({
 const Login = () => {
   const { setAuthToken } = useJumboAuth();
   const navigate = useNavigate();
-  
+
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showPwd, setShowPwd] = useState(false);
 
+  const methods = useForm({
+    resolver: yupResolver(validationSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
   const onSignIn = async (email, password) => {
     setLoading(true);
     try {
-      const { data } = await baseAxios.post('/login', { email, password });
+      const { data } = await baseAxios.post("/login", { email, password });
       if (data?.meta?.success) {
         setAuthToken(data?.data?.token);
-        navigate('/dashboard');
+        navigate("/dashboard");
       }
     } catch (error) {
       console.log(error);
@@ -108,73 +125,68 @@ const Login = () => {
             </Div>
           </Div>
           <Div>
-            <Formik
-              
-              initialValues={{
-                email: "",
-                password: "",
-              }}
-              validationSchema={validationSchema}
-              onSubmit={(data, { setSubmitting }) => {
-                setSubmitting(true);
-                onSignIn(data.email, data.password);
-                setSubmitting(false);
-              }}
-            >
-              {({ isSubmitting }) => (
-                <Form
-                  style={{ textAlign: "left" }}
-                  noValidate
-                  autoComplete="off"
-                >
-                  {errorMessage && <p>{errorMessage}</p>}
-                  <Div sx={{ mb: 3, mt: 1 }}>
-                    <Typography variant={"body1"} mb={1}>Email</Typography>
-                    <JumboTextField fullWidth name="email" />
-                  </Div>
-                  <Div sx={{ mb: 2, mt: 1 }}>
-                    <Typography variant={"body1"} mb={1}>Password</Typography>
-                    <JumboTextField
-                      fullWidth
-                      name="password"
-                      type={showPwd ? 'text' : 'password'}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton onClick={() => setShowPwd((curr) => !curr)}>
-                              {showPwd && <VisibilityIcon />}
-                              {!showPwd && <VisibilityOffIcon />}
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Div>
-                  <Typography textAlign={"right"} variant={"body1"} mb={2}>
-                    <Link underline="none" href="#">
-                      Forgot your password?
-                    </Link>
+            <FormProvider {...methods}>
+              <form
+                style={{ textAlign: "left" }}
+                noValidate
+                autoComplete="off"
+                onSubmit={methods.handleSubmit((data) =>
+                  onSignIn(data.email, data.password)
+                )}
+              >
+                {errorMessage && <p>{errorMessage}</p>}
+                <Div sx={{ mb: 3, mt: 1 }}>
+                  <Typography variant={"body1"} mb={1}>
+                    Email
                   </Typography>
-                  <LoadingButton
+                  <JumboTextField fullWidth name="email" />
+                </Div>
+                <Div sx={{ mb: 2, mt: 1 }}>
+                  <Typography variant={"body1"} mb={1}>
+                    Password
+                  </Typography>
+                  <JumboTextField
                     fullWidth
-                    type="submit"
-                    variant="contained"
-                    size="large"
-                    sx={{ mb: 3 }}
-                    loading={isSubmitting || isLoading}
-                    loadingIndicator="Loading ..."
-                  >
-                    Login
-                  </LoadingButton>
-                  <Typography textAlign={"center"} variant={"body1"} mb={1}>
-                    Don't have an account? &nbsp;
-                    <Link underline="none" href="#">
-                      Sign up now
-                    </Link>
-                  </Typography>
-                </Form>
-              )}
-            </Formik>
+                    name="password"
+                    type={showPwd ? "text" : "password"}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={() => setShowPwd((curr) => !curr)}
+                          >
+                            {showPwd && <VisibilityIcon />}
+                            {!showPwd && <VisibilityOffIcon />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Div>
+                <Typography textAlign={"right"} variant={"body1"} mb={2}>
+                  <Link underline="none" href="#">
+                    Forgot your password?
+                  </Link>
+                </Typography>
+                <LoadingButton
+                  fullWidth
+                  type="submit"
+                  variant="contained"
+                  size="large"
+                  sx={{ mb: 3 }}
+                  loading={isLoading}
+                  loadingIndicator="Loading ..."
+                >
+                  Login
+                </LoadingButton>
+                <Typography textAlign={"center"} variant={"body1"} mb={1}>
+                  Don't have an account? &nbsp;
+                  <Link underline="none" href="#">
+                    Sign up now
+                  </Link>
+                </Typography>
+              </form>
+            </FormProvider>
           </Div>
         </CardContent>
       </Card>

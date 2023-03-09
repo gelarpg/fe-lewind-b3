@@ -6,6 +6,8 @@ import useAxiosFunction from "app/hooks/useAxiosFunction";
 import { withSnackbar } from "app/components/SnackbarComponent";
 import { useNavigate, useParams } from 'react-router-dom';
 import CustomForm from "./form";
+import Div from "@jumbo/shared/Div";
+import { CircularProgress } from "@mui/material";
 
 const EditClient = (props) => {
   const navigate = useNavigate();
@@ -34,7 +36,7 @@ const EditClient = (props) => {
       },
       onSuccess: () => {
         props.snackbarShowMessage('Data client berhasil diubah');
-        navigate('/clients');
+        setTimeout(() => navigate('/clients'), 1500);
       },
     });
   };
@@ -42,17 +44,30 @@ const EditClient = (props) => {
   return (
     <Box>
       <Box p={5} mx={4}>
-        <CustomForm
-          onSubmit={onSubmitData}
-          isLoading={isLoading}
-          initialValues={{
-            name: clientDetail?.name ?? "",
-            address: clientDetail?.address ?? "",
-            offer_number: clientDetail?.offer_number ?? "",
-            transaction_fee: clientDetail?.transaction_fee?.toString()?.replace(/[$.]+/g, ',') ?? '',
-            waste_id: clientDetail?.waste_id ? {value: clientDetail?.waste_id, label: clientDetail?.waste_name} : null,
-          }}
-        />
+      {isLoadingDetail ? (
+          <Div
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+            }}
+          >
+            <CircularProgress sx={{ m: "-40px auto 0" }} />
+          </Div>
+        ) : (
+          <CustomForm
+            onSubmit={onSubmitData}
+            isLoading={isLoading}
+            initialValues={{
+              name: clientDetail?.name ?? "",
+              address: clientDetail?.address ?? "",
+              offer_number: clientDetail?.offer_number ?? "",
+              transaction_fee: clientDetail?.transaction_fee?.toString()?.replace(/[$.]+/g, ',') ?? '',
+              waste_id: clientDetail?.waste_id ? {value: clientDetail?.waste_id, label: clientDetail?.waste_name} : null,
+            }}
+          />
+        )}
       </Box>
     </Box>
   );

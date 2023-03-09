@@ -1,20 +1,32 @@
 import React from 'react';
-import {useField} from "formik";
-import TextField from "@mui/material/TextField";
+import { useFormContext, Controller } from 'react-hook-form';
+import TextField from '@mui/material/TextField';
 
 //todo: to see how to define prop-types for this component
 
 const JumboTextField = (props) => {
-    const [field, meta] = useField(props);
-    const errorText = meta.error && meta.touched ? meta.error : '';
-    return (
-        <TextField
+  const { name } = props;
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+  return (
+    <Controller
+      name={name}
+      control={props?.control ?? control}
+      defaultValue=""
+      render={({ field, fieldState: {invalid, error} }) => {
+        return (
+          <TextField
             {...props}
             {...field}
-            helperText={errorText}
-            error={!!errorText}
-        />
-    );
+            helperText={error?.message ?? ''}
+            error={invalid}
+          />
+        )
+      }}
+    />
+  );
 };
 
-export default JumboTextField;
+export default React.memo(JumboTextField);

@@ -1,7 +1,6 @@
 import React from "react";
 import { Typography, Box } from "@mui/material";
 import * as yup from "yup";
-import { Form, Formik } from "formik";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 import JumboTextField from "@jumbo/components/JumboFormik/JumboTextField";
@@ -9,6 +8,8 @@ import { GreyButton } from "app/components/CustomIconButton";
 import FormikWasteSelection from "app/components/FormikWasteSelection";
 import FormikNumberInput from "app/components/FormikNumberInput";
 import { useNavigate } from "react-router-dom";
+import { useForm, FormProvider } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const validationSchema = yup.object({
   name: yup.string().required("Nama client harus diisi"),
@@ -38,20 +39,13 @@ const CustomForm = ({
 }) => {
   const navigate = useNavigate();
 
+  const methods = useForm({
+    resolver: yupResolver(validationSchema),
+    defaultValues: initialValues,
+  });
   return (
-    <Formik
-      initialValues={initialValues}
-      enableReinitialize={true}
-      validationSchema={validationSchema}
-      validateOnMount={false}
-      onSubmit={(data, { setSubmitting }) => {
-        setSubmitting(true);
-        onSubmit(data);
-        setSubmitting(false);
-      }}
-    >
-      {({ isSubmitting, values, setFieldValue }) => (
-        <Form style={{ textAlign: "left" }} noValidate autoComplete="off">
+    <FormProvider {...methods}>
+      <form style={{ textAlign: 'left' }} noValidate autoComplete="off" onSubmit={methods.handleSubmit(onSubmit)}>
           <Box mb={4}>
             <Box flex={1} mb={3}>
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
@@ -127,15 +121,14 @@ const CustomForm = ({
                 type="submit"
                 variant="contained"
                 sx={{ ml: 3 }}
-                loading={isSubmitting || isLoading}
+                loading={isLoading}
               >
                 Simpan
               </LoadingButton>
             )}
           </Box>
-        </Form>
-      )}
-    </Formik>
+        </form>
+    </FormProvider>
   );
 };
 

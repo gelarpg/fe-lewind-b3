@@ -1,7 +1,6 @@
 import React from "react";
 import { Typography, Box, Grid } from "@mui/material";
 import * as yup from "yup";
-import { Form, Formik } from "formik";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 import JumboTextField from "@jumbo/components/JumboFormik/JumboTextField";
@@ -9,12 +8,180 @@ import { GreyButton } from "app/components/CustomIconButton";
 import FormikNumberInput from "app/components/FormikNumberInput";
 import FormikUploadFile from "app/components/FormikUploadFile";
 import { useNavigate } from "react-router-dom";
+import { useForm, FormProvider } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import FormikReactSelect from "app/components/FormikReactSelect";
+import FormikDatepicker from "app/components/FormikDatepicker";
 
 const validationSchema = yup.object({
-  name: yup.string().required("Nama limbah harus diisi"),
-  type: yup.string().required("Jenis limbah harus diisi"),
-  weight_unit: yup.string().required("Berat satuan harus diisi"),
-  price_unit: yup.string().required("Harga satuan harus diisi"),
+  client_id: yup
+    .object()
+    .shape({
+      label: yup.string().required(),
+      value: yup.string().required(),
+    })
+    .test("required", "Nama Klien harus diisi", (value, ctx) => {
+      if (!value) return false;
+      else if (value !== null && value.value && value.label)
+        return !!value.value && !!value.label;
+      return true;
+    })
+    .nullable(),
+  transportation_id: yup
+    .object()
+    .shape({
+      label: yup.string().required(),
+      value: yup.string().required(),
+    })
+    .test("required", "Kendaraan harus diisi", (value, ctx) => {
+      if (!value) return false;
+      else if (value !== null && value.value && value.label)
+        return !!value.value && !!value.label;
+      return true;
+    })
+    .nullable(),
+  driver_id: yup
+    .object()
+    .shape({
+      label: yup.string().required(),
+      value: yup.string().required(),
+    })
+    .test("required", "Nama Driver harus diisi", (value, ctx) => {
+      if (!value) return false;
+      else if (value !== null && value.value && value.label)
+        return !!value.value && !!value.label;
+      return true;
+    })
+    .nullable(),
+  address: yup.string().required("Alamat harus diisi"),
+  period: yup.string().required("Alamat harus diisi"),
+  service_fee: yup.string().required("Biaya Layanan harus diisi"),
+  service_fee_document: yup
+    .mixed()
+    .nullable()
+    .required("Dokumen Biaya Layanan harus diisi")
+    .test("fileSize", "Dokumen Biaya Layanan maksimal 5MB", (value) => {
+      if (value) return value.size <= 5000000;
+      return true;
+    })
+    .test(
+      "fileFormat",
+      "Dokumen Biaya Layanan harus dalam format .pdf atau .png atau .jpeg",
+      (value) => {
+        if (value) {
+          ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
+        }
+        return true;
+      }
+    ),
+  invoice_document: yup
+    .mixed()
+    .nullable()
+    .required("Dokumen Invoice harus diisi")
+    .test("fileSize", "Dokumen Invoice maksimal 5MB", (value) => {
+      if (value) return value.size <= 5000000;
+      return true;
+    })
+    .test(
+      "fileFormat",
+      "Dokumen Invoice harus dalam format .pdf atau .png atau .jpeg",
+      (value) => {
+        if (value) {
+          ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
+        }
+        return true;
+      }
+    ),
+  travel_document: yup
+    .mixed()
+    .nullable()
+    .required("Surat Jalan harus diisi")
+    .test("fileSize", "Surat Jalan maksimal 5MB", (value) => {
+      if (value) return value.size <= 5000000;
+      return true;
+    })
+    .test(
+      "fileFormat",
+      "Surat Jalan harus dalam format .pdf atau .png atau .jpeg",
+      (value) => {
+        if (value) {
+          ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
+        }
+        return true;
+      }
+    ),
+  bast_document: yup
+    .mixed()
+    .nullable()
+    .required("Dokumen BAST harus diisi")
+    .test("fileSize", "Dokumen BAST maksimal 5MB", (value) => {
+      if (value) return value.size <= 5000000;
+      return true;
+    })
+    .test(
+      "fileFormat",
+      "Dokumen BAST harus dalam format .pdf atau .png atau .jpeg",
+      (value) => {
+        if (value) {
+          ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
+        }
+        return true;
+      }
+    ),
+  waste_document: yup
+    .mixed()
+    .nullable()
+    .required("Dokumen Penerima Limbah harus diisi")
+    .test("fileSize", "Dokumen Penerima Limbah maksimal 5MB", (value) => {
+      if (value) return value.size <= 5000000;
+      return true;
+    })
+    .test(
+      "fileFormat",
+      "Dokumen Penerima Limbah harus dalam format .pdf atau .png atau .jpeg",
+      (value) => {
+        if (value) {
+          ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
+        }
+        return true;
+      }
+    ),
+  transporter_document: yup
+    .mixed()
+    .nullable()
+    .required("Dokumen Transporter harus diisi")
+    .test("fileSize", "Dokumen Transporter maksimal 5MB", (value) => {
+      if (value) return value.size <= 5000000;
+      return true;
+    })
+    .test(
+      "fileFormat",
+      "Dokumen Transporter harus dalam format .pdf atau .png atau .jpeg",
+      (value) => {
+        if (value) {
+          ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
+        }
+        return true;
+      }
+    ),
+  provider_document: yup
+    .mixed()
+    .nullable()
+    .required("Dokumen Penyedia harus diisi")
+    .test("fileSize", "Dokumen Penyedia maksimal 5MB", (value) => {
+      if (value) return value.size <= 5000000;
+      return true;
+    })
+    .test(
+      "fileFormat",
+      "Dokumen Penyedia harus dalam format .pdf atau .png atau .jpeg",
+      (value) => {
+        if (value) {
+          ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
+        }
+        return true;
+      }
+    ),
 });
 
 const CustomForm = ({
@@ -24,178 +191,173 @@ const CustomForm = ({
   isLoading = false,
 }) => {
   const navigate = useNavigate();
+  const methods = useForm({
+    resolver: yupResolver(validationSchema),
+    defaultValues: initialValues,
+  });
 
   return (
-    <Formik
-      initialValues={initialValues}
-      enableReinitialize={true}
-      validationSchema={validationSchema}
-      validateOnMount={false}
-      onSubmit={(data, { setSubmitting }) => {
-        setSubmitting(true);
-        onSubmit(data);
-        setSubmitting(false);
-      }}
-    >
-      {({ isSubmitting, values, setFieldValue }) => (
-        <Form style={{ textAlign: "left" }} noValidate autoComplete="off">
-          <Box mb={4}>
-            <Box flex={1} mb={3}>
-              <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-                Nama Klien
-              </Typography>
-              <JumboTextField
-                variant="standard"
-                disabled={isDetail}
-                size="small"
-                fullWidth
-                name="name"
-              />
-            </Box>
-            <Box flex={1} mb={3}>
-              <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-                Jenis Limbah
-              </Typography>
-              <JumboTextField
-                variant="standard"
-                disabled={isDetail}
-                size="small"
-                fullWidth
-                name="type"
-              />
-            </Box>
-            <Box flex={1} mb={3}>
-              <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-                Alamat
-              </Typography>
-              <JumboTextField
-                variant="standard"
-                disabled={isDetail}
-                size="small"
-                fullWidth
-                name="address"
-              />
-            </Box>
-            <Box flex={1} mb={3}>
-              <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-                Periode
-              </Typography>
-              <JumboTextField
-                variant="standard"
-                disabled={isDetail}
-                size="small"
-                fullWidth
-                name="period"
-              />
-            </Box>
-            <Box flex={1} mb={3}>
-              <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-                Nama Driver
-              </Typography>
-              <JumboTextField
-                variant="standard"
-                disabled={isDetail}
-                size="small"
-                fullWidth
-                name="driver_name"
-              />
-            </Box>
-            <Box flex={1} mb={3}>
-              <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-                Kendaraan
-              </Typography>
-              <JumboTextField
-                variant="standard"
-                disabled={isDetail}
-                size="small"
-                fullWidth
-                name="transportation"
-              />
-            </Box>
-            <Grid container spacing={3} direction="row" alignItems="end" mb={3}>
-              <Grid item xs={5}>
-                <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-                  Biaya Layanan
-                </Typography>
-                <FormikNumberInput
-                  disabled={isDetail}
-                  variant="standard"
-                  size="small"
-                  fullWidth
-                  name="service_fee"
-                />
-              </Grid>
-              <Grid item xs={7}>
-                <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-                  Dokumen Biaya Layanan
-                </Typography>
-                <FormikUploadFile name="pdf_service_fee" disabled={isDetail} />
-              </Grid>
-            </Grid>
-            <Grid container spacing={1} direction="row" alignItems="end" mb={3}>
-              <Grid item xs={4}>
-                <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-                  Invoice
-                </Typography>
-                <FormikUploadFile name="pdf_invoice" disabled={isDetail} />
-              </Grid>
-              <Grid item xs={4}>
-                <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-                  Dokumen Penyedia
-                </Typography>
-                <FormikUploadFile name="pdf_provider" disabled={isDetail} />
-              </Grid>
-              <Grid item xs={4}>
-                <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-                  Dokumen Transporter
-                </Typography>
-                <FormikUploadFile name="pdf_transporter" disabled={isDetail} />
-              </Grid>
-            </Grid>
-            <Grid container spacing={1} direction="row" alignItems="end" mb={3}>
-              <Grid item xs={4}>
-                <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-                  Dokumen Penerima Limbah
-                </Typography>
-                <FormikUploadFile name="pdf_waste" disabled={isDetail} />
-              </Grid>
-              <Grid item xs={4}>
-                <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-                  BAST
-                </Typography>
-                <FormikUploadFile name="pdf_bast" disabled={isDetail} />
-              </Grid>
-              <Grid item xs={4}>
-                <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-                  Surat Jalan
-                </Typography>
-                <FormikUploadFile name="pdf_surat_jalan" disabled={isDetail} />
-              </Grid>
-            </Grid>
+    <FormProvider {...methods}>
+      <form style={{ textAlign: 'left' }} noValidate autoComplete="off" onSubmit={methods.handleSubmit(onSubmit)}>
+        <Box mb={4}>
+          <Box flex={1} mb={3}>
+            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+              Nama Klien
+            </Typography>
+            <FormikReactSelect
+              isDisabled={isDetail}
+              name="client_id"
+              placeholder="Nama Klien"
+              url="/clients"
+              usePagination
+              objectProp="clients"
+            />
           </Box>
-          <Box display="flex" alignItems="center" justifyContent="end">
-            <GreyButton
-              type="button"
-              variant="outlined"
-              color="secondary"
-              onClick={() => navigate("/wastes")}
+          <Box flex={1} mb={3}>
+            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+              Jenis Limbah
+            </Typography>
+            <JumboTextField
+              variant="standard"
+              disabled={isDetail}
+              size="small"
+              fullWidth
+              name="type"
+            />
+          </Box>
+          <Box flex={1} mb={3}>
+            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+              Alamat
+            </Typography>
+            <JumboTextField
+              variant="standard"
+              disabled={isDetail}
+              size="small"
+              fullWidth
+              name="address"
+              multiline
+              rows={3}
+            />
+          </Box>
+          <Box flex={1} mb={3}>
+            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+              Periode
+            </Typography>
+            <FormikDatepicker
+              name="period"
+              disabled={isDetail}
+              disableFuture
+            />
+          </Box>
+          <Box flex={1} mb={3}>
+            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+              Nama Driver
+            </Typography>
+            <FormikReactSelect
+              isDisabled={isDetail}
+              name="driver_id"
+              placeholder="Nama Driver"
+              url="/driver"
+              usePagination
+              objectProp="driver"
+            />
+          </Box>
+          <Box flex={1} mb={3}>
+            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+              Kendaraan
+            </Typography>
+            <FormikReactSelect
+              isDisabled={isDetail}
+              name="transportation_id"
+              placeholder="Kendaraan"
+              url="/transportation"
+              usePagination
+              objectProp="transportation"
+            />
+          </Box>
+          <Grid container spacing={3} direction="row" alignItems="end" mb={3}>
+            <Grid item xs={5}>
+              <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+                Biaya Layanan
+              </Typography>
+              <FormikNumberInput
+                disabled={isDetail}
+                variant="standard"
+                size="small"
+                fullWidth
+                name="service_fee"
+              />
+            </Grid>
+            <Grid item xs={7}>
+              <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+                Dokumen Biaya Layanan
+              </Typography>
+              <FormikUploadFile name="service_fee_document" disabled={isDetail} />
+            </Grid>
+          </Grid>
+          <Grid container spacing={1} direction="row" alignItems="end" mb={3}>
+            <Grid item xs={4}>
+              <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+                Invoice
+              </Typography>
+              <FormikUploadFile name="invoice_document" disabled={isDetail} />
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+                Dokumen Penyedia
+              </Typography>
+              <FormikUploadFile name="provider_document" disabled={isDetail} />
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+                Dokumen Transporter
+              </Typography>
+              <FormikUploadFile name="transporter_document" disabled={isDetail} />
+            </Grid>
+          </Grid>
+          <Grid container spacing={1} direction="row" alignItems="end" mb={3}>
+            <Grid item xs={4}>
+              <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+                Dokumen Penerima Limbah
+              </Typography>
+              <FormikUploadFile name="waste_document" disabled={isDetail} />
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+                BAST
+              </Typography>
+              <FormikUploadFile name="bast_document" disabled={isDetail} />
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+                Surat Jalan
+              </Typography>
+              <FormikUploadFile name="travel_document" disabled={isDetail} />
+            </Grid>
+          </Grid>
+        </Box>
+        <Box display="flex" alignItems="center" justifyContent="end">
+          <GreyButton
+            type="button"
+            variant="outlined"
+            color="secondary"
+            onClick={() => navigate("/wastes")}
+          >
+            Batal
+          </GreyButton>
+          {!isDetail && (
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              sx={{ ml: 3 }}
+              loading={isLoading}
             >
-              Batal
-            </GreyButton>
-            {!isDetail && (
-              <LoadingButton
-                type="submit"
-                variant="contained"
-                sx={{ ml: 3 }}
-                loading={isSubmitting || isLoading}
-              >
-                Simpan
-              </LoadingButton>
-            )}
-          </Box>
-        </Form>
-      )}
-    </Formik>
+              Simpan
+            </LoadingButton>
+          )}
+        </Box>
+      </form>
+    </FormProvider>
   );
 };
 

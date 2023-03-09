@@ -133,7 +133,6 @@ const Vehicles = (props) => {
       onSuccess: () => {
         props.snackbarShowMessage('Data berhasil dihapus')
         if (requestParam.page === 1) {
-          console.log('aduuuh 01')
           refetch({
             params: {
               page: 1,
@@ -141,7 +140,6 @@ const Vehicles = (props) => {
             },
           });
         } else {
-          console.log('aduuuh 02')
           setRequestParam((curr) => ({
             ...curr,
             page: 1,

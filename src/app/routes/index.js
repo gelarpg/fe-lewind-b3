@@ -7,7 +7,6 @@ const Login = React.lazy(() => import("app/pages/Login"));
 const Submissions = React.lazy(() => import("app/pages/Submissions"));
 const NewSubmissions = React.lazy(() => import("app/pages/Submissions/new"));
 const EditSubmissions = React.lazy(() => import("app/pages/Submissions/edit"));
-const DetailSubmissions = React.lazy(() => import("app/pages/Submissions/detail"));
 
 const Recaps = React.lazy(() => import("app/pages/Recaps"));
 const NewRecaps = React.lazy(() => import("app/pages/Recaps/new"));
@@ -22,22 +21,18 @@ const DetailUsers = React.lazy(() => import("app/pages/Users/detail"));
 const Vehicles = React.lazy(() => import("app/pages/Master/Vehicles"));
 const NewVehicles = React.lazy(() => import("app/pages/Master/Vehicles/new"));
 const EditVehicles = React.lazy(() => import("app/pages/Master/Vehicles/edit"));
-const DetailVehicles = React.lazy(() => import("app/pages/Master/Vehicles/detail"));
 
 const Wastes = React.lazy(() => import("app/pages/Master/Wastes"));
 const NewWastes = React.lazy(() => import("app/pages/Master/Wastes/new"));
 const EditWastes = React.lazy(() => import("app/pages/Master/Wastes/edit"));
-const DetailWastes = React.lazy(() => import("app/pages/Master/Wastes/detail"));
 
 const Drivers = React.lazy(() => import("app/pages/Master/Drivers"));
 const NewDrivers = React.lazy(() => import("app/pages/Master/Drivers/new"));
 const EditDrivers = React.lazy(() => import("app/pages/Master/Drivers/edit"));
-const DetailDrivers = React.lazy(() => import("app/pages/Master/Drivers/detail"));
 
 const Clients = React.lazy(() => import("app/pages/Master/Clients"));
 const NewClients = React.lazy(() => import("app/pages/Master/Clients/new"));
 const EditClients = React.lazy(() => import("app/pages/Master/Clients/edit"));
-const DetailClients = React.lazy(() => import("app/pages/Master/Clients/detail"));
 
 const Invoices = React.lazy(() => import("app/pages/Invoices"));
 const NewInvoices = React.lazy(() => import("app/pages/Invoices/new"));
@@ -69,10 +64,6 @@ const routesForAuthenticatedOnly = [
   {
     path: "/submissions/new",
     element: <Page component={NewSubmissions} />,
-  },
-  {
-    path: "/submissions/:id",
-    element: <Page component={DetailSubmissions} />,
   },
   {
     path: "/submissions/:id/edit",
@@ -122,10 +113,6 @@ const routesForAuthenticatedOnly = [
     element: <Page component={NewVehicles} />,
   },
   {
-    path: "/vehicles/:id",
-    element: <Page component={DetailVehicles} />,
-  },
-  {
     path: "/vehicles/:id/edit",
     element: <Page component={EditVehicles} />,
   },
@@ -137,10 +124,6 @@ const routesForAuthenticatedOnly = [
   {
     path: "/wastes/new",
     element: <Page component={NewWastes} />,
-  },
-  {
-    path: "/wastes/:id",
-    element: <Page component={DetailWastes} />,
   },
   {
     path: "/wastes/:id/edit",
@@ -156,10 +139,6 @@ const routesForAuthenticatedOnly = [
     element: <Page component={NewDrivers} />,
   },
   {
-    path: "/drivers/:id",
-    element: <Page component={DetailDrivers} />,
-  },
-  {
     path: "/drivers/:id/edit",
     element: <Page component={EditDrivers} />,
   },
@@ -171,10 +150,6 @@ const routesForAuthenticatedOnly = [
   {
     path: "/clients/new",
     element: <Page component={NewClients} />,
-  },
-  {
-    path: "/clients/:id",
-    element: <Page component={DetailClients} />,
   },
   {
     path: "/clients/:id/edit",

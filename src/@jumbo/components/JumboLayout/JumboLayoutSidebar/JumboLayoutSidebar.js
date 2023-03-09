@@ -31,7 +31,7 @@ const JumboLayoutSidebar = ({children, headerHeightProps}) => {
     }, [sidebarOptions?.view]);
 
 
-    if (sidebarOptions?.hide || (location.pathname === '/login')) {
+    if (location.pathname === '/login') {
         return null;
     }
 

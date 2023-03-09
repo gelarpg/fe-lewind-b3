@@ -25,7 +25,7 @@ const NewWaste = (props) => {
       },
       onSuccess: () => {
         props.snackbarShowMessage('Data limbah berhasil ditambahkan');
-        navigate('/wastes');
+        setTimeout(() => navigate('/wastes'), 1500);
       },
     });
   };

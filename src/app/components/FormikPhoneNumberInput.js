@@ -1,24 +1,31 @@
 import React from 'react';
-import { useField } from 'formik';
+import { useFormContext, Controller } from 'react-hook-form';
 import { PatternFormat } from 'react-number-format';
 import { TextField } from '@mui/material';
 
 const FormikPhoneNumberInput = (props) => {
-  const [field, meta] = useField(props);
-  const { ...otherProps } = props;
-
-  const errorText = meta.error && meta.touched ? meta.error : '';
-
+  const { name } = props;
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
   return (
-    <PatternFormat
-      {...otherProps}
-      {...field}
-      type="tel"
-      format="+62 ### #########" 
-      mask="_" 
-      customInput={TextField}
-      helperText={errorText}
-      error={!!errorText}
+    <Controller
+      name={name}
+      control={control}
+      defaultValue=""
+      render={({ field, fieldState: {invalid, error} }) => (
+        <PatternFormat
+          {...props}
+          {...field}
+          type="tel"
+          format="+62 ### #########"
+          mask="_"
+          customInput={TextField}
+          helperText={error?.message}
+          error={invalid}
+        />
+      )}
     />
   );
 };
