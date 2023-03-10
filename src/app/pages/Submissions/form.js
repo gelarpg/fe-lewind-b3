@@ -8,8 +8,8 @@ import { GreyButton } from "app/components/CustomIconButton";
 import FormikNumberInput from "app/components/FormikNumberInput";
 import FormikUploadFile from "app/components/FormikUploadFile";
 import { useNavigate } from "react-router-dom";
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import FormikReactSelect from "app/components/FormikReactSelect";
 import FormikDatepicker from "app/components/FormikDatepicker";
 
@@ -198,7 +198,12 @@ const CustomForm = ({
 
   return (
     <FormProvider {...methods}>
-      <form style={{ textAlign: 'left' }} noValidate autoComplete="off" onSubmit={methods.handleSubmit(onSubmit)}>
+      <form
+        style={{ textAlign: "left" }}
+        noValidate
+        autoComplete="off"
+        onSubmit={methods.handleSubmit(onSubmit)}
+      >
         <Box mb={4}>
           <Box flex={1} mb={3}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
@@ -243,11 +248,7 @@ const CustomForm = ({
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
               Periode
             </Typography>
-            <FormikDatepicker
-              name="period"
-              disabled={isDetail}
-              disableFuture
-            />
+            <FormikDatepicker name="period" disabled={isDetail} disableFuture />
           </Box>
           <Box flex={1} mb={3}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
@@ -275,60 +276,70 @@ const CustomForm = ({
               objectProp="transportation"
             />
           </Box>
-          <Grid container spacing={3} direction="row" alignItems="end" mb={3}>
-            <Grid item xs={5}>
-              <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-                Biaya Layanan
-              </Typography>
-              <FormikNumberInput
-                disabled={isDetail}
-                variant="standard"
-                size="small"
-                fullWidth
-                name="service_fee"
-              />
+          <Box flex={1}>
+            <Grid container spacing={3} direction="row" alignItems="start" mb={3}>
+              <Grid item xs={5}>
+                <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+                  Biaya Layanan
+                </Typography>
+                <FormikNumberInput
+                  disabled={isDetail}
+                  variant="standard"
+                  size="small"
+                  fullWidth
+                  name="service_fee"
+                />
+              </Grid>
+              <Grid item xs={7}>
+                <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+                  Dokumen Biaya Layanan
+                </Typography>
+                <FormikUploadFile
+                  name="service_fee_document"
+                  disabled={isDetail}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={7}>
-              <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-                Dokumen Biaya Layanan
-              </Typography>
-              <FormikUploadFile name="service_fee_document" disabled={isDetail} />
-            </Grid>
-          </Grid>
-          <Grid container spacing={1} direction="row" alignItems="end" mb={3}>
-            <Grid item xs={4}>
+          </Box>
+          <Grid container spacing={1} direction="row" alignItems="start" mb={3}>
+            <Grid item xs={12} md={6} lg={6} mb={3}>
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                 Invoice
               </Typography>
               <FormikUploadFile name="invoice_document" disabled={isDetail} />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={12} md={6} lg={6} mb={3}>
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                 Dokumen Penyedia
               </Typography>
               <FormikUploadFile name="provider_document" disabled={isDetail} />
             </Grid>
-            <Grid item xs={4}>
+          </Grid>
+          <Grid container spacing={1} direction="row" alignItems="start" mb={3}>
+            <Grid item xs={12} md={6} lg={6} mb={3}>
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                 Dokumen Transporter
               </Typography>
-              <FormikUploadFile name="transporter_document" disabled={isDetail} />
+              <FormikUploadFile
+                name="transporter_document"
+                disabled={isDetail}
+              />
             </Grid>
-          </Grid>
-          <Grid container spacing={1} direction="row" alignItems="end" mb={3}>
-            <Grid item xs={4}>
+            <Grid item xs={12} md={6} lg={6} mb={3}>
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                 Dokumen Penerima Limbah
               </Typography>
               <FormikUploadFile name="waste_document" disabled={isDetail} />
             </Grid>
-            <Grid item xs={4}>
+          </Grid>
+          <Grid container spacing={1} direction="row" alignItems="start" mb={3}>
+            <Grid item xs={12} md={6} lg={6} mb={3}>
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                 BAST
               </Typography>
               <FormikUploadFile name="bast_document" disabled={isDetail} />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={12} md={6} lg={6} mb={3}>
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                 Surat Jalan
               </Typography>

@@ -26,7 +26,7 @@ const FormikUploadFile = ({
       render={({ field: { onBlur }, fieldState: { invalid, error } }) => (
         <>
           <Grid container spacing={1} direction="row">
-            <Grid item xs={3} sx={{ position: "relative" }}>
+            <Grid item xs={4} sx={{ position: "relative" }}>
               <GreyButton
                 variant="contained"
                 component="label"
@@ -49,7 +49,7 @@ const FormikUploadFile = ({
                 />
               </GreyButton>
             </Grid>
-            <Grid item xs={9}>
+            <Grid item xs={8}>
               {filename && (
                 <Box flex={1} display="flex" alignItems="center" width={1}>
                   <AttachFileIcon sx={{ mr: 1, color: "#828282" }} />
