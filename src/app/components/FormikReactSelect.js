@@ -20,6 +20,8 @@ const FormikReactSelect = ({
   labelProp = "name",
   usePagination = false,
   objectProp = undefined,
+  useStaticData = false,
+  optionsData = [],
   ...props
 }) => {
   const { name } = props;
@@ -32,6 +34,12 @@ const FormikReactSelect = ({
   const [options, setOptions] = useState([]);
   const [query, setQuery] = useState({ limit: 50, page: 0 });
   const prevQuery = usePrevious(query);
+
+  useEffect(() => {
+    if (useStaticData && optionsData?.length) {
+      setOptions(optionsData.map((x) => ({ value: x[valueProp], label: x[labelProp] })));
+    }
+  }, [useStaticData, optionsData])
 
   useEffect(() => {
     if (usePagination) {
@@ -87,7 +95,7 @@ const FormikReactSelect = ({
   const onMenuClose = () => {
     if (usePagination) {
       setQuery({});
-      setOptions([]);
+      if (!useStaticData) setOptions([]);
       NEXT_PAGE = null;
     }
   }
