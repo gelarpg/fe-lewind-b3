@@ -18,6 +18,11 @@ import {CircularProgress} from "@mui/material";
 import JumboAuthProvider from "@jumbo/components/JumboAuthProvider";
 import { AxiosInterceptor } from "./services/AxiosInterceptor";
 
+import moment from 'moment';
+import localization from 'moment/locale/id';
+
+moment.updateLocale('id', localization);
+
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
