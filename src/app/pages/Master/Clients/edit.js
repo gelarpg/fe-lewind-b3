@@ -17,12 +17,14 @@ const EditClient = (props) => {
     data: clientDetail,
     error: errorDetail,
   } = useFetch({
-    url: `/clients/${params.id}`,
+    url: `/clients/detail/${params.id}`,
   });
 
   const onSubmitData = (payload) => {
     const temp = {
       ...payload,
+      waste_id: payload.waste_id.value,
+      transaction_fee: Number(payload.transaction_fee.replace(/[$.]+/g, '').replace(/[$,]+/g, '.')),
     };
     axiosFetch({
       method: "put",
@@ -44,10 +46,11 @@ const EditClient = (props) => {
           onSubmit={onSubmitData}
           isLoading={isLoading}
           initialValues={{
-            name: "",
-            address: "",
-            offer_number: "",
-            transaction_fee: "",
+            name: clientDetail?.name ?? "",
+            address: clientDetail?.address ?? "",
+            offer_number: clientDetail?.offer_number ?? "",
+            transaction_fee: clientDetail?.transaction_fee?.toString()?.replace(/[$.]+/g, ',') ?? '',
+            waste_id: clientDetail?.waste_id ? {value: clientDetail?.waste_id, label: clientDetail?.waste_name} : null,
           }}
         />
       </Box>

@@ -308,6 +308,14 @@ export const mainTheme = {
         },
         MuiDataGrid: {
             styleOverrides: {
+                root: {
+                    '&.MuiDataGrid-root .MuiDataGrid-columnHeader:focus, &.MuiDataGrid-root .MuiDataGrid-cell:focus': {
+                        outline: 'none',
+                    },
+                    '&.MuiDataGrid-root .MuiDataGrid-columnHeader:focus-within, &.MuiDataGrid-root .MuiDataGrid-cell:focus-within': {
+                        outline: 'none',
+                    },
+                },
                 cellContent: {
                     display: '-webkit-box',
                     WebkitLineClamp: 3,

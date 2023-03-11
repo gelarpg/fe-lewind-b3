@@ -1,48 +1,48 @@
 import React from "react";
 import Page from "@jumbo/shared/Page";
 
-import Home from "app/pages/Home";
-import Login from "app/pages/Login";
+const Home = React.lazy(() => import("app/pages/Home"));
+const Login = React.lazy(() => import("app/pages/Login"));
 
-import Submissions from "app/pages/Submissions";
-import NewSubmissions from "app/pages/Submissions/new";
-import EditSubmissions from "app/pages/Submissions/edit";
-import DetailSubmissions from "app/pages/Submissions/detail";
+const Submissions = React.lazy(() => import("app/pages/Submissions"));
+const NewSubmissions = React.lazy(() => import("app/pages/Submissions/new"));
+const EditSubmissions = React.lazy(() => import("app/pages/Submissions/edit"));
+const DetailSubmissions = React.lazy(() => import("app/pages/Submissions/detail"));
 
-import Recaps from "app/pages/Recaps";
-import NewRecaps from "app/pages/Recaps/new";
-import EditRecaps from "app/pages/Recaps/edit";
-import DetailRecaps from "app/pages/Recaps/detail";
+const Recaps = React.lazy(() => import("app/pages/Recaps"));
+const NewRecaps = React.lazy(() => import("app/pages/Recaps/new"));
+const EditRecaps = React.lazy(() => import("app/pages/Recaps/edit"));
+const DetailRecaps = React.lazy(() => import("app/pages/Recaps/detail"));
 
-import Users from "app/pages/Users";
-import NewUsers from "app/pages/Users/new";
-import EditUsers from "app/pages/Users/edit";
-import DetailUsers from "app/pages/Users/detail";
+const Users = React.lazy(() => import("app/pages/Users"));
+const NewUsers = React.lazy(() => import("app/pages/Users/new"));
+const EditUsers = React.lazy(() => import("app/pages/Users/edit"));
+const DetailUsers = React.lazy(() => import("app/pages/Users/detail"));
 
-import Vehicles from "app/pages/Master/Vehicles";
-import NewVehicles from "app/pages/Master/Vehicles/new";
-import EditVehicles from "app/pages/Master/Vehicles/edit";
-import DetailVehicles from "app/pages/Master/Vehicles/detail";
+const Vehicles = React.lazy(() => import("app/pages/Master/Vehicles"));
+const NewVehicles = React.lazy(() => import("app/pages/Master/Vehicles/new"));
+const EditVehicles = React.lazy(() => import("app/pages/Master/Vehicles/edit"));
+const DetailVehicles = React.lazy(() => import("app/pages/Master/Vehicles/detail"));
 
-import Wastes from "app/pages/Master/Wastes";
-import NewWastes from "app/pages/Master/Wastes/new";
-import EditWastes from "app/pages/Master/Wastes/edit";
-import DetailWastes from "app/pages/Master/Wastes/detail";
+const Wastes = React.lazy(() => import("app/pages/Master/Wastes"));
+const NewWastes = React.lazy(() => import("app/pages/Master/Wastes/new"));
+const EditWastes = React.lazy(() => import("app/pages/Master/Wastes/edit"));
+const DetailWastes = React.lazy(() => import("app/pages/Master/Wastes/detail"));
 
-import Drivers from "app/pages/Master/Drivers";
-import NewDrivers from "app/pages/Master/Drivers/new";
-import EditDrivers from "app/pages/Master/Drivers/edit";
-import DetailDrivers from "app/pages/Master/Drivers/detail";
+const Drivers = React.lazy(() => import("app/pages/Master/Drivers"));
+const NewDrivers = React.lazy(() => import("app/pages/Master/Drivers/new"));
+const EditDrivers = React.lazy(() => import("app/pages/Master/Drivers/edit"));
+const DetailDrivers = React.lazy(() => import("app/pages/Master/Drivers/detail"));
 
-import Clients from "app/pages/Master/Clients";
-import NewClients from "app/pages/Master/Clients/new";
-import EditClients from "app/pages/Master/Clients/edit";
-import DetailClients from "app/pages/Master/Clients/detail";
+const Clients = React.lazy(() => import("app/pages/Master/Clients"));
+const NewClients = React.lazy(() => import("app/pages/Master/Clients/new"));
+const EditClients = React.lazy(() => import("app/pages/Master/Clients/edit"));
+const DetailClients = React.lazy(() => import("app/pages/Master/Clients/detail"));
 
-import Invoices from "app/pages/Invoices";
-import NewInvoices from "app/pages/Invoices/new";
-import EditInvoices from "app/pages/Invoices/edit";
-import DetailInvoices from "app/pages/Invoices/detail";
+const Invoices = React.lazy(() => import("app/pages/Invoices"));
+const NewInvoices = React.lazy(() => import("app/pages/Invoices/new"));
+const EditInvoices = React.lazy(() => import("app/pages/Invoices/edit"));
+const DetailInvoices = React.lazy(() => import("app/pages/Invoices/detail"));
 
 /**
  routes which you want to make accessible to both authenticated and anonymous users

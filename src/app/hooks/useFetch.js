@@ -51,7 +51,7 @@ const useFetch = (configObject) => {
   useEffect(() => {
     let isMounted = true;
     const source = axios.CancelToken.source();
-    if (!isEmpty(config) && !isEqual(config, prevConfig)) {
+    if (!isEmpty(config)) {
       fetch(config, source, isMounted);
     }
     return () => {

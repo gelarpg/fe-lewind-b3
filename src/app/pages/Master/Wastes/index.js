@@ -59,29 +59,34 @@ const Wastes = (props) => {
       {
         field: "name",
         headerName: "Nama Limbah",
-        width: 150,
+        width: 200,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
         field: "type",
         headerName: "Jenis Limbah",
-        width: 150,
+        width: 200,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
-        field: "weightType",
+        field: "weight_unit",
         headerName: "Berat Satuan",
         width: 150,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
-        field: "price",
+        field: "price_unit",
         headerName: "Harga Satuan",
-        width: 150,
-        valueFormatter: (params) => params?.value ?? "-",
+        width: 200,
+        valueFormatter: (params) => {
+          return `${new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+          }).format(params.value)}`;
+        },
         sortable: false,
       },
       {
@@ -93,7 +98,7 @@ const Wastes = (props) => {
             <CustomEditIconButton
               size="small"
               sx={{ mr: 2 }}
-              onClick={() => navigate(`/vehicles/${params.row.id}/edit`)}
+              onClick={() => navigate(`/wastes/${params.row.id}/edit`)}
             />,
             <CustomDeleteIconButton
               size="small"
@@ -107,8 +112,8 @@ const Wastes = (props) => {
   }, [currentPage, rowsPerPage]);
 
   useEffect(() => {
-    if (wastesData?.drivers && wastesData?.paginator) {
-      setDatas(wastesData.drivers);
+    if (wastesData?.waste && wastesData?.paginator) {
+      setDatas(wastesData.waste);
       setPagination(wastesData.paginator);
       if (tableRef && tableRef.current) tableRef.current.scrollIntoView();
     }

@@ -31,4 +31,4 @@ const DatepickerComponent = ({
   );
 };
 
-export default DatepickerComponent;
+export default React.memo(DatepickerComponent);

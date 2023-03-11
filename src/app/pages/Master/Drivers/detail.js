@@ -13,7 +13,7 @@ const DetailDriver = () => {
     data: driverDetail,
     error: errorDetail,
   } = useFetch({
-    url: `/driver/${params.id}`,
+    url: `/driver/detail/${params.id}`,
   });
 
   return (
@@ -37,10 +37,10 @@ const DetailDriver = () => {
             isLoading={isLoadingDetail}
             isDetail={true}
             initialValues={{
-              name: "",
-              age: "",
-              phone_number: "",
-              address: "",
+              name: driverDetail?.name ?? "",
+              age: driverDetail?.age ?? "",
+              phone_number: driverDetail?.phone_number ?? "",
+              address: driverDetail?.address ?? "",
             }}
           />
         ) : null}

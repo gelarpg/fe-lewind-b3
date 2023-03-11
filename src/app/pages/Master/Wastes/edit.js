@@ -17,12 +17,13 @@ const EditWaste = (props) => {
     data: wasteDetail,
     error: errorDetail,
   } = useFetch({
-    url: `/waste/${params.id}`,
+    url: `/waste/detail/${params.id}`,
   });
 
   const onSubmitData = (payload) => {
     const temp = {
       ...payload,
+      price_unit: Number(payload.price_unit.replace(/[$.]+/g, '').replace(/[$,]+/g, '.')),
     };
     axiosFetch({
       method: "put",
@@ -44,10 +45,10 @@ const EditWaste = (props) => {
           onSubmit={onSubmitData}
           isLoading={isLoading}
           initialValues={{
-            name: "",
-            type: "",
-            weight_unit: "",
-            price_unit: "",
+            name: wasteDetail?.name ?? "",
+            type: wasteDetail?.type ?? "",
+            weight_unit: wasteDetail?.weight_unit ?? "",
+            price_unit: wasteDetail?.price_unit?.toString()?.replace(/[$.]+/g, ',') ?? '',
           }}
         />
       </Box>

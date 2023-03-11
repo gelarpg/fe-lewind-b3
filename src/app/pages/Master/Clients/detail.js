@@ -13,7 +13,7 @@ const DetailClient = () => {
     data: clientDetail,
     error: errorDetail,
   } = useFetch({
-    url: `/clients/${params.id}`,
+    url: `/clients/detail/${params.id}`,
   });
 
   return (
@@ -37,10 +37,11 @@ const DetailClient = () => {
             isLoading={isLoadingDetail}
             isDetail={true}
             initialValues={{
-              name: "",
-              address: "",
-              offer_number: "",
-              transaction_fee: "",
+              name: clientDetail?.name ?? "",
+            address: clientDetail?.address ?? "",
+            offer_number: clientDetail?.offer_number ?? "",
+            transaction_fee: clientDetail?.transaction_fee?.toString()?.replace(/[$.]+/g, ',') ?? '',
+            waste_id: clientDetail?.waste_id ? {value: clientDetail?.waste_id, label: clientDetail?.waste_name} : null,
             }}
           />
         ) : null}

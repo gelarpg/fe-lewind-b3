@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Box, Stack, Grid } from "@mui/material";
+import { Typography, Box, Grid } from "@mui/material";
 import * as yup from "yup";
 import { Form, Formik } from "formik";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -13,37 +13,6 @@ import FormikDatepicker from "app/components/FormikDatepicker";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 
-const fuelTypeArr = [
-  {
-    value: 'Premium',
-    label: "Premium",
-  },
-  {
-    value: 'Pertalite',
-    label: "Pertalite",
-  },
-  {
-    value: 'Pertamina Dex',
-    label: "Pertamina Dex",
-  },
-  {
-    value: 'Dexlite',
-    label: "Dexlite",
-  },
-  {
-    value: 'Solar',
-    label: "Solar",
-  },
-  {
-    value: 'Pertamax',
-    label: "Pertamax",
-  },
-  {
-    value: 'Pertamax Turbo',
-    label: "Pertamax Turbo",
-  },
-];
-
 const validationSchema = yup.object({
   name: yup.string().required("Nama kendaraan harus diisi"),
   no_police: yup
@@ -53,25 +22,19 @@ const validationSchema = yup.object({
       /^[A-Z]{1,2}\s{1}\d{0,4}\s{0,1}[A-Z]{0,3}$/,
       "Nomor polisi tidak valid"
     ),
-  year: yup.string().required("Tahun kendaraan harus diisi"),
+  year: yup
+    .string()
+    .required("Tahun kendaraan harus diisi")
+    .test("max", "Tahun kendaraan maksimal tahun ini", (value) => {
+      return Number(moment(value).format('YYYY')) <= Number(moment().format("YYYY"));
+    }),
   capacity: yup
     .number()
+    .typeError("Kapasitas angkut tidak valid")
     .integer("Kapasitas angkut harus berupa angka")
     .required("Kapasitas angkut harus diisi")
     .min(1, "Kapasitas angkut minimal 1"),
-  fuel_type: yup
-    .object()
-    .shape({
-      label: yup.string().required(),
-      value: yup.string().required(),
-    })
-    .test("required", "Jenis bahan bakar harus diisi", (value, ctx) => {
-      if (!value) return false;
-      else if (value !== null && value.value && value.label)
-        return !!value.value && !!value.label;
-      return true;
-    })
-    .nullable(),
+  fuel_type: yup.string().required("Jenis bahan bakar harus diisi"),
   transportation_type_id: yup
     .object()
     .shape({
@@ -85,36 +48,36 @@ const validationSchema = yup.object({
       return true;
     })
     .nullable(),
-  pdf_stnk: yup
-    .mixed()
-    .nullable()
-    .required("Harap masukkan attachment")
-    .test("fileSize", "Attachment maksimal 5MB", (value) => {
-      return !value || (value && value.size <= 5000000);
-    })
-    .test(
-      "fileFormat",
-      "Attachment harus dalam format .pdf atau .png atau .jpeg",
-      (value) =>
-        !value ||
-        (value &&
-          ["application/pdf", "image/png", "image/jpeg"].includes(value.type))
-    ),
-  pdf_surat_jalan: yup
-    .mixed()
-    .nullable()
-    .required("Harap masukkan attachment")
-    .test("fileSize", "Attachment maksimal 5MB", (value) => {
-      return !value || (value && value.size <= 5000000);
-    })
-    .test(
-      "fileFormat",
-      "Attachment harus dalam format .pdf atau .png atau .jpeg",
-      (value) =>
-        !value ||
-        (value &&
-          ["application/pdf", "image/png", "image/jpeg"].includes(value.type))
-    ),
+  // pdf_stnk: yup
+  //   .mixed()
+  //   .nullable()
+  //   .required("Harap masukkan attachment")
+  //   .test("fileSize", "Attachment maksimal 5MB", (value) => {
+  //     return !value || (value && value.size <= 5000000);
+  //   })
+  //   .test(
+  //     "fileFormat",
+  //     "Attachment harus dalam format .pdf atau .png atau .jpeg",
+  //     (value) =>
+  //       !value ||
+  //       (value &&
+  //         ["application/pdf", "image/png", "image/jpeg"].includes(value.type))
+  //   ),
+  // pdf_surat_jalan: yup
+  //   .mixed()
+  //   .nullable()
+  //   .required("Harap masukkan attachment")
+  //   .test("fileSize", "Attachment maksimal 5MB", (value) => {
+  //     return !value || (value && value.size <= 5000000);
+  //   })
+  //   .test(
+  //     "fileFormat",
+  //     "Attachment harus dalam format .pdf atau .png atau .jpeg",
+  //     (value) =>
+  //       !value ||
+  //       (value &&
+  //         ["application/pdf", "image/png", "image/jpeg"].includes(value.type))
+  //   ),
 });
 
 const CustomForm = ({
@@ -128,6 +91,7 @@ const CustomForm = ({
   return (
     <Formik
       initialValues={initialValues}
+      enableReinitialize={true}
       validationSchema={validationSchema}
       validateOnMount={false}
       onSubmit={(data, { setSubmitting }) => {
@@ -156,32 +120,10 @@ const CustomForm = ({
                 Jenis Kendaraan
               </Typography>
               <FormikReactSelect
-                isSearchable={false}
                 isDisabled={isDetail}
                 name="transportation_type_id"
                 placeholder="Pilih Jenis Kendaraan"
-                options={[
-                  {
-                    value: 1,
-                    label: "Hino",
-                  },
-                  {
-                    value: 2,
-                    label: "Hino",
-                  },
-                  {
-                    value: 3,
-                    label: "Hino",
-                  },
-                  {
-                    value: 4,
-                    label: "Hino",
-                  },
-                  {
-                    value: 5,
-                    label: "Hino",
-                  },
-                ]}
+                url="/transportation/list/type"
               />
             </Box>
             <Box flex={1} mb={3}>
@@ -224,12 +166,12 @@ const CustomForm = ({
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                 Jenis Bahan Bakar
               </Typography>
-              <FormikReactSelect
-                isSearchable={false}
-                isDisabled={isDetail}
+              <JumboTextField
+                variant="standard"
+                disabled={isDetail}
+                size="small"
+                fullWidth
                 name="fuel_type"
-                placeholder="Pilih Jenis Bahan Bakar"
-                options={fuelTypeArr}
               />
             </Box>
             <Grid container spacing={3} direction="row" alignItems="end" mb={3}>
@@ -282,7 +224,6 @@ const CustomForm = ({
                 variant="contained"
                 sx={{ ml: 3 }}
                 loading={isSubmitting || isLoading}
-                loadingIndicator="Loading ..."
               >
                 Simpan
               </LoadingButton>

@@ -59,28 +59,33 @@ const Clients = (props) => {
       {
         field: "name",
         headerName: "Nama Client",
-        width: 150,
+        width: 200,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
-        field: "offeringNumber",
+        field: "offer_number",
         headerName: "Nomor Penawaran",
-        width: 150,
+        width: 200,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
-        field: "transportCost",
+        field: "transaction_fee",
         headerName: "Biaya Transportasi",
-        width: 150,
-        valueFormatter: (params) => params?.value ?? "-",
+        width: 200,
+        valueFormatter: (params) => {
+          return `${new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+          }).format(params.value)}`;
+        },
         sortable: false,
       },
       {
         field: "address",
         headerName: "Alamat",
-        width: 150,
+        width: 200,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
@@ -93,7 +98,7 @@ const Clients = (props) => {
             <CustomEditIconButton
               size="small"
               sx={{ mr: 2 }}
-              onClick={() => navigate(`/vehicles/${params.row.id}/edit`)}
+              onClick={() => navigate(`/clients/${params.row.id}/edit`)}
             />,
             <CustomDeleteIconButton
               size="small"
@@ -107,8 +112,8 @@ const Clients = (props) => {
   }, [currentPage, rowsPerPage]);
 
   useEffect(() => {
-    if (clientsData?.drivers && clientsData?.paginator) {
-      setDatas(clientsData.drivers);
+    if (clientsData?.clients && clientsData?.paginator) {
+      setDatas(clientsData.clients);
       setPagination(clientsData.paginator);
       if (tableRef && tableRef.current) tableRef.current.scrollIntoView();
     }
