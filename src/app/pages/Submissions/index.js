@@ -17,6 +17,7 @@ import useFetch from "app/hooks/useFetch";
 import useAxiosFunction from "app/hooks/useAxiosFunction";
 import usePrevious from "app/hooks/usePrevious";
 import {isEqual} from "lodash";
+import moment from "moment";
 
 const Submissions = () => {
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
@@ -56,14 +57,14 @@ const Submissions = () => {
           rowsPerPage * currentPage + (index.api.getRowIndex(index.row.id) + 1),
       },
       {
-        field: "name",
+        field: "client_name",
         headerName: "Nama Klien",
         width: 150,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
-        field: "type",
+        field: "waste_name",
         headerName: "Jenis Limbah",
         width: 150,
         valueFormatter: (params) => params?.value ?? "-",
@@ -73,18 +74,18 @@ const Submissions = () => {
         field: "period",
         headerName: "Periode",
         width: 150,
-        valueFormatter: (params) => params?.value ?? "-",
+        valueFormatter: (params) => params?.value ? moment(params?.value).format('DD MMMM YYYY') : "-",
         sortable: false,
       },
       {
-        field: "driver",
+        field: "driver_name",
         headerName: "Nama Driver",
         width: 150,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
-        field: "vehicle",
+        field: "transportation_name",
         headerName: "Kendaraan",
         width: 150,
         valueFormatter: (params) => params?.value ?? "-",
@@ -94,7 +95,7 @@ const Submissions = () => {
         field: "status",
         headerName: "Status",
         width: 150,
-        valueFormatter: (params) => params?.value ?? "-",
+        valueFormatter: (params) => Boolean(params?.value) ? "Ya" : "Tidak",
         sortable: false,
       },
       {
@@ -120,8 +121,8 @@ const Submissions = () => {
   }, [currentPage, rowsPerPage]);
 
   useEffect(() => {
-    if (submissionData?.drivers && submissionData?.paginator) {
-      setDatas(submissionData.drivers);
+    if (submissionData?.submission && submissionData?.paginator) {
+      setDatas(submissionData.submission);
       setPagination(submissionData.paginator);
       if (tableRef && tableRef.current) tableRef.current.scrollIntoView();
     }

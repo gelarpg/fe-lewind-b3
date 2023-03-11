@@ -56,44 +56,23 @@ const Users = () => {
           rowsPerPage * currentPage + (index.api.getRowIndex(index.row.id) + 1),
       },
       {
-        field: "name",
-        headerName: "Nama Client",
-        width: 150,
+        field: "first_name",
+        headerName: "Nama",
+        flex: 1,
+        renderCell: (params) => `${params?.value ?? ''} ${params?.row?.last_name ?? ''}`,
+        sortable: false,
+      },
+      {
+        field: "email",
+        headerName: "Email",
+        flex: 1,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
-        field: "type",
-        headerName: "Jenis Limbah",
-        width: 150,
-        valueFormatter: (params) => params?.value ?? "-",
-        sortable: false,
-      },
-      {
-        field: "period",
-        headerName: "Periode",
-        width: 150,
-        valueFormatter: (params) => params?.value ?? "-",
-        sortable: false,
-      },
-      {
-        field: "driver",
-        headerName: "Nama Driver",
-        width: 150,
-        valueFormatter: (params) => params?.value ?? "-",
-        sortable: false,
-      },
-      {
-        field: "vehicle",
-        headerName: "Kendaraan",
-        width: 150,
-        valueFormatter: (params) => params?.value ?? "-",
-        sortable: false,
-      },
-      {
-        field: "status",
-        headerName: "Status",
-        width: 150,
+        field: "roles_name",
+        headerName: "Hak Akses",
+        flex: 1,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
@@ -114,14 +93,14 @@ const Users = () => {
             />,
           ];
         },
-        width: 200,
+        flex: 1,
       },
     ];
   }, [currentPage, rowsPerPage]);
 
   useEffect(() => {
-    if (usersData?.drivers && usersData?.paginator) {
-      setDatas(usersData.drivers);
+    if (usersData?.users && usersData?.paginator) {
+      setDatas(usersData.users);
       setPagination(usersData.paginator);
       if (tableRef && tableRef.current) tableRef.current.scrollIntoView();
     }

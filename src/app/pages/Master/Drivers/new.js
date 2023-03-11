@@ -4,28 +4,48 @@ import useAxiosFunction from 'app/hooks/useAxiosFunction';
 import CustomForm from './form';
 import { withSnackbar } from "app/components/SnackbarComponent";
 import { useNavigate } from "react-router-dom";
+import { uploadFileHandler } from "app/utils/helpers";
 
 const NewDriver = (props) => {
   const navigate = useNavigate();
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
 
   const onSubmitData = (payload) => {
+    const promises = [];
     const temp = {};
     temp.name = payload.name;
     temp.age = payload.age;
     temp.phone_number = payload.phone_number.replace(/\s+/g,"").replace(/_/g, "");
     temp.address = payload.address;
 
-    axiosFetch({
-      method: 'post',
-      url: '/driver/create',
-      requestConfig: {
-        data: temp,
-      },
-      onSuccess: () => {
-        props.snackbarShowMessage('Data driver berhasil ditambahkan');
-        navigate('/drivers');
-      },
+    if (payload.sim_file) {
+      promises.push({
+        key: "sim_file",
+        payload: payload.sim_file,
+      });
+    }
+    if (payload.ktp_file) {
+      promises.push({
+        key: "ktp_file",
+        payload: payload.ktp_file,
+      });
+    }
+    uploadFileHandler(promises).then((values) => {
+      let dataToSend = {
+        ...temp,
+        ...values,
+      };
+      axiosFetch({
+        method: 'post',
+        url: '/driver/create',
+        requestConfig: {
+          data: dataToSend,
+        },
+        onSuccess: () => {
+          props.snackbarShowMessage('Data driver berhasil ditambahkan');
+          setTimeout(() => navigate('/drivers'), 1500);
+        },
+      });
     });
   };
 
@@ -40,8 +60,10 @@ const NewDriver = (props) => {
               age: "",
               phone_number: "",
               address: "",
-              // pdf_no_stnk: null,
-              // pdf_surat_jalan: null
+              sim_file: null,
+              ktp_file: null,
+              sim_number: "",
+              ktp_number: ""
             }}
           />
       </Box>

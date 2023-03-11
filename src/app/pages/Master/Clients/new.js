@@ -24,7 +24,7 @@ const NewClient = (props) => {
       },
       onSuccess: () => {
         props.snackbarShowMessage('Data client berhasil ditambahkan');
-        navigate('/clients');
+        setTimeout(() => navigate('/clients'), 1500);
       },
     });
   };

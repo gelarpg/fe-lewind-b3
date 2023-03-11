@@ -1,21 +1,20 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import Select from 'react-select';
-import useAxiosFunction from 'app/hooks/useAxiosFunction';
-import useJumboAuth from '@jumbo/hooks/useJumboAuth';
-import { Box, FormHelperText } from '@mui/material';
-import { useField, useFormikContext } from 'formik';
+import React, { useEffect, useState, useCallback } from "react";
+import Select from "react-select";
+import useAxiosFunction from "app/hooks/useAxiosFunction";
+import useJumboAuth from "@jumbo/hooks/useJumboAuth";
+import { Box, FormHelperText } from "@mui/material";
 import { alpha } from "@mui/material";
+import { useFormContext, Controller } from "react-hook-form";
 
 let NEXT_PAGE = null;
 
 const FormikWasteSelection = ({
-  placeholder = 'Pilih Jenis Limbah',
+  placeholder = "Pilih Jenis Limbah",
   isDisabled,
   ...props
 }) => {
-  const [field, meta] = useField(props);
-  const { setFieldValue } = useFormikContext();
-  const errorText = meta.error && meta.touched ? meta.error : '';
+  const { name } = props;
+  const { control } = useFormContext();
   const { isLoading, data: wasteData, error, axiosFetch } = useAxiosFunction();
   const { authUser } = useJumboAuth();
 
@@ -28,8 +27,8 @@ const FormikWasteSelection = ({
   useEffect(() => {
     if (authUser) {
       axiosFetch({
-        method: 'get',
-        url: '/waste',
+        method: "get",
+        url: "/waste",
         requestConfig: {
           params: {
             ...query,
@@ -64,43 +63,59 @@ const FormikWasteSelection = ({
 
   return (
     <Box display="flex" flexDirection="column" flex={1}>
-      <Select
-        isDisabled={isDisabled}
-        placeholder={placeholder}
-        menuPortalTarget={document.body}
-        options={options}
-        styles={{
-          control: (styles) => ({
-            ...styles,
-            borderColor: errorText ? "#dc3545" : "#007E03",
-            ":hover": {
-              ...styles[":hover"],
-              borderColor: errorText ? "#dc3545" : "#007E03",
-            },
-            boxShadow: "none",
-          }),
-          option: (styles, { data, isSelected, isFocused, isDisabled }) => ({
-            ...styles,
-            backgroundColor: isDisabled
-              ? undefined
-              : isSelected
-              ? "#007E03"
-              : isFocused
-              ? alpha("#007E03", 0.5)
-              : undefined,
-            color: (isSelected || isFocused) ? "#fff" : data.color,
-          }),
-        }}
-        value={field.value}
-        isClearable={false}
-        isSearchable={false}
-        onChange={(value) => setFieldValue(field.name, value)}
-        closeMenuOnSelect={true}
-        isLoading={isLoading}
-        onMenuScrollToBottom={onMenuScrollToBottom}
-        onMenuClose={onMenuClose}
+      <Controller
+        name={name}
+        control={control}
+        defaultValue=""
+        render={({
+          field: { value, onChange, onBlur },
+          fieldState: { invalid, error },
+        }) => (
+          <>
+            <Select
+              isDisabled={isDisabled}
+              placeholder={placeholder}
+              menuPortalTarget={document.body}
+              options={options}
+              onBlur={onBlur}
+              styles={{
+                control: (styles) => ({
+                  ...styles,
+                  borderColor: invalid ? "#dc3545" : "#E0E0E0",
+                  ":hover": {
+                    ...styles[":hover"],
+                    borderColor: invalid ? "#dc3545" : "#E0E0E0",
+                  },
+                  boxShadow: "none",
+                }),
+                option: (
+                  styles,
+                  { data, isSelected, isFocused, isDisabled }
+                ) => ({
+                  ...styles,
+                  backgroundColor: isDisabled
+                    ? undefined
+                    : isSelected
+                    ? "#007E03"
+                    : isFocused
+                    ? alpha("#007E03", 0.5)
+                    : undefined,
+                  color: isSelected || isFocused ? "#fff" : data.color,
+                }),
+              }}
+              value={value}
+              isClearable={false}
+              isSearchable={false}
+              onChange={(value) => onChange(value)}
+              closeMenuOnSelect={true}
+              isLoading={isLoading}
+              onMenuScrollToBottom={onMenuScrollToBottom}
+              onMenuClose={onMenuClose}
+            />
+            {invalid && <FormHelperText error>{error?.message}</FormHelperText>}
+          </>
+        )}
       />
-      {errorText && <FormHelperText error>{errorText}</FormHelperText>}
     </Box>
   );
 };

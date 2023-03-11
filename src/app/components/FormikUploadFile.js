@@ -1,59 +1,84 @@
-import React, {useState} from "react";
-import { useField, useFormikContext } from "formik";
-import { FormHelperText, Box, Stack, Typography, Grid } from "@mui/material";
+import React, { useState } from "react";
+import { FormHelperText, Box, Typography, Grid } from "@mui/material";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { GreyButton } from "./CustomIconButton";
-import AttachFileIcon from '@mui/icons-material/AttachFile';
+import AttachFileIcon from "@mui/icons-material/AttachFile";
+import { useFormContext, Controller, useWatch } from "react-hook-form";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 
 const FormikUploadFile = ({
   label = "Upload File",
   accept = "application/pdf",
-  defaultFileName = '',
+  defaultFileName = "",
   disabled = false,
   ...props
 }) => {
-  const [field, meta] = useField(props);
-  const { setFieldValue } = useFormikContext();
+  const { name } = props;
+  const { control, setValue, getValues } = useFormContext();
   const [filename, setFilename] = useState(defaultFileName);
+  const value = useWatch({ name });
 
-  const errorText = meta.error && meta.touched ? meta.error : "";
   return (
-    <Grid container spacing={1} direction="row">
-      <Grid item xs={4} sx={{ position: 'relative' }}>
-        <GreyButton
-          variant="contained"
-          component="label"
-          startIcon={<FileUploadIcon />}
-          size="small"
-          sx={{ height: 'min-content' }}
-          disabled={disabled}
-        >
-          {label}
-          <input
-            name={field.name}
-            accept={accept}
-            type="file"
-            hidden
-            onChange={(e) => {
-              setFieldValue(field.name, e.target.files[0]);
-              setFilename(e.target.value);
-            }}
-          />
-        </GreyButton>
-        {errorText && (
-          <FormHelperText sx={{ position: 'absolute' }} error>{errorText}</FormHelperText>
-        )}
-      </Grid>
-      <Grid item xs={8}>
-        {filename && (
-          <Box flex={1} display="flex" alignItems="center" width={1}>
-            <AttachFileIcon sx={{mr: 1, color: '#828282'}} />
-            <Typography noWrap sx={{ color: '#828282' }}>{filename}</Typography>
-          </Box>
-        )}
-      </Grid>
-    </Grid>
+    <Controller
+      name={name}
+      control={control}
+      defaultValue=""
+      render={({ field: { onBlur }, fieldState: { invalid, error } }) => (
+        <>
+          <Grid container spacing={1} direction="row">
+            <Grid item xs={4} sx={{ position: "relative" }}>
+              <GreyButton
+                variant="contained"
+                component="label"
+                startIcon={<FileUploadIcon />}
+                size="small"
+                sx={{ height: "min-content" }}
+                disabled={disabled}
+              >
+                {label}
+                <input
+                  name={name}
+                  accept={accept}
+                  onBlur={onBlur}
+                  type="file"
+                  hidden
+                  onChange={(e) => {
+                    setValue(name, e.target.files[0], { shouldValidate: true });
+                    setFilename(e.target.value);
+                  }}
+                />
+              </GreyButton>
+            </Grid>
+            <Grid item xs={8}>
+              {filename && (
+                <Box flex={1} display="flex" alignItems="center" width={1}>
+                  <AttachFileIcon sx={{ mr: 1, color: "#828282" }} />
+                  <Typography noWrap sx={{ color: "#828282" }}>
+                    {filename}
+                  </Typography>
+                  <RemoveRedEyeIcon
+                    sx={{ cursor: "pointer", ml: 1, color: "#828282" }}
+                    onClick={() => {
+                      let url = null;
+                      if (typeof value === "string") url = value;
+                      else if (typeof value === "object")
+                        url = URL.createObjectURL(value);
+                      if (url) window.open(url, "_blank");
+                    }}
+                  />
+                </Box>
+              )}
+            </Grid>
+          </Grid>
+          {invalid && (
+            <FormHelperText error>
+              {error?.message}
+            </FormHelperText>
+          )}
+        </>
+      )}
+    />
   );
 };
 
-export default FormikUploadFile;
+export default React.memo(FormikUploadFile);

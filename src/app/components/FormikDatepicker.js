@@ -1,38 +1,63 @@
 import React from 'react';
-import { useField, useFormikContext } from 'formik';
 import { TextField } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { useFormContext, Controller } from 'react-hook-form';
 
 const FormikDatepicker = (props) => {
-  const { setFieldValue } = useFormikContext();
-  const [field, meta] = useField(props);
-  const errorText = meta.error && meta.touched ? meta.error : '';
+  const { name } = props;
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+
+  const [isOpen, setOpen] = React.useState(false);
+
+  const handleClickInput = React.useCallback(() => {
+    setOpen(true);
+  }, []);
 
   return (
     <>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DesktopDatePicker
-          onChange={(value) => setFieldValue(field.name, value)}
-          value={field.value}
-          renderInput={(params) => {
-            return (
-              <TextField
-                variant="standard"
-                name={field.name}
-                fullWidth
-                {...params}
-                error={!!errorText}
-                helperText={errorText}
-              />
-            );
-          }}
-          {...props}
-        />
-      </LocalizationProvider>
+      <Controller
+        name={name}
+        control={control}
+        defaultValue=""
+        render={({ field: { onChange, value, onBlur }, fieldState: {invalid, error} }) => (
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DesktopDatePicker
+              open={isOpen}
+              onOpen={() => setOpen(true)}
+              onClose={() => setOpen(false)}
+              reduceAnimations={true}
+              onChange={(value) => {
+                onChange(value);
+              }}
+              closeOnSelect={true}
+              value={value}
+              renderInput={(params) => {
+                return (
+                  <TextField
+                    variant="standard"
+                    name={name}
+                    fullWidth
+                    {...params}
+                    error={invalid}
+                    helperText={error?.message ?? ''}
+                    // onKeyDown={(e) => e.preventDefault()}
+                    onClick={handleClickInput}
+                    inputProps={{ ...params.inputProps, readOnly: true }}
+                  />
+                );
+              }}
+              {...props}
+            />
+          </LocalizationProvider>
+        )}
+      />
     </>
   );
 };
 
-export default React.memo(FormikDatepicker);
+export default FormikDatepicker;

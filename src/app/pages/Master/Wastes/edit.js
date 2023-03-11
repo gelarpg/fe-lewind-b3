@@ -6,6 +6,8 @@ import useAxiosFunction from "app/hooks/useAxiosFunction";
 import { withSnackbar } from "app/components/SnackbarComponent";
 import { useNavigate, useParams } from 'react-router-dom';
 import CustomForm from "./form";
+import Div from "@jumbo/shared/Div";
+import { CircularProgress } from "@mui/material";
 
 const EditWaste = (props) => {
   const navigate = useNavigate();
@@ -33,7 +35,7 @@ const EditWaste = (props) => {
       },
       onSuccess: () => {
         props.snackbarShowMessage('Data limbah berhasil diubah');
-        navigate('/wastes');
+        setTimeout(() => navigate('/wastes'), 1500);
       },
     });
   };
@@ -41,16 +43,29 @@ const EditWaste = (props) => {
   return (
     <Box>
       <Box p={5} mx={4}>
-        <CustomForm
-          onSubmit={onSubmitData}
-          isLoading={isLoading}
-          initialValues={{
-            name: wasteDetail?.name ?? "",
-            type: wasteDetail?.type ?? "",
-            weight_unit: wasteDetail?.weight_unit ?? "",
-            price_unit: wasteDetail?.price_unit?.toString()?.replace(/[$.]+/g, ',') ?? '',
-          }}
-        />
+      {isLoadingDetail ? (
+          <Div
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+            }}
+          >
+            <CircularProgress sx={{ m: "-40px auto 0" }} />
+          </Div>
+        ) : (
+          <CustomForm
+            onSubmit={onSubmitData}
+            isLoading={isLoading}
+            initialValues={{
+              name: wasteDetail?.name ?? "",
+              type: wasteDetail?.type ?? "",
+              weight_unit: wasteDetail?.weight_unit ?? "",
+              price_unit: wasteDetail?.price_unit?.toString()?.replace(/[$.]+/g, ',') ?? '',
+            }}
+          />
+        )}
       </Box>
     </Box>
   );
