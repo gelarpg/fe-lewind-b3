@@ -60,14 +60,14 @@ const validationSchema = yup.object({
     .nullable()
     .required("Dokumen STNK harus diisi")
     .test("fileSize", "Dokumen STNK maksimal 5MB", (value) => {
-      if (value) return value.size <= 5000000;
+      if (value && value.size) return value.size <= 5000000;
       return true;
     })
     .test(
       "fileFormat",
       "Dokumen STNK harus dalam format .pdf atau .png atau .jpeg",
       (value) => {
-        if (value) {
+        if (value && value.type) {
           ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
         }
         return true;
@@ -78,7 +78,7 @@ const validationSchema = yup.object({
     .nullable()
     .required("Dokumen Surat Jalan harus diisi")
     .test("fileSize", "Dokumen Surat Jalan maksimal 5MB", (value) => {
-      if (value) {
+      if (value && value.size) {
         return value.size <= 5000000;
       }
       return true;
@@ -87,7 +87,7 @@ const validationSchema = yup.object({
       "fileFormat",
       "Dokumen Surat Jalan harus dalam format .pdf atau .png atau .jpeg",
       (value) => {
-        if (value) {
+        if (value && value.type) {
           return ["application/pdf", "image/png", "image/jpeg"].includes(
             value.type
           );

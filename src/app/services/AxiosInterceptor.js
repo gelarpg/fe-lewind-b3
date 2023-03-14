@@ -14,7 +14,7 @@ const AxiosInterceptor = ({ children }) => {
 
   useEffect(() => {
     const resInterceptor = (response) => {
-      if ('auth' in response?.data) {
+      if (typeof response?.data === 'object' && 'auth' in response?.data) {
         if (!response?.data?.auth) {
           enqueueSnackbar('Your session is expired. Redirecting you to login page.', {
             autoHideDuration: 2000,
@@ -31,7 +31,7 @@ const AxiosInterceptor = ({ children }) => {
     };
 
     const errInterceptor = (error) => {
-      if ('auth' in error?.response?.data) {
+      if (typeof error?.response?.data === 'object' && 'auth' in error?.response?.data) {
         if (!error?.response?.data?.auth) {
           enqueueSnackbar('Your session is expired. Redirecting you to login page.', {
             autoHideDuration: 2000,

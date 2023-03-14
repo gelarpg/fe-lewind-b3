@@ -7,14 +7,22 @@ import { withSnackbar } from "app/components/SnackbarComponent";
 import { useNavigate, useParams } from "react-router-dom";
 import CustomForm from "./form";
 import moment from "moment";
-import { uploadFileHandler } from "app/utils/helpers";
+import { uploadFileHandler, getDocumentNumber, getDocumentPath } from "app/utils/helpers";
 import Div from "@jumbo/shared/Div";
 import { CircularProgress } from "@mui/material";
+
+let PDF_BASE_URL = process.env.REACT_APP_API_BASE_URL_EXPORT;
+PDF_BASE_URL = PDF_BASE_URL.substring(0, PDF_BASE_URL.length - 1);
 
 const EditVehicles = (props) => {
   const navigate = useNavigate();
   const params = useParams();
-  const { isLoading, data, error, axiosFetch } = useAxiosFunction();
+  const {
+    isLoading: isLoadingAPI,
+    data,
+    error,
+    axiosFetch,
+  } = useAxiosFunction();
 
   const {
     isLoading: isLoadingDetail,
@@ -24,7 +32,10 @@ const EditVehicles = (props) => {
     url: `/transportation/detail/${params.id}`,
   });
 
+  const [isLoading, setLoading] = React.useState(false);
+
   const onSubmitData = (payload) => {
+    setLoading(true);
     const promises = [];
     const temp = {
       ...payload,
@@ -33,16 +44,24 @@ const EditVehicles = (props) => {
       year: moment(payload.year).format("YYYY"),
     };
     if (payload.stnk_file) {
-      promises.push({
-        key: "stnk_file",
-        payload: payload.stnk_file,
-      });
+      if (typeof payload.stnk_file === "string") {
+        temp.stnk_file = payload.stnk_file.replace(PDF_BASE_URL, '');
+      } else if (typeof payload.stnk_file === "object") {
+        promises.push({
+          key: "stnk_file",
+          payload: payload.stnk_file,
+        });
+      }
     }
     if (payload.travel_document_file) {
-      promises.push({
-        key: "travel_document_file",
-        payload: payload.travel_document_file,
-      });
+      if (typeof payload.travel_document_file === "string") {
+        temp.travel_document_file = payload.travel_document_file.replace(PDF_BASE_URL, '');
+      } else if (typeof payload.travel_document_file === "object") {
+        promises.push({
+          key: "travel_document_file",
+          payload: payload.travel_document_file,
+        });
+      }
     }
     uploadFileHandler(promises).then((values) => {
       let dataToSend = {
@@ -59,6 +78,7 @@ const EditVehicles = (props) => {
           props.snackbarShowMessage("Data kendaraan berhasil diubah");
           setTimeout(() => navigate("/vehicles"), 1500);
         },
+        finally: () => setLoading(false)
       });
     });
   };
@@ -87,29 +107,22 @@ const EditVehicles = (props) => {
               year: vehicleDetail?.year ?? "",
               capacity: vehicleDetail?.capacity ?? "",
               fuel_type: vehicleDetail?.fuel_type ?? "",
-              transportation_type_id: vehicleDetail?.transportation_type_id
+              transportation_type_id: vehicleDetail?.transportation_type
                 ? {
-                    value: vehicleDetail?.transportation_type_id,
-                    label: vehicleDetail?.transportation_type_name,
+                    value: 1,
+                    label: vehicleDetail?.transportation_type,
                   }
                 : null,
-              travel_document_number: vehicleDetail?.documents?.length
-                ? vehicleDetail?.documents.find(
-                    (x) => x.type === "travel_document"
-                  ).doc_number
-                : "",
-              stnk_number: vehicleDetail?.documents?.length
-                ? vehicleDetail?.documents.find((x) => x.type === "stnk")
-                    .doc_number
-                : "",
-              stnk_file: vehicleDetail?.documents?.length
-                ? vehicleDetail?.documents.find((x) => x.type === "stnk").path
-                : "",
-              travel_document_file: vehicleDetail?.documents?.length
-                ? vehicleDetail?.documents.find(
-                    (x) => x.type === "travel_document"
-                  ).path
-                : "",
+              // transportation_type_id: vehicleDetail?.transportation_type_id
+              //   ? {
+              //       value: vehicleDetail?.transportation_type_id,
+              //       label: vehicleDetail?.transportation_type_name,
+              //     }
+              //   : null,
+              travel_document_number: getDocumentNumber(vehicleDetail, "travel_document") ?? "",
+              stnk_number: getDocumentNumber(vehicleDetail, "stnk") ?? "",
+              stnk_file: getDocumentPath(vehicleDetail, "stnk") ?? "",
+              travel_document_file: getDocumentPath(vehicleDetail, "travel_document") ?? "",
             }}
           />
         )}

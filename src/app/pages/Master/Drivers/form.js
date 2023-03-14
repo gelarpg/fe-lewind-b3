@@ -32,14 +32,14 @@ const validationSchema = yup.object({
     .nullable()
     .required("Dokumen SIM harus diisi")
     .test("fileSize", "Dokumen SIM maksimal 5MB", (value) => {
-      if (value) return value.size <= 5000000;
+      if (value && value.size) return value.size <= 5000000;
       return true;
     })
     .test(
       "fileFormat",
       "Dokumen SIM harus dalam format .pdf atau .png atau .jpeg",
       (value) => {
-        if (value) {
+        if (value && value.type) {
           ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
         }
         return true;
@@ -50,7 +50,7 @@ const validationSchema = yup.object({
     .nullable()
     .required("Dokumen KTP harus diisi")
     .test("fileSize", "Dokumen KTP maksimal 5MB", (value) => {
-      if (value) {
+      if (value && value.size) {
         return value.size <= 5000000;
       }
       return true;
@@ -59,7 +59,7 @@ const validationSchema = yup.object({
       "fileFormat",
       "Dokumen KTP harus dalam format .pdf atau .png atau .jpeg",
       (value) => {
-        if (value) {
+        if (value && value.type) {
           return ["application/pdf", "image/png", "image/jpeg"].includes(
             value.type
           );

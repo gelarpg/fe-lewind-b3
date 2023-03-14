@@ -54,21 +54,21 @@ const validationSchema = yup.object({
     })
     .nullable(),
   address: yup.string().required("Alamat harus diisi"),
-  period: yup.string().required("Alamat harus diisi"),
+  period: yup.string().required("Periode harus diisi"),
   service_fee: yup.string().required("Biaya Layanan harus diisi"),
   service_fee_document: yup
     .mixed()
     .nullable()
     .required("Dokumen Biaya Layanan harus diisi")
     .test("fileSize", "Dokumen Biaya Layanan maksimal 5MB", (value) => {
-      if (value) return value.size <= 5000000;
+      if (value && value.size) return value.size <= 5000000;
       return true;
     })
     .test(
       "fileFormat",
       "Dokumen Biaya Layanan harus dalam format .pdf atau .png atau .jpeg",
       (value) => {
-        if (value) {
+        if (value && value.type) {
           ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
         }
         return true;
@@ -79,14 +79,14 @@ const validationSchema = yup.object({
     .nullable()
     .required("Dokumen Invoice harus diisi")
     .test("fileSize", "Dokumen Invoice maksimal 5MB", (value) => {
-      if (value) return value.size <= 5000000;
+      if (value && value.size) return value.size <= 5000000;
       return true;
     })
     .test(
       "fileFormat",
       "Dokumen Invoice harus dalam format .pdf atau .png atau .jpeg",
       (value) => {
-        if (value) {
+        if (value && value.type) {
           ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
         }
         return true;
@@ -97,14 +97,14 @@ const validationSchema = yup.object({
     .nullable()
     .required("Surat Jalan harus diisi")
     .test("fileSize", "Surat Jalan maksimal 5MB", (value) => {
-      if (value) return value.size <= 5000000;
+      if (value && value.size) return value.size <= 5000000;
       return true;
     })
     .test(
       "fileFormat",
       "Surat Jalan harus dalam format .pdf atau .png atau .jpeg",
       (value) => {
-        if (value) {
+        if (value && value.type) {
           ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
         }
         return true;
@@ -115,14 +115,14 @@ const validationSchema = yup.object({
     .nullable()
     .required("Dokumen BAST harus diisi")
     .test("fileSize", "Dokumen BAST maksimal 5MB", (value) => {
-      if (value) return value.size <= 5000000;
+      if (value && value.size) return value.size <= 5000000;
       return true;
     })
     .test(
       "fileFormat",
       "Dokumen BAST harus dalam format .pdf atau .png atau .jpeg",
       (value) => {
-        if (value) {
+        if (value && value.type) {
           ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
         }
         return true;
@@ -133,14 +133,14 @@ const validationSchema = yup.object({
     .nullable()
     .required("Dokumen Penerima Limbah harus diisi")
     .test("fileSize", "Dokumen Penerima Limbah maksimal 5MB", (value) => {
-      if (value) return value.size <= 5000000;
+      if (value && value.size) return value.size <= 5000000;
       return true;
     })
     .test(
       "fileFormat",
       "Dokumen Penerima Limbah harus dalam format .pdf atau .png atau .jpeg",
       (value) => {
-        if (value) {
+        if (value && value.type) {
           ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
         }
         return true;
@@ -151,14 +151,14 @@ const validationSchema = yup.object({
     .nullable()
     .required("Dokumen Transporter harus diisi")
     .test("fileSize", "Dokumen Transporter maksimal 5MB", (value) => {
-      if (value) return value.size <= 5000000;
+      if (value && value.size) return value.size <= 5000000;
       return true;
     })
     .test(
       "fileFormat",
       "Dokumen Transporter harus dalam format .pdf atau .png atau .jpeg",
       (value) => {
-        if (value) {
+        if (value && value.type) {
           ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
         }
         return true;
@@ -169,14 +169,14 @@ const validationSchema = yup.object({
     .nullable()
     .required("Dokumen Penyedia harus diisi")
     .test("fileSize", "Dokumen Penyedia maksimal 5MB", (value) => {
-      if (value) return value.size <= 5000000;
+      if (value && value.size) return value.size <= 5000000;
       return true;
     })
     .test(
       "fileFormat",
       "Dokumen Penyedia harus dalam format .pdf atau .png atau .jpeg",
       (value) => {
-        if (value) {
+        if (value && value.type) {
           ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
         }
         return true;

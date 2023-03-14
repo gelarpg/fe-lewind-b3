@@ -15,6 +15,7 @@ const useAxiosFunction = () => {
       requestConfig = {},
       onSuccess = null,
       onFailure = null,
+      finally: onFinally = null,
     } = configObject;
     try {
       setLoading(true);
@@ -59,6 +60,7 @@ const useAxiosFunction = () => {
       setError(errorMessage);
       if (onFailure) onFailure(errorMessage)
     } finally {
+      if (onFinally) onFinally();
       setLoading(false);
     }
   };

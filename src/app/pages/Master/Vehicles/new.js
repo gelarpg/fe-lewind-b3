@@ -11,9 +11,12 @@ import { uploadFileHandler } from "app/utils/helpers";
 
 const NewVehicle = (props) => {
   const navigate = useNavigate();
-  const { isLoading, data, error, axiosFetch } = useAxiosFunction();
+  const { isLoading: isLoadingAPI, data, error, axiosFetch } = useAxiosFunction();
+
+  const [isLoading, setLoading] = useState(false);
 
   const onSubmitData = (payload) => {
+    setLoading(true);
     const promises = [];
     const temp = {
       ...payload,
@@ -47,6 +50,7 @@ const NewVehicle = (props) => {
           props.snackbarShowMessage("Data kendaraan berhasil ditambahkan");
           setTimeout(() => navigate("/vehicles"), 1500);
         },
+        finally: () => setLoading(false)
       });
     });
   };

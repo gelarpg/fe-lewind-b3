@@ -8,7 +8,7 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 
 const FormikUploadFile = ({
   label = "Upload File",
-  accept = "application/pdf",
+  accept = "application/pdf, image/png, image/jpeg",
   defaultFileName = "",
   disabled = false,
   ...props

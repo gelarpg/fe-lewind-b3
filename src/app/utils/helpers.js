@@ -1,5 +1,8 @@
 import baseAxios from "app/services/AxiosInterceptor";
 
+let PDF_BASE_URL = process.env.REACT_APP_API_BASE_URL_EXPORT;
+PDF_BASE_URL = PDF_BASE_URL.substring(0, PDF_BASE_URL.length - 1);
+
 export const uploadFileHandler = async (array) => {
   const promises = [];
   const uploadFileTmp = () => new Promise((resolve, reject) => resolve(null));
@@ -37,3 +40,20 @@ export const uploadFileHandler = async (array) => {
     })
     .catch((error) => {});
 };
+
+export const getDocumentPath = (object, prop) => {
+  let path = null;
+  if (object?.documents && object?.documents?.length) {
+    const doc = object?.documents.find((x) => x.type === prop);
+    if (doc && doc?.path) path = `${PDF_BASE_URL}${doc?.path}`;
+  }
+  return path
+}
+export const getDocumentNumber = (object, prop) => {
+  let doc_number = null;
+  if (object?.documents && object?.documents?.length) {
+    const doc = object?.documents.find((x) => x.type === prop);
+    if (doc && doc?.doc_number) doc_number = `${PDF_BASE_URL}${doc?.doc_number}`;
+  }
+  return doc_number
+}

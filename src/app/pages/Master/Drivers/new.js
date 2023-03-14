@@ -8,7 +8,9 @@ import { uploadFileHandler } from "app/utils/helpers";
 
 const NewDriver = (props) => {
   const navigate = useNavigate();
-  const { isLoading, data, error, axiosFetch } = useAxiosFunction();
+  const { isLoading: isLoadingAPI, data, error, axiosFetch } = useAxiosFunction();
+
+  const [isLoading, setLoading] = React.useState(false);
 
   const onSubmitData = (payload) => {
     const promises = [];
@@ -45,6 +47,7 @@ const NewDriver = (props) => {
           props.snackbarShowMessage('Data driver berhasil ditambahkan');
           setTimeout(() => navigate('/drivers'), 1500);
         },
+        finally: () => setLoading(false)
       });
     });
   };

@@ -10,10 +10,13 @@ import { useNavigate } from "react-router-dom";
 import { uploadFileHandler } from "app/utils/helpers";
 
 const NewSubmission = (props) => {
-  const { isLoading, data, error, axiosFetch } = useAxiosFunction();
+  const { isLoading: isLoadingAPI, data, error, axiosFetch } = useAxiosFunction();
   const navigate = useNavigate();
 
+  const [isLoading, setLoading] = useState(false);
+
   const onSubmitData = (payload) => {
+    setLoading(true);
     const promises = [];
     const temp = {
       ...payload,
@@ -82,6 +85,7 @@ const NewSubmission = (props) => {
           props.snackbarShowMessage("Data pengajuan berhasil ditambahkan");
           setTimeout(() => navigate('/submissions'), 1500);
         },
+        finally: () => setLoading(false)
       });
     });
   };
