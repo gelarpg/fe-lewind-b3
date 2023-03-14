@@ -99,6 +99,7 @@ const NewSubmission = (props) => {
           initialValues={{
             client_id: null,
             transportation_id: null,
+            waste_name: "",
             driver_id: null,
             address: "",
             period: "",

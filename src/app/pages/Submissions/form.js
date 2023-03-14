@@ -54,6 +54,7 @@ const validationSchema = yup.object({
     })
     .nullable(),
   address: yup.string().required("Alamat harus diisi"),
+  waste_name: yup.string().required("Jenis Limbah harus diisi"),
   period: yup.string().required("Periode harus diisi"),
   service_fee: yup.string().required("Biaya Layanan harus diisi"),
   service_fee_document: yup
@@ -227,7 +228,7 @@ const CustomForm = ({
               disabled={isDetail}
               size="small"
               fullWidth
-              name="type"
+              name="waste_name"
             />
           </Box>
           <Box flex={1} mb={3}>

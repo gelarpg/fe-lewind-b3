@@ -21,10 +21,10 @@ const EditSubmission = (props) => {
 
   const {
     isLoading: isLoadingDetail,
-    data: clientDetail,
+    data: submissionDetail,
     error: errorDetail,
   } = useFetch({
-    url: `/submission/${params.id}`,
+    url: `/submission/detail/${params.id}`,
   });
 
   const [isLoading, setLoading] = React.useState(false);
@@ -152,10 +152,20 @@ const EditSubmission = (props) => {
             onSubmit={onSubmitData}
             isLoading={isLoading}
             initialValues={{
-              name: "",
-              address: "",
-              offer_number: "",
-              transaction_fee: "",
+              waste_name: submissionDetail?.waste_name ?? "",
+              client_id: submissionDetail?.client_name ? { value: 1, label: submissionDetail?.client_name } : null,
+              transportation_id: submissionDetail?.transportation_name ? { value: 1, label: submissionDetail?.transportation_name } : null,
+              driver_id: submissionDetail?.driver_name ? { value: 1, label: submissionDetail?.driver_name } : null,
+              address: submissionDetail?.address ?? "",
+              period: submissionDetail?.period ? moment(submissionDetail?.period) : null,
+              service_fee: submissionDetail?.service_fee?.toString()?.replace(/[$.]+/g, ',') ?? '',
+              service_fee_document: null,
+              invoice_document: null,
+              travel_document: null,
+              bast_document: null,
+              waste_document: null,
+              transporter_document: null,
+              provider_document: null,
             }}
           />
         )}
