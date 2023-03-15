@@ -1,6 +1,7 @@
 {
-  "name": "jumbo-react-6.x",
+  "name": "lewindgroup",
   "version": "0.1.0",
+  "homepage": "https://lewindgroup.com/",
   "private": true,
   "dependencies": {
     "@amcharts/amcharts4": "^4.10.33",
