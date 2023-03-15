@@ -64,7 +64,7 @@ const EditClient = (props) => {
               address: clientDetail?.address ?? "",
               offer_number: clientDetail?.offer_number ?? "",
               transaction_fee: clientDetail?.transaction_fee?.toString()?.replace(/[$.]+/g, ',') ?? '',
-              waste_id: clientDetail?.waste_id ? {value: clientDetail?.waste_id, label: clientDetail?.waste_name} : null,
+              waste_id: clientDetail?.waste_id ? {value: clientDetail?.waste_id, label: `${clientDetail?.waste_name} - ${clientDetail?.waste_type}`} : null,
             }}
           />
         )}

@@ -19,6 +19,8 @@ const NewDriver = (props) => {
     temp.age = payload.age;
     temp.phone_number = payload.phone_number.replace(/\s+/g,"").replace(/_/g, "");
     temp.address = payload.address;
+    temp.sim_number = payload.sim_number;
+    temp.ktp_number = payload.ktp_number;
 
     if (payload.sim_file) {
       promises.push({

@@ -107,18 +107,12 @@ const EditVehicles = (props) => {
               year: vehicleDetail?.year ?? "",
               capacity: vehicleDetail?.capacity ?? "",
               fuel_type: vehicleDetail?.fuel_type ?? "",
-              transportation_type_id: vehicleDetail?.transportation_type
+              transportation_type_id: vehicleDetail?.transportation_type_id
                 ? {
-                    value: 1,
+                    value: vehicleDetail?.transportation_type_id,
                     label: vehicleDetail?.transportation_type,
                   }
                 : null,
-              // transportation_type_id: vehicleDetail?.transportation_type_id
-              //   ? {
-              //       value: vehicleDetail?.transportation_type_id,
-              //       label: vehicleDetail?.transportation_type_name,
-              //     }
-              //   : null,
               travel_document_number: getDocumentNumber(vehicleDetail, "travel_document") ?? "",
               stnk_number: getDocumentNumber(vehicleDetail, "stnk") ?? "",
               stnk_file: getDocumentPath(vehicleDetail, "stnk") ?? "",

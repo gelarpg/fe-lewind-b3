@@ -9,21 +9,20 @@ import usePrevious from "app/hooks/usePrevious";
 
 let NEXT_PAGE = null;
 
-const FormikWasteSelection = ({
-  placeholder = "Pilih Jenis Limbah",
+const FormikClientSelection = ({
+  placeholder = "Pilih Klien",
   isDisabled,
   ...props
 }) => {
   const { name } = props;
   const { control } = useFormContext();
-  const { isLoading, data: wasteData, error, axiosFetch } = useAxiosFunction();
+  const { isLoading, data: clientData, error, axiosFetch } = useAxiosFunction();
 
   const [options, setOptions] = useState([]);
   const [query, setQuery] = useState({
     page: 0,
     limit: 50,
   });
-
   const prevQuery = usePrevious(query);
 
   useEffect(() => {
@@ -31,7 +30,7 @@ const FormikWasteSelection = ({
       if (!isEqual(prevQuery, query)) {
         axiosFetch({
           method: "get",
-          url: "/waste",
+          url: "/clients",
           requestConfig: {
             params: {
               ...query,
@@ -43,14 +42,20 @@ const FormikWasteSelection = ({
   }, [query, prevQuery]);
 
   useEffect(() => {
-    if (wasteData?.paginator && wasteData.waste) {
+    if (clientData?.paginator && clientData.clients) {
       setOptions((curr) => [
         ...curr,
-        ...wasteData.waste.map((x) => ({ value: x.id, label: `${x.name} - ${x.type}` })),
+        ...clientData.clients.map((x) => ({
+          value: x.id,
+          label: x.name,
+          address: x.address,
+          waste_name: x.waste_name,
+          waste_type: x.waste_type,
+        })),
       ]);
-      NEXT_PAGE = wasteData?.paginator?.nextPage;
+      NEXT_PAGE = clientData?.paginator?.nextPage;
     }
-  }, [wasteData]);
+  }, [clientData]);
 
   const onMenuClose = useCallback(() => {
     setOptions([]);
@@ -59,7 +64,7 @@ const FormikWasteSelection = ({
   }, []);
 
   const onMenuOpen = useCallback(() => {
-    setQuery({ page: 1, limit: 50 });
+    setQuery({ limit: 50, page: 1 });
   }, []);
 
   const onMenuScrollToBottom = useCallback(() => {
@@ -113,7 +118,10 @@ const FormikWasteSelection = ({
               value={value}
               isClearable={false}
               isSearchable={false}
-              onChange={(value) => onChange(value)}
+              onChange={(value) => {
+                onChange(value);
+                if (props?.onChange) props?.onChange(value);
+              }}
               closeMenuOnSelect={true}
               isLoading={isLoading}
               onMenuScrollToBottom={onMenuScrollToBottom}
@@ -128,4 +136,4 @@ const FormikWasteSelection = ({
   );
 };
 
-export default React.memo(FormikWasteSelection);
+export default React.memo(FormikClientSelection);

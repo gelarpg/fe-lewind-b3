@@ -22,6 +22,8 @@ const FormikReactSelect = ({
   objectProp = undefined,
   useStaticData = false,
   optionsData = [],
+  additionalKey = null,
+  additionalProp = null,
   ...props
 }) => {
   const { name } = props;
@@ -46,7 +48,11 @@ const FormikReactSelect = ({
       if (objectProp && datas?.paginator && datas[objectProp]) {
         setOptions((curr) => [
           ...curr,
-          ...datas[objectProp].map((x) => ({ value: x[valueProp], label: x[labelProp] })),
+          ...datas[objectProp].map((x) => {
+            const value = { value: x[valueProp], label: x[labelProp] };
+            if (additionalKey && additionalProp) value[additionalKey] = x[additionalProp];
+            return value;
+          }),
         ]);
         NEXT_PAGE = datas?.paginator?.nextPage;
       }
@@ -115,7 +121,10 @@ const FormikReactSelect = ({
             value={value}
             isClearable={false}
             isSearchable={true}
-            onChange={(val) => onChange(val)}
+            onChange={(val) => {
+              onChange(val);
+              if (props?.onChange) props.onChange(val);
+            }}
             onBlur={onBlur}
             closeMenuOnSelect={true}
             isLoading={isLoading}

@@ -1,12 +1,16 @@
 import React from "react";
 import { Box } from "@mui/material";
 
-import useFetch from 'app/hooks/useFetch';
+import useFetch from "app/hooks/useFetch";
 import useAxiosFunction from "app/hooks/useAxiosFunction";
 import { withSnackbar } from "app/components/SnackbarComponent";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from "react-router-dom";
 import CustomForm from "./form";
-import { uploadFileHandler, getDocumentNumber, getDocumentPath } from "app/utils/helpers";
+import {
+  uploadFileHandler,
+  getDocumentNumber,
+  getDocumentPath,
+} from "app/utils/helpers";
 import Div from "@jumbo/shared/Div";
 import { CircularProgress } from "@mui/material";
 import moment from "moment";
@@ -17,7 +21,12 @@ PDF_BASE_URL = PDF_BASE_URL.substring(0, PDF_BASE_URL.length - 1);
 const EditSubmission = (props) => {
   const navigate = useNavigate();
   const params = useParams();
-  const { isLoading: isLoadingAPI, data, error, axiosFetch } = useAxiosFunction();
+  const {
+    isLoading: isLoadingAPI,
+    data,
+    error,
+    axiosFetch,
+  } = useAxiosFunction();
 
   const {
     isLoading: isLoadingDetail,
@@ -42,73 +51,85 @@ const EditSubmission = (props) => {
       driver_id: payload.driver_id.value,
       period: moment(payload.period).format("YYYY-MM-DD HH:mm:ss"),
     };
-    if (payload.service_fee_document) {
-      if (typeof payload.service_fee_document === "string") {
-        temp.service_fee_document = payload.service_fee_document.replace(PDF_BASE_URL, '');
-      } else if (typeof payload.service_fee_document === "object") {
+    if (payload.service_fee_file) {
+      if (typeof payload.service_fee_file === "string") {
+        temp.service_fee_file = payload.service_fee_file.replace(
+          PDF_BASE_URL,
+          ""
+        );
+      } else if (typeof payload.service_fee_file === "object") {
         promises.push({
-          key: "service_fee_document",
-          payload: payload.service_fee_document,
+          key: "service_fee_file",
+          payload: payload.service_fee_file,
         });
       }
     }
-    if (payload.invoice_document) {
-      if (typeof payload.invoice_document === "string") {
-        temp.invoice_document = payload.invoice_document.replace(PDF_BASE_URL, '');
-      } else if (typeof payload.invoice_document === "object") {
+    if (payload.invoice_file) {
+      if (typeof payload.invoice_file === "string") {
+        temp.invoice_file = payload.invoice_file.replace(PDF_BASE_URL, "");
+      } else if (typeof payload.invoice_file === "object") {
         promises.push({
-          key: "invoice_document",
-          payload: payload.invoice_document,
+          key: "invoice_file",
+          payload: payload.invoice_file,
         });
       }
     }
-    if (payload.travel_document) {
-      if (typeof payload.travel_document === "string") {
-        temp.travel_document = payload.travel_document.replace(PDF_BASE_URL, '');
-      } else if (typeof payload.travel_document === "object") {
+    if (payload.travel_document_file) {
+      if (typeof payload.travel_document_file === "string") {
+        temp.travel_document_file = payload.travel_document_file.replace(
+          PDF_BASE_URL,
+          ""
+        );
+      } else if (typeof payload.travel_document_file === "object") {
         promises.push({
-          key: "travel_document",
-          payload: payload.travel_document,
+          key: "travel_document_file",
+          payload: payload.travel_document_file,
         });
       }
     }
-    if (payload.bast_document) {
-      if (typeof payload.bast_document === "string") {
-        temp.bast_document = payload.bast_document.replace(PDF_BASE_URL, '');
-      } else if (typeof payload.bast_document === "object") {
+    if (payload.bast_file) {
+      if (typeof payload.bast_file === "string") {
+        temp.bast_file = payload.bast_file.replace(PDF_BASE_URL, "");
+      } else if (typeof payload.bast_file === "object") {
         promises.push({
-          key: "bast_document",
-          payload: payload.bast_document,
+          key: "bast_file",
+          payload: payload.bast_file,
         });
       }
     }
-    if (payload.transporter_document) {
-      if (typeof payload.transporter_document === "string") {
-        temp.transporter_document = payload.transporter_document.replace(PDF_BASE_URL, '');
-      } else if (typeof payload.transporter_document === "object") {
+    if (payload.transporter_file) {
+      if (typeof payload.transporter_file === "string") {
+        temp.transporter_file = payload.transporter_file.replace(
+          PDF_BASE_URL,
+          ""
+        );
+      } else if (typeof payload.transporter_file === "object") {
         promises.push({
-          key: "transporter_document",
-          payload: payload.transporter_document,
+          key: "transporter_file",
+          payload: payload.transporter_file,
         });
       }
     }
-    if (payload.supplier_document) {
-      if (typeof payload.supplier_document === "string") {
-        temp.supplier_document = payload.supplier_document.replace(PDF_BASE_URL, '');
-      } else if (typeof payload.supplier_document === "object") {
+    if (payload.provider_file) {
+      if (typeof payload.provider_file === "string") {
+        temp.provider_file = payload.provider_file.replace(PDF_BASE_URL, "");
+      } else if (typeof payload.provider_file === "object") {
         promises.push({
-          key: "supplier_document",
-          payload: payload.supplier_document,
+          key: "provider_file",
+          payload: payload.provider_file,
         });
       }
     }
-    if (payload.waste_document) {
-      if (typeof payload.waste_document === "string") {
-        temp.waste_document = payload.waste_document.replace(PDF_BASE_URL, '');
-      } else if (typeof payload.waste_document === "object") {
+    if (payload.waste_receipt_file) {
+      if (typeof payload.waste_receipt_file === "string") {
+        temp.waste_receipt_file = payload.waste_receipt_file.replace(
+          PDF_BASE_URL,
+          ""
+        );
+      } else if (typeof payload.waste_receipt_file === "object") {
         promises.push({
-          key: "waste_document",
-          payload: payload.waste_document,
+          key: "waste_receipt_file",
+          payload: payload.waste_receipt_file,
         });
       }
     }
@@ -125,10 +146,10 @@ const EditSubmission = (props) => {
           data: dataToSend,
         },
         onSuccess: () => {
-          props.snackbarShowMessage('Data pengajuan berhasil diubah');
-          setTimeout(() => navigate('/submissions'), 1500);
+          props.snackbarShowMessage("Data pengajuan berhasil diubah");
+          setTimeout(() => navigate("/submissions"), 1500);
         },
-        finally: () => setLoading(false)
+        finally: () => setLoading(false),
       });
     });
   };
@@ -136,7 +157,7 @@ const EditSubmission = (props) => {
   return (
     <Box>
       <Box p={5} mx={4}>
-      {isLoadingDetail ? (
+        {isLoadingDetail ? (
           <Div
             sx={{
               position: "absolute",
@@ -153,19 +174,51 @@ const EditSubmission = (props) => {
             isLoading={isLoading}
             initialValues={{
               waste_name: submissionDetail?.waste_name ?? "",
-              client_id: submissionDetail?.client_name ? { value: 1, label: submissionDetail?.client_name } : null,
-              transportation_id: submissionDetail?.transportation_name ? { value: 1, label: submissionDetail?.transportation_name } : null,
-              driver_id: submissionDetail?.driver_name ? { value: 1, label: submissionDetail?.driver_name } : null,
-              address: submissionDetail?.address ?? "",
-              period: submissionDetail?.period ? moment(submissionDetail?.period) : null,
-              service_fee: submissionDetail?.service_fee?.toString()?.replace(/[$.]+/g, ',') ?? '',
-              service_fee_document: null,
-              invoice_document: null,
-              travel_document: null,
-              bast_document: null,
-              waste_document: null,
-              transporter_document: null,
-              provider_document: null,
+              client_id: submissionDetail?.client_id
+                ? {
+                    value: submissionDetail?.client_id,
+                    label: submissionDetail?.client_name,
+                  }
+                : null,
+              transportation_id: submissionDetail?.transportation_id
+                ? {
+                    value: submissionDetail?.transportation_id,
+                    label: submissionDetail?.transportation_name,
+                  }
+                : null,
+              driver_id: submissionDetail?.driver_id
+                ? {
+                    value: submissionDetail?.driver_id,
+                    label: submissionDetail?.driver_name,
+                  }
+                : null,
+              address: submissionDetail?.client_address ?? "",
+              period: submissionDetail?.period
+                ? moment(submissionDetail?.period)
+                : null,
+              service_fee:
+                submissionDetail?.service_fee
+                  ?.toString()
+                  ?.replace(/[$.]+/g, ",") ?? "",
+              service_fee_file: getDocumentPath(
+                submissionDetail,
+                "service_fee"
+              ),
+              invoice_file: getDocumentPath(submissionDetail, "invoice"),
+              travel_document_file: getDocumentPath(
+                submissionDetail,
+                "travel_document"
+              ),
+              bast_file: getDocumentPath(submissionDetail, "bast"),
+              waste_receipt_file: getDocumentPath(
+                submissionDetail,
+                "waste_receipt"
+              ),
+              transporter_file: getDocumentPath(
+                submissionDetail,
+                "transporter"
+              ),
+              provider_file: getDocumentPath(submissionDetail, "provider"),
             }}
           />
         )}

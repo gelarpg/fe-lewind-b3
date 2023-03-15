@@ -12,6 +12,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import FormikReactSelect from "app/components/FormikReactSelect";
 import FormikDatepicker from "app/components/FormikDatepicker";
+import FormikClientSelection from "app/components/FormikClientSelection";
 
 const validationSchema = yup.object({
   client_id: yup
@@ -53,11 +54,11 @@ const validationSchema = yup.object({
       return true;
     })
     .nullable(),
-  address: yup.string().required("Alamat harus diisi"),
-  waste_name: yup.string().required("Jenis Limbah harus diisi"),
+  address: yup.string(),
+  waste_name: yup.string(),
   period: yup.string().required("Periode harus diisi"),
   service_fee: yup.string().required("Biaya Layanan harus diisi"),
-  service_fee_document: yup
+  service_fee_file: yup
     .mixed()
     .nullable()
     .required("Dokumen Biaya Layanan harus diisi")
@@ -75,7 +76,7 @@ const validationSchema = yup.object({
         return true;
       }
     ),
-  invoice_document: yup
+  invoice_file: yup
     .mixed()
     .nullable()
     .required("Dokumen Invoice harus diisi")
@@ -93,7 +94,7 @@ const validationSchema = yup.object({
         return true;
       }
     ),
-  travel_document: yup
+  travel_document_file: yup
     .mixed()
     .nullable()
     .required("Surat Jalan harus diisi")
@@ -111,7 +112,7 @@ const validationSchema = yup.object({
         return true;
       }
     ),
-  bast_document: yup
+  bast_file: yup
     .mixed()
     .nullable()
     .required("Dokumen BAST harus diisi")
@@ -129,7 +130,7 @@ const validationSchema = yup.object({
         return true;
       }
     ),
-  waste_document: yup
+  waste_receipt_file: yup
     .mixed()
     .nullable()
     .required("Dokumen Penerima Limbah harus diisi")
@@ -147,7 +148,7 @@ const validationSchema = yup.object({
         return true;
       }
     ),
-  transporter_document: yup
+  transporter_file: yup
     .mixed()
     .nullable()
     .required("Dokumen Transporter harus diisi")
@@ -165,7 +166,7 @@ const validationSchema = yup.object({
         return true;
       }
     ),
-  provider_document: yup
+  provider_file: yup
     .mixed()
     .nullable()
     .required("Dokumen Penyedia harus diisi")
@@ -210,13 +211,13 @@ const CustomForm = ({
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
               Nama Klien
             </Typography>
-            <FormikReactSelect
+            <FormikClientSelection
               isDisabled={isDetail}
               name="client_id"
-              placeholder="Nama Klien"
-              url="/clients"
-              usePagination
-              objectProp="clients"
+              onChange={(val) => {
+                methods.setValue("waste_name", val?.waste_name);
+                methods.setValue("address", val?.address);
+              }}
             />
           </Box>
           <Box flex={1} mb={3}>
@@ -225,10 +226,11 @@ const CustomForm = ({
             </Typography>
             <JumboTextField
               variant="standard"
-              disabled={isDetail}
+              disabled={true}
               size="small"
               fullWidth
               name="waste_name"
+              placeholder="Jenis Limbah"
             />
           </Box>
           <Box flex={1} mb={3}>
@@ -237,7 +239,7 @@ const CustomForm = ({
             </Typography>
             <JumboTextField
               variant="standard"
-              disabled={isDetail}
+              disabled={true}
               size="small"
               fullWidth
               name="address"
@@ -278,7 +280,13 @@ const CustomForm = ({
             />
           </Box>
           <Box flex={1}>
-            <Grid container spacing={3} direction="row" alignItems="start" mb={3}>
+            <Grid
+              container
+              spacing={3}
+              direction="row"
+              alignItems="start"
+              mb={3}
+            >
               <Grid item xs={5}>
                 <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                   Biaya Layanan
@@ -296,8 +304,9 @@ const CustomForm = ({
                   Dokumen Biaya Layanan
                 </Typography>
                 <FormikUploadFile
-                  name="service_fee_document"
+                  name="service_fee_file"
                   disabled={isDetail}
+                  defaultFileName={initialValues?.service_fee_file}
                 />
               </Grid>
             </Grid>
@@ -307,13 +316,21 @@ const CustomForm = ({
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                 Invoice
               </Typography>
-              <FormikUploadFile name="invoice_document" disabled={isDetail} />
+              <FormikUploadFile
+                name="invoice_file"
+                disabled={isDetail}
+                defaultFileName={initialValues?.invoice_file}
+              />
             </Grid>
             <Grid item xs={12} md={6} lg={6} mb={3}>
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                 Dokumen Penyedia
               </Typography>
-              <FormikUploadFile name="provider_document" disabled={isDetail} />
+              <FormikUploadFile
+                name="provider_file"
+                disabled={isDetail}
+                defaultFileName={initialValues?.provider_file}
+              />
             </Grid>
           </Grid>
           <Grid container spacing={1} direction="row" alignItems="start" mb={3}>
@@ -322,15 +339,20 @@ const CustomForm = ({
                 Dokumen Transporter
               </Typography>
               <FormikUploadFile
-                name="transporter_document"
+                name="transporter_file"
                 disabled={isDetail}
+                defaultFileName={initialValues?.transporter_file}
               />
             </Grid>
             <Grid item xs={12} md={6} lg={6} mb={3}>
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                 Dokumen Penerima Limbah
               </Typography>
-              <FormikUploadFile name="waste_document" disabled={isDetail} />
+              <FormikUploadFile
+                name="waste_receipt_file"
+                disabled={isDetail}
+                defaultFileName={initialValues?.waste_receipt_file}
+              />
             </Grid>
           </Grid>
           <Grid container spacing={1} direction="row" alignItems="start" mb={3}>
@@ -338,13 +360,21 @@ const CustomForm = ({
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                 BAST
               </Typography>
-              <FormikUploadFile name="bast_document" disabled={isDetail} />
+              <FormikUploadFile
+                name="bast_file"
+                disabled={isDetail}
+                defaultFileName={initialValues?.bast_file}
+              />
             </Grid>
             <Grid item xs={12} md={6} lg={6} mb={3}>
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                 Surat Jalan
               </Typography>
-              <FormikUploadFile name="travel_document" disabled={isDetail} />
+              <FormikUploadFile
+                name="travel_document_file"
+                disabled={isDetail}
+                defaultFileName={initialValues?.travel_document_file}
+              />
             </Grid>
           </Grid>
         </Box>

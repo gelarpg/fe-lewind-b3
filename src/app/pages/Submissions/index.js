@@ -92,10 +92,9 @@ const Submissions = () => {
         sortable: false,
       },
       {
-        field: "status",
+        field: "status_name",
         headerName: "Status",
         width: 150,
-        valueFormatter: (params) => Boolean(params?.value) ? "Ya" : "Tidak",
         sortable: false,
       },
       {

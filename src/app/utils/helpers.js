@@ -53,7 +53,7 @@ export const getDocumentNumber = (object, prop) => {
   let doc_number = null;
   if (object?.documents && object?.documents?.length) {
     const doc = object?.documents.find((x) => x.type === prop);
-    if (doc && doc?.doc_number) doc_number = `${PDF_BASE_URL}${doc?.doc_number}`;
+    if (doc && doc?.doc_number) doc_number = `${doc?.doc_number}`;
   }
   return doc_number
 }

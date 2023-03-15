@@ -28,46 +28,46 @@ const NewSubmission = (props) => {
       driver_id: payload.driver_id.value,
       period: moment(payload.period).format("YYYY-MM-DD HH:mm:ss"),
     };
-    if (payload.service_fee_document) {
+    if (payload.service_fee_file) {
       promises.push({
-        key: "service_fee_document",
-        payload: payload.service_fee_document,
+        key: "service_fee_file",
+        payload: payload.service_fee_file,
       });
     }
-    if (payload.invoice_document) {
+    if (payload.invoice_file) {
       promises.push({
-        key: "invoice_document",
-        payload: payload.invoice_document,
+        key: "invoice_file",
+        payload: payload.invoice_file,
       });
     }
-    if (payload.travel_document) {
+    if (payload.travel_document_file) {
       promises.push({
-        key: "travel_document",
-        payload: payload.travel_document,
+        key: "travel_document_file",
+        payload: payload.travel_document_file,
       });
     }
-    if (payload.bast_document) {
+    if (payload.bast_file) {
       promises.push({
-        key: "bast_document",
-        payload: payload.bast_document,
+        key: "bast_file",
+        payload: payload.bast_file,
       });
     }
-    if (payload.transporter_document) {
+    if (payload.transporter_file) {
       promises.push({
-        key: "transporter_document",
-        payload: payload.transporter_document,
+        key: "transporter_file",
+        payload: payload.transporter_file,
       });
     }
-    if (payload.provider_document) {
+    if (payload.provider_file) {
       promises.push({
-        key: "provider_document",
-        payload: payload.provider_document,
+        key: "provider_file",
+        payload: payload.provider_file,
       });
     }
-    if (payload.waste_document) {
+    if (payload.waste_receipt_file) {
       promises.push({
-        key: "waste_document",
-        payload: payload.waste_document,
+        key: "waste_receipt_file",
+        payload: payload.waste_receipt_file,
       });
     }
     uploadFileHandler(promises).then((values) => {
@@ -104,13 +104,13 @@ const NewSubmission = (props) => {
             address: "",
             period: "",
             service_fee: "",
-            service_fee_document: null,
-            invoice_document: null,
-            travel_document: null,
-            bast_document: null,
-            waste_document: null,
-            transporter_document: null,
-            provider_document: null,
+            service_fee_file: null,
+            invoice_file: null,
+            travel_document_file: null,
+            bast_file: null,
+            waste_receipt_file: null,
+            transporter_file: null,
+            provider_file: null,
           }}
         />
       </Box>

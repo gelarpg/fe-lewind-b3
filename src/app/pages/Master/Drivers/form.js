@@ -23,9 +23,13 @@ const validationSchema = yup.object({
     .max(50, "Umur minimal 50 Tahun"),
   phone_number: yup.string().required("No telepon harus diisi"),
   address: yup.string().required("Alamat harus diisi"),
-  sim_number: yup.string().required("Nomor SIM harus diisi"),
+  sim_number: yup
+    .number()
+    .typeError("Nomor SIM tidak valid")
+    .required("Nomor SIM harus diisi"),
   ktp_number: yup
-    .string()
+    .number()
+    .typeError("NIK tidak valid")
     .required("NIK harus diisi"),
   sim_file: yup
     .mixed()
@@ -165,7 +169,7 @@ const CustomForm = ({
                 />
               </Grid>
               <Grid item xs={12} md={6} lg={8}>
-                <FormikUploadFile name="ktp_file" disabled={isDetail} />
+                <FormikUploadFile name="ktp_file" disabled={isDetail} defaultFileName={initialValues?.ktp_file} />
               </Grid>
             </Grid>
           </Box>
@@ -190,7 +194,7 @@ const CustomForm = ({
                 />
               </Grid>
               <Grid item xs={12} md={6} lg={8}>
-                <FormikUploadFile name="sim_file" disabled={isDetail} />
+                <FormikUploadFile name="sim_file" disabled={isDetail} defaultFileName={initialValues?.sim_file} />
               </Grid>
             </Grid>
           </Box>
