@@ -69,7 +69,8 @@ const Login = () => {
     <Stack
       direction={{ lg: "row", md: "column", sm: "column", xs: "column" }}
       spacing={{ lg: 4, md: 3, sm: 2, xs: 2 }}
-      margin={{ lg: 4, md: 3, sm: 2, xs: 2 }}
+      marginX={{ lg: 8, md: 3, sm: 2, xs: 2 }}
+      marginY={{ lg: 4, md: 3, sm: 2, xs: 2 }}
       alignItems="center"
       sx={{ height: "100%" }}
     >
