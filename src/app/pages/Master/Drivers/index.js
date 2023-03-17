@@ -56,34 +56,34 @@ const Drivers = (props) => {
         headerName: "No",
         renderCell: (index) =>
           rowsPerPage * currentPage + (index.api.getRowIndex(index.row.id) + 1),
-        width: 20,
+        flex: 0.5,
         sortable: false,
       },
       {
         field: "name",
         headerName: "Nama",
-        width: 200,
+        flex: 1.5,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
         field: "age",
         headerName: "Umur",
-        width: 150,
+        flex: 0.5,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
         field: "phone_number",
         headerName: "No Telp",
-        width: 150,
+        flex: 1.5,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
         field: "address",
         headerName: "Alamat",
-        width: 300,
+        flex: 2.5,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
@@ -104,7 +104,7 @@ const Drivers = (props) => {
             />,
           ];
         },
-        width: 200,
+        flex: 1,
       },
     ];
   }, [currentPage, rowsPerPage]);

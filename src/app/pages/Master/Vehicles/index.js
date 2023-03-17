@@ -55,32 +55,33 @@ const Vehicles = (props) => {
         headerName: "No",
         renderCell: (index) =>
           rowsPerPage * currentPage + (index.api.getRowIndex(index.row.id) + 1),
+        flex: 0.5,
       },
       {
         field: "name",
         headerName: "Nama Kendaraan",
-        width: 200,
+        flex: 2,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
         field: "transportation_type",
         headerName: "Jenis Kendaraan",
-        width: 200,
+        flex: 2,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
         field: "no_police",
-        headerName: "No Pol",
-        width: 150,
+        headerName: "No Polisi",
+        flex: 1,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
         field: "year",
         headerName: "Tahun Kendaraan",
-        width: 150,
+        flex: 1.5,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
@@ -101,7 +102,7 @@ const Vehicles = (props) => {
             />,
           ];
         },
-        width: 200,
+        flex: 1,
       },
     ];
   }, [currentPage, rowsPerPage]);

@@ -55,25 +55,26 @@ const Clients = (props) => {
         headerName: "No",
         renderCell: (index) =>
           rowsPerPage * currentPage + (index.api.getRowIndex(index.row.id) + 1),
+        flex: 0.5,
       },
       {
         field: "name",
         headerName: "Nama Client",
-        width: 200,
+        flex: 2,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
         field: "offer_number",
         headerName: "Nomor Penawaran",
-        width: 200,
+        flex: 2,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
         field: "transaction_fee",
-        headerName: "Biaya Transportasi",
-        width: 200,
+        headerName: "Biaya Transaksi",
+        flex: 2,
         valueFormatter: (params) => {
           return `${new Intl.NumberFormat('id-ID', {
             style: 'currency',
@@ -85,7 +86,7 @@ const Clients = (props) => {
       {
         field: "address",
         headerName: "Alamat",
-        width: 200,
+        flex: 2.5,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
@@ -106,7 +107,7 @@ const Clients = (props) => {
             />,
           ];
         },
-        width: 200,
+        flex: 1,
       },
     ];
   }, [currentPage, rowsPerPage]);

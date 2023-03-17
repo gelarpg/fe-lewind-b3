@@ -67,9 +67,9 @@ const Login = () => {
 
   return (
     <Stack
-      direction="row"
-      spacing={4}
-      margin={4}
+      direction={{ lg: "row", md: "column", sm: "column", xs: "column" }}
+      spacing={{ lg: 4, md: 3, sm: 2, xs: 2 }}
+      margin={{ lg: 4, md: 3, sm: 2, xs: 2 }}
       alignItems="center"
       sx={{ height: "100%" }}
     >
@@ -88,10 +88,8 @@ const Login = () => {
           PT. Lewind
         </Typography>
         <Typography variant="subtitle" sx={{ color: "#000000", fontSize: 20 }}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
+          Lewind group adalah sebuah perusahaan transporter limbah B3 terkemuka di Indonesia, mempunyai legalitas yg lengkap, tim profesional, dan layanan yg mengutamakan kepuasan pelanggan.
+          Lewindgroup berkomitmen untuk senantiasa berkontribusi pada menjaga kualitas lingkungan,  karena dengan lingkungan yang baik, kehidupan bisa berlangsung dengan berkualitas.
         </Typography>
       </Div>
       <Card sx={{ maxWidth: "100%" }}>
@@ -120,7 +118,7 @@ const Login = () => {
                   fontSize: 14,
                 }}
               >
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                Silahkan Login dengan email & password yang benar.
               </Typography>
             </Div>
           </Div>
@@ -163,11 +161,11 @@ const Login = () => {
                     }}
                   />
                 </Div>
-                <Typography textAlign={"right"} variant={"body1"} mb={2}>
+                {/* <Typography textAlign={"right"} variant={"body1"} mb={2}>
                   <Link underline="none" href="#">
                     Forgot your password?
                   </Link>
-                </Typography>
+                </Typography> */}
                 <LoadingButton
                   fullWidth
                   type="submit"
@@ -179,12 +177,12 @@ const Login = () => {
                 >
                   Login
                 </LoadingButton>
-                <Typography textAlign={"center"} variant={"body1"} mb={1}>
+                {/* <Typography textAlign={"center"} variant={"body1"} mb={1}>
                   Don't have an account? &nbsp;
                   <Link underline="none" href="#">
                     Sign up now
                   </Link>
-                </Typography>
+                </Typography> */}
               </form>
             </FormProvider>
           </Div>

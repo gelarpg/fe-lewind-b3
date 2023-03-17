@@ -287,7 +287,7 @@ const CustomForm = ({
               alignItems="start"
               mb={3}
             >
-              <Grid item xs={5}>
+              <Grid item xs={12} md={6} lg={6}>
                 <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                   Biaya Layanan
                 </Typography>
@@ -299,7 +299,7 @@ const CustomForm = ({
                   name="service_fee"
                 />
               </Grid>
-              <Grid item xs={7}>
+              <Grid item xs={12} md={6} lg={6}>
                 <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                   Dokumen Biaya Layanan
                 </Typography>
@@ -312,7 +312,7 @@ const CustomForm = ({
             </Grid>
           </Box>
           <Grid container spacing={1} direction="row" alignItems="start" mb={3}>
-            <Grid item xs={12} md={6} lg={6} mb={3}>
+            <Grid item xs={12} md={6} lg={6}>
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                 Invoice
               </Typography>
@@ -322,7 +322,7 @@ const CustomForm = ({
                 defaultFileName={initialValues?.invoice_file}
               />
             </Grid>
-            <Grid item xs={12} md={6} lg={6} mb={3}>
+            <Grid item xs={12} md={6} lg={6}>
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                 Dokumen Penyedia
               </Typography>
@@ -334,7 +334,7 @@ const CustomForm = ({
             </Grid>
           </Grid>
           <Grid container spacing={1} direction="row" alignItems="start" mb={3}>
-            <Grid item xs={12} md={6} lg={6} mb={3}>
+            <Grid item xs={12} md={6} lg={6}>
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                 Dokumen Transporter
               </Typography>
@@ -344,7 +344,7 @@ const CustomForm = ({
                 defaultFileName={initialValues?.transporter_file}
               />
             </Grid>
-            <Grid item xs={12} md={6} lg={6} mb={3}>
+            <Grid item xs={12} md={6} lg={6}>
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                 Dokumen Penerima Limbah
               </Typography>
@@ -356,7 +356,7 @@ const CustomForm = ({
             </Grid>
           </Grid>
           <Grid container spacing={1} direction="row" alignItems="start" mb={3}>
-            <Grid item xs={12} md={6} lg={6} mb={3}>
+            <Grid item xs={12} md={6} lg={6}>
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                 BAST
               </Typography>
@@ -366,7 +366,7 @@ const CustomForm = ({
                 defaultFileName={initialValues?.bast_file}
               />
             </Grid>
-            <Grid item xs={12} md={6} lg={6} mb={3}>
+            <Grid item xs={12} md={6} lg={6}>
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                 Surat Jalan
               </Typography>

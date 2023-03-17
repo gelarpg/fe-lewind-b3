@@ -54,6 +54,7 @@ const Users = () => {
         headerName: "No",
         renderCell: (index) =>
           rowsPerPage * currentPage + (index.api.getRowIndex(index.row.id) + 1),
+        flex: 0.5
       },
       {
         field: "first_name",

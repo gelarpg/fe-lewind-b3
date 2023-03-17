@@ -55,32 +55,33 @@ const Wastes = (props) => {
         headerName: "No",
         renderCell: (index) =>
           rowsPerPage * currentPage + (index.api.getRowIndex(index.row.id) + 1),
+        flex: 0.5,
       },
       {
         field: "name",
         headerName: "Nama Limbah",
-        width: 200,
+        flex: 2,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
         field: "type",
         headerName: "Jenis Limbah",
-        width: 200,
+        flex: 2,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
         field: "weight_unit",
         headerName: "Berat Satuan",
-        width: 150,
+        flex: 1,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
         field: "price_unit",
         headerName: "Harga Satuan",
-        width: 200,
+        flex: 1,
         valueFormatter: (params) => {
           return `${new Intl.NumberFormat('id-ID', {
             style: 'currency',
@@ -106,7 +107,7 @@ const Wastes = (props) => {
             />,
           ];
         },
-        width: 200,
+        flex: 1,
       },
     ];
   }, [currentPage, rowsPerPage]);
