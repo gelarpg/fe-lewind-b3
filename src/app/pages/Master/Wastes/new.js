@@ -16,6 +16,7 @@ const NewWaste = (props) => {
     const temp = {
       ...payload,
       price_unit: Number(payload.price_unit.replace(/[$.]+/g, '').replace(/[$,]+/g, '.')),
+      type: payload.type.value
     };
     axiosFetch({
       method: "post",
@@ -38,7 +39,7 @@ const NewWaste = (props) => {
           isLoading={isLoading}
           initialValues={{
             name: "",
-            type: "",
+            type: null,
             weight_unit: "",
             price_unit: "",
           }}

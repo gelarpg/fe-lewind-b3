@@ -9,10 +9,21 @@ const DatepickerComponent = ({
   value,
   ...props
 }) => {
+  const [isOpen, setOpen] = React.useState(false);
+
+  const handleClickInput = React.useCallback(() => {
+    setOpen(true);
+  }, []);
+
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <DesktopDatePicker
+          open={isOpen}
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
+          reduceAnimations={true}
+          closeOnSelect={true}
           onChange={onChange}
           value={value}
           renderInput={(params) => {
@@ -20,6 +31,8 @@ const DatepickerComponent = ({
               <TextField
                 variant="outlined"
                 fullWidth
+                onClick={handleClickInput}
+                inputProps={{ ...params.inputProps, readOnly: true }}
                 {...params}
               />
             );

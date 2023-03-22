@@ -100,7 +100,7 @@ const EditVehicles = (props) => {
         ) : (
           <CustomForm
             onSubmit={onSubmitData}
-            isLoading={isLoading}
+            isLoading={isLoading || isLoadingAPI}
             initialValues={{
               name: vehicleDetail?.name ?? "",
               no_police: vehicleDetail?.no_police ?? "",

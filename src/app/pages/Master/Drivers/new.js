@@ -59,7 +59,7 @@ const NewDriver = (props) => {
       <Box p={5} mx={4}>
           <CustomForm
             onSubmit={onSubmitData}
-            isLoading={isLoading}
+            isLoading={isLoading || isLoadingAPI}
             initialValues={{
               name: "",
               age: "",

@@ -3,12 +3,21 @@ import styled from "@mui/material/styles/styled";
 import { IconButton, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CheckIcon from '@mui/icons-material/Check';
 
 const IconButtonDelete = styled(IconButton)({
   backgroundColor: "#DC4343",
   borderRadius: "5px",
   "&:hover, &:focus": {
     backgroundColor: "#DC4343",
+  },
+});
+
+const IconApprove = styled(IconButton)({
+  backgroundColor: "#007E03",
+  borderRadius: "5px",
+  "&:hover, &:focus": {
+    backgroundColor: "#007E03",
   },
 });
 
@@ -72,4 +81,35 @@ const CustomDeleteIconButton = ({ onClick, ...props }) => {
   );
 };
 
-export { CustomEditIconButton, CustomDeleteIconButton, GreyButton };
+const ApproveIconButton = ({ onClick, ...props }) => {
+  const [isShow, setShow] = useState(false);
+  return (
+    <Fragment>
+      <IconApprove aria-label="approve" type="button" {...props} onClick={() => setShow(true)}>
+        <CheckIcon sx={{ color: 'white' }} />
+      </IconApprove>
+      <Dialog open={isShow} onClose={() => setShow(false)}>
+        <DialogTitle>Konfirmasi</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Apakah Anda yakin ingin memproses pengajuan ini?</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <GreyButton type="button" variant="outlined" color="secondary" onClick={() => setShow(false)}>
+            Batal
+          </GreyButton>
+          <Button
+            variant="contained"
+            onClick={() => {
+              setShow(false);
+              if (onClick) onClick();
+            }}
+            autoFocus>
+            Ya
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Fragment>
+  );
+};
+
+export { CustomEditIconButton, CustomDeleteIconButton, GreyButton, ApproveIconButton };

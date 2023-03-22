@@ -46,7 +46,13 @@ const FormikWasteSelection = ({
     if (wasteData?.paginator && wasteData.waste) {
       setOptions((curr) => [
         ...curr,
-        ...wasteData.waste.map((x) => ({ value: x.id, label: `${x.name} - ${x.type}` })),
+        ...wasteData.waste.map((x) => ({
+          value: x.id,
+          label: x.name,
+          type: x.type,
+          weight_unit: x.weight_unit,
+          price_unit: x.price_unit,
+        })),
       ]);
       NEXT_PAGE = wasteData?.paginator?.nextPage;
     }
@@ -113,7 +119,10 @@ const FormikWasteSelection = ({
               value={value}
               isClearable={false}
               isSearchable={false}
-              onChange={(value) => onChange(value)}
+              onChange={(value) => {
+                onChange(value);
+                if (props?.onChange) props.onChange(value);
+              }}
               closeMenuOnSelect={true}
               isLoading={isLoading}
               onMenuScrollToBottom={onMenuScrollToBottom}

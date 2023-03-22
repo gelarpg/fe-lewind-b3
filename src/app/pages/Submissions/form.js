@@ -79,7 +79,7 @@ const validationSchema = yup.object({
   invoice_file: yup
     .mixed()
     .nullable()
-    .required("Dokumen Invoice harus diisi")
+    // .required("Dokumen Invoice harus diisi")
     .test("fileSize", "Dokumen Invoice maksimal 5MB", (value) => {
       if (value && value.size) return value.size <= 5000000;
       return true;
@@ -97,7 +97,7 @@ const validationSchema = yup.object({
   travel_document_file: yup
     .mixed()
     .nullable()
-    .required("Surat Jalan harus diisi")
+    // .required("Surat Jalan harus diisi")
     .test("fileSize", "Surat Jalan maksimal 5MB", (value) => {
       if (value && value.size) return value.size <= 5000000;
       return true;
@@ -115,7 +115,7 @@ const validationSchema = yup.object({
   bast_file: yup
     .mixed()
     .nullable()
-    .required("Dokumen BAST harus diisi")
+    // .required("Dokumen BAST harus diisi")
     .test("fileSize", "Dokumen BAST maksimal 5MB", (value) => {
       if (value && value.size) return value.size <= 5000000;
       return true;
@@ -133,7 +133,7 @@ const validationSchema = yup.object({
   waste_receipt_file: yup
     .mixed()
     .nullable()
-    .required("Dokumen Penerima Limbah harus diisi")
+    // .required("Dokumen Penerima Limbah harus diisi")
     .test("fileSize", "Dokumen Penerima Limbah maksimal 5MB", (value) => {
       if (value && value.size) return value.size <= 5000000;
       return true;
@@ -151,7 +151,7 @@ const validationSchema = yup.object({
   transporter_file: yup
     .mixed()
     .nullable()
-    .required("Dokumen Transporter harus diisi")
+    // .required("Dokumen Transporter harus diisi")
     .test("fileSize", "Dokumen Transporter maksimal 5MB", (value) => {
       if (value && value.size) return value.size <= 5000000;
       return true;
@@ -169,7 +169,7 @@ const validationSchema = yup.object({
   provider_file: yup
     .mixed()
     .nullable()
-    .required("Dokumen Penyedia harus diisi")
+    // .required("Dokumen Penyedia harus diisi")
     .test("fileSize", "Dokumen Penyedia maksimal 5MB", (value) => {
       if (value && value.size) return value.size <= 5000000;
       return true;
@@ -383,7 +383,7 @@ const CustomForm = ({
             type="button"
             variant="outlined"
             color="secondary"
-            onClick={() => navigate("/wastes")}
+            onClick={() => navigate("/submissions")}
           >
             Batal
           </GreyButton>

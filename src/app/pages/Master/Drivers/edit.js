@@ -96,7 +96,7 @@ const EditDriver = (props) => {
         ) : (
           <CustomForm
             onSubmit={onSubmitData}
-            isLoading={isLoading}
+            isLoading={isLoading || isLoadingAPI}
             initialValues={{
               name: driverDetail?.name ?? "",
               age: driverDetail?.age ??  "",

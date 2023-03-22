@@ -9,9 +9,7 @@ const NewSubmissions = React.lazy(() => import("app/pages/Submissions/new"));
 const EditSubmissions = React.lazy(() => import("app/pages/Submissions/edit"));
 
 const Recaps = React.lazy(() => import("app/pages/Recaps"));
-const NewRecaps = React.lazy(() => import("app/pages/Recaps/new"));
 const EditRecaps = React.lazy(() => import("app/pages/Recaps/edit"));
-const DetailRecaps = React.lazy(() => import("app/pages/Recaps/detail"));
 
 const Users = React.lazy(() => import("app/pages/Users"));
 const NewUsers = React.lazy(() => import("app/pages/Users/new"));
@@ -35,9 +33,7 @@ const NewClients = React.lazy(() => import("app/pages/Master/Clients/new"));
 const EditClients = React.lazy(() => import("app/pages/Master/Clients/edit"));
 
 const Invoices = React.lazy(() => import("app/pages/Invoices"));
-const NewInvoices = React.lazy(() => import("app/pages/Invoices/new"));
 const EditInvoices = React.lazy(() => import("app/pages/Invoices/edit"));
-const DetailInvoices = React.lazy(() => import("app/pages/Invoices/detail"));
 
 /**
  routes which you want to make accessible to both authenticated and anonymous users
@@ -73,14 +69,6 @@ const routesForAuthenticatedOnly = [
   {
     path: "/orders",
     element: <Page component={Recaps} />,
-  },
-  {
-    path: "/orders/new",
-    element: <Page component={NewRecaps} />,
-  },
-  {
-    path: "/orders/:id",
-    element: <Page component={DetailRecaps} />,
   },
   {
     path: "/orders/:id/edit",
@@ -159,14 +147,6 @@ const routesForAuthenticatedOnly = [
   {
     path: "/invoices",
     element: <Page component={Invoices} />,
-  },
-  {
-    path: "/invoices/new",
-    element: <Page component={NewInvoices} />,
-  },
-  {
-    path: "/invoices/:id",
-    element: <Page component={DetailInvoices} />,
   },
   {
     path: "/invoices/:id/edit",

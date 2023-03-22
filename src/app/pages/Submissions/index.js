@@ -10,6 +10,7 @@ import { Button, Box, Typography } from "@mui/material";
 import {
   CustomEditIconButton,
   CustomDeleteIconButton,
+  ApproveIconButton,
 } from "app/components/CustomIconButton";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
@@ -18,8 +19,9 @@ import useAxiosFunction from "app/hooks/useAxiosFunction";
 import usePrevious from "app/hooks/usePrevious";
 import {isEqual} from "lodash";
 import moment from "moment";
+import { withSnackbar } from "app/components/SnackbarComponent";
 
-const Submissions = () => {
+const Submissions = (props) => {
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
   const {
     isLoading: isLoadingList,
@@ -42,6 +44,7 @@ const Submissions = () => {
   const tableRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [fetched, setFetched] = useState(false);
   const [requestParam, setRequestParam] = useState({
     page: 1,
     limit: 10,
@@ -103,9 +106,14 @@ const Submissions = () => {
         type: "actions",
         getActions: (params) => {
           return [
+            <ApproveIconButton
+              size="small"
+              sx={{ mr: 1 }}
+              onClick={() => approveData(params.row.id)}
+            />,
             <CustomEditIconButton
               size="small"
-              sx={{ mr: 2 }}
+              sx={{ mr: 1 }}
               onClick={() => navigate(`/submissions/${params.row.id}/edit`)}
             />,
             <CustomDeleteIconButton
@@ -114,7 +122,7 @@ const Submissions = () => {
             />,
           ];
         },
-        width: 200,
+        width: 175,
       },
     ];
   }, [currentPage, rowsPerPage]);
@@ -132,12 +140,28 @@ const Submissions = () => {
   }, []);
 
   useEffect(() => {
-    if (!isEqual(prevParam, requestParam)) {
+    if (fetched) {
       refetch({
         params: requestParam,
       });
+      setFetched(false);
     }
-  }, [requestParam]);
+  }, [fetched]);
+
+  const approveData = (id) => {
+    axiosFetch({
+      method: "put",
+      url: `/submission/approval/${id}`,
+      onSuccess: () => {
+        props.snackbarShowMessage("Data pengajuan berhasil diproses");
+        setRequestParam((curr) => ({
+          ...curr,
+          page: 1,
+        }));
+        setFetched(true);
+      },
+    });
+  }
 
   const deleteData = (id) => {
     axiosFetch({
@@ -148,6 +172,7 @@ const Submissions = () => {
           ...curr,
           page: 1,
         }));
+        setFetched(true);
       },
     });
   };
@@ -158,6 +183,7 @@ const Submissions = () => {
       ...curr,
       page: page + 1,
     }));
+    setFetched(true);
   }, []);
 
   const onChangeRowsPerPage = useCallback((pageSize) => {
@@ -168,6 +194,7 @@ const Submissions = () => {
       page: 1,
       limit: pageSize,
     }));
+    setFetched(true);
   }, []);
 
   return (
@@ -204,4 +231,4 @@ const Submissions = () => {
   );
 };
 
-export default Submissions;
+export default withSnackbar(Submissions);

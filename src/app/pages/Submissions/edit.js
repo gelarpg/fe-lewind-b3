@@ -133,7 +133,6 @@ const EditSubmission = (props) => {
         });
       }
     }
-    console.log(temp);
     uploadFileHandler(promises).then((values) => {
       let dataToSend = {
         ...temp,
@@ -171,7 +170,7 @@ const EditSubmission = (props) => {
         ) : (
           <CustomForm
             onSubmit={onSubmitData}
-            isLoading={isLoading}
+            isLoading={isLoading || isLoadingAPI}
             initialValues={{
               waste_name: submissionDetail?.waste_name ?? "",
               client_id: submissionDetail?.client_id

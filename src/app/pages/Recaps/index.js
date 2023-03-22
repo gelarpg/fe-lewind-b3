@@ -30,7 +30,7 @@ const Recaps = () => {
       params: {
         page: 1,
         limit: 10,
-        filter: "pengajuan",
+        status: "2",
       },
     },
   });
@@ -44,8 +44,9 @@ const Recaps = () => {
   const [requestParam, setRequestParam] = useState({
     page: 1,
     limit: 10,
-    filter: "pengajuan",
+    status: "2",
   });
+  const [fetched, setFetched] = useState(false);
   const prevParam = usePrevious(requestParam);
 
   const columns = useMemo(() => {
@@ -55,18 +56,26 @@ const Recaps = () => {
         headerName: "No",
         renderCell: (index) =>
           rowsPerPage * currentPage + (index.api.getRowIndex(index.row.id) + 1),
+        width: 50
       },
       {
-        field: "name",
-        headerName: "Nama Klien",
-        width: 150,
+        field: "order_id",
+        headerName: "No Order",
+        width: 200,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
-        field: "type",
+        field: "client_name",
+        headerName: "Nama Klien",
+        width: 200,
+        valueFormatter: (params) => params?.value ?? "-",
+        sortable: false,
+      },
+      {
+        field: "waste_name",
         headerName: "Jenis Limbah",
-        width: 150,
+        width: 200,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
@@ -74,25 +83,25 @@ const Recaps = () => {
         field: "period",
         headerName: "Periode",
         width: 150,
-        valueFormatter: (params) => params?.value ?? "-",
+        valueFormatter: (params) => params?.value ? moment(params?.value).format('DD MMMM YYYY') : "-",
         sortable: false,
       },
       {
-        field: "driver",
+        field: "driver_name",
         headerName: "Nama Driver",
-        width: 150,
+        width: 200,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
-        field: "vehicle",
+        field: "transportation_name",
         headerName: "Kendaraan",
-        width: 150,
+        width: 200,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
-        field: "status",
+        field: "status_name",
         headerName: "Status",
         width: 150,
         valueFormatter: (params) => params?.value ?? "-",
@@ -103,22 +112,23 @@ const Recaps = () => {
         headerName: "",
         type: "actions",
         getActions: (params) => {
-          return [
+          let arr = [
             <CustomEditIconButton
               size="small"
-              sx={{ mr: 2 }}
               onClick={() => navigate(`/orders/${params.row.id}/edit`)}
             />,
           ];
+          if (params.row.status.toString() === "4") arr = [];
+          return arr;
         },
-        width: 200,
+        width: 75,
       },
     ];
   }, [currentPage, rowsPerPage]);
 
   useEffect(() => {
-    if (recapsData?.orders && recapsData?.paginator) {
-      setDatas(recapsData.orders);
+    if (recapsData?.submission && recapsData?.paginator) {
+      setDatas(recapsData.submission);
       setPagination(recapsData.paginator);
       if (tableRef && tableRef.current) tableRef.current.scrollIntoView();
     }
@@ -129,12 +139,13 @@ const Recaps = () => {
   }, []);
 
   useEffect(() => {
-    if (!isEqual(prevParam, requestParam)) {
+    if (fetched) {
       refetch({
         params: requestParam,
       });
+      setFetched(false);
     }
-  }, [requestParam]);
+  }, [fetched]);
 
   const onChangePage = useCallback((event, page) => {
     setCurrentPage(page);
@@ -142,6 +153,7 @@ const Recaps = () => {
       ...curr,
       page: page + 1,
     }));
+    setFetched(true);
   }, []);
 
   const onChangeRowsPerPage = useCallback((pageSize) => {
@@ -152,6 +164,7 @@ const Recaps = () => {
       page: 1,
       limit: pageSize,
     }));
+    setFetched(true);
   }, []);
 
   return (
@@ -160,31 +173,33 @@ const Recaps = () => {
         <Box flex={3}>
           <ToggleButtonGroup
             color="primary"
-            value={requestParam.filter}
+            value={requestParam.status}
             exclusive
-            onChange={(event, value) =>
+            onChange={(event, value) => {
               setRequestParam((curr) => ({
                 ...curr,
-                filter: value,
-              }))
-            }
+                status: value,
+              }));
+              setFetched(true);
+            }}
           >
-            <ToggleButton value="pengajuan">Pengajuan</ToggleButton>
-            <ToggleButton value="process">Proses</ToggleButton>
-            <ToggleButton value="waiting_pickup">Waiting Pickup</ToggleButton>
-            <ToggleButton value="cancelled">Dibatalkan</ToggleButton>
-            <ToggleButton value="done">Selesai</ToggleButton>
+            <ToggleButton value="2">Proses</ToggleButton>
+            <ToggleButton value="3">Waiting Pickup</ToggleButton>
+            <ToggleButton value="4">Pickup</ToggleButton>
+            <ToggleButton value="5">Dibatalkan</ToggleButton>
+            <ToggleButton value="6">Selesai</ToggleButton>
           </ToggleButtonGroup>
         </Box>
         <Box flex={1}>
           <DatepickerComponent
             value={requestParam?.date ?? null}
-            onChange={(val) =>
+            onChange={(val) => {
               setRequestParam((curr) => ({
                 ...curr,
                 date: val,
-              }))
-            }
+              }));
+              setFetched(true);
+            }}
             disableFuture
             placeholder="Pilih Tanggal"
           />

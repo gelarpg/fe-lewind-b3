@@ -39,7 +39,7 @@ const FormikReactSelect = ({
 
   useEffect(() => {
     if (useStaticData && optionsData?.length) {
-      setOptions(optionsData.map((x) => ({ value: x[valueProp], label: x[labelProp] })));
+      setOptions(optionsData.map((x) => ({ value: x[valueProp], label: x[labelProp], isDisabled: x?.isDisabled ?? false })));
     }
   }, [useStaticData, optionsData])
 
@@ -143,6 +143,7 @@ const FormikReactSelect = ({
               }),
               option: (styles, { data, isSelected, isFocused, isDisabled }) => ({
                 ...styles,
+                cursor: isDisabled ? 'not-allowed' : 'auto',
                 backgroundColor: isDisabled
                   ? undefined
                   : isSelected
@@ -150,7 +151,7 @@ const FormikReactSelect = ({
                   : isFocused
                   ? alpha("#007E03", 0.5)
                   : undefined,
-                color: isSelected || isFocused ? "#fff" : data.color,
+                color: isDisabled ? 'hsl(0, 0%, 80%)' : (isSelected || isFocused) ? "#fff" : data.color,
               }),
             }}
             menuPortalTarget={document.body}

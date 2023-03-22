@@ -20,8 +20,8 @@ const transactionsStatus = [
   { name: "Menunggu Pembayaran", value: 57, color: "#66C7FF" },
 ];
 const wastesData = [
-  { name: "Limbah Padat", value: 43, color: "#EA4569" },
-  { name: "Limbah Cair", value: 57, color: "#5273E8" },
+  { name: "Dibatalkan", value: 43, color: "#EA4569" },
+  { name: "Selesai", value: 57, color: "#5273E8" },
 ];
 
 const submissionsData = [
@@ -219,7 +219,7 @@ const Home = () => {
                 justifyContent: "center",
               }}
             >
-              <Typography variant="h6">Jumlah Limbah Yang diangkut</Typography>
+              <Typography variant="h6">Status Pengajuan Dibatalkan & Selesai</Typography>
               <Typography
                 variant="body1"
                 sx={{ color: "#6D788B", fontSize: "10px" }}

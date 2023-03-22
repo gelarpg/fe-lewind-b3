@@ -46,6 +46,7 @@ const Vehicles = (props) => {
     page: 1,
     limit: 10,
   });
+  const [fetched, setFetched] = useState(false);
   const prevParam = usePrevious(requestParam);
 
   const columns = useMemo(() => {
@@ -120,12 +121,13 @@ const Vehicles = (props) => {
   }, []);
 
   useEffect(() => {
-    if (!isEqual(prevParam, requestParam)) {
+    if (fetched) {
       refetch({
         params: requestParam,
       });
+      setFetched(false);
     }
-  }, [requestParam]);
+  }, [fetched]);
 
   const deleteData = (id) => {
     axiosFetch({
@@ -133,19 +135,11 @@ const Vehicles = (props) => {
       url: `/transportation/delete/${id}`,
       onSuccess: () => {
         props.snackbarShowMessage('Data berhasil dihapus')
-        if (requestParam.page === 1) {
-          refetch({
-            params: {
-              page: 1,
-              limit: requestParam.limit
-            },
-          });
-        } else {
-          setRequestParam((curr) => ({
-            ...curr,
-            page: 1,
-          }));
-        }
+        setRequestParam((curr) => ({
+          ...curr,
+          page: 1,
+        }));
+        setFetched(true);
       },
     });
   };
@@ -156,6 +150,7 @@ const Vehicles = (props) => {
       ...curr,
       page: page + 1,
     }));
+    setFetched(true);
   }, []);
 
   const onChangeRowsPerPage = useCallback((pageSize) => {
@@ -166,6 +161,7 @@ const Vehicles = (props) => {
       page: 1,
       limit: pageSize,
     }));
+    setFetched(true);
   }, []);
 
   return (

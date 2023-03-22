@@ -17,6 +17,8 @@ import useFetch from "app/hooks/useFetch";
 import useAxiosFunction from "app/hooks/useAxiosFunction";
 import usePrevious from "app/hooks/usePrevious";
 import {isEqual} from "lodash";
+import moment from "moment";
+import DatepickerComponent from "app/components/DatepickerComponent";
 
 const Invoices = () => {
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
@@ -26,11 +28,12 @@ const Invoices = () => {
     error: errorInvoicesData,
     refetch,
   } = useFetch({
-    url: "/invoices",
+    url: "/bills",
     requestConfig: {
       params: {
         page: 1,
         limit: 10,
+        payment_status: "false",
       },
     },
   });
@@ -44,8 +47,9 @@ const Invoices = () => {
   const [requestParam, setRequestParam] = useState({
     page: 1,
     limit: 10,
-    filter: 'waiting_payment',
+    payment_status: "false",
   });
+  const [fetched, setFetched] = useState(false);
   const prevParam = usePrevious(requestParam);
 
   const columns = useMemo(() => {
@@ -55,18 +59,26 @@ const Invoices = () => {
         headerName: "No",
         renderCell: (index) =>
           rowsPerPage * currentPage + (index.api.getRowIndex(index.row.id) + 1),
+        width: 50
       },
       {
-        field: "name",
-        headerName: "Nama Klien",
-        width: 150,
+        field: "order_id",
+        headerName: "No Order",
+        width: 200,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
-        field: "type",
+        field: "client_name",
+        headerName: "Nama Klien",
+        width: 200,
+        valueFormatter: (params) => params?.value ?? "-",
+        sortable: false,
+      },
+      {
+        field: "waste_name",
         headerName: "Jenis Limbah",
-        width: 150,
+        width: 200,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
@@ -74,28 +86,28 @@ const Invoices = () => {
         field: "period",
         headerName: "Periode",
         width: 150,
-        valueFormatter: (params) => params?.value ?? "-",
+        valueFormatter: (params) => params?.value ? moment(params?.value).format('DD MMMM YYYY') : "-",
         sortable: false,
       },
       {
-        field: "driver",
+        field: "driver_name",
         headerName: "Nama Driver",
-        width: 150,
+        width: 200,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
-        field: "vehicle",
+        field: "transportation_name",
         headerName: "Kendaraan",
-        width: 150,
+        width: 200,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
-        field: "status",
+        field: "payment_status",
         headerName: "Status",
-        width: 150,
-        valueFormatter: (params) => params?.value ?? "-",
+        width: 200,
+        valueFormatter: (params) => Boolean(params?.value) ? "Dibayar" : "Menunggu Pembayaran",
         sortable: false,
       },
       {
@@ -106,19 +118,18 @@ const Invoices = () => {
           return [
             <CustomEditIconButton
               size="small"
-              sx={{ mr: 2 }}
               onClick={() => navigate(`/invoices/${params.row.id}/edit`)}
             />,
           ];
         },
-        width: 200,
+        width: 75,
       },
     ];
   }, [currentPage, rowsPerPage]);
 
   useEffect(() => {
-    if (invoicesData?.drivers && invoicesData?.paginator) {
-      setDatas(invoicesData.drivers);
+    if (invoicesData?.submission && invoicesData?.paginator) {
+      setDatas(invoicesData.submission);
       setPagination(invoicesData.paginator);
       if (tableRef && tableRef.current) tableRef.current.scrollIntoView();
     }
@@ -129,12 +140,13 @@ const Invoices = () => {
   }, []);
 
   useEffect(() => {
-    if (!isEqual(prevParam, requestParam)) {
+    if (fetched) {
       refetch({
         params: requestParam,
       });
+      setFetched(false);
     }
-  }, [requestParam]);
+  }, [fetched]);
 
   const onChangePage = useCallback((event, page) => {
     setCurrentPage(page);
@@ -142,6 +154,7 @@ const Invoices = () => {
       ...curr,
       page: page + 1,
     }));
+    setFetched(true);
   }, []);
 
   const onChangeRowsPerPage = useCallback((pageSize) => {
@@ -152,23 +165,43 @@ const Invoices = () => {
       page: 1,
       limit: pageSize,
     }));
+    setFetched(true);
   }, []);
 
   return (
     <Fragment>
       <Box display="flex" mb={4}>
-        <ToggleButtonGroup
-          color="primary"
-          value={requestParam?.filter}
-          exclusive
-          onChange={(event, value) => setRequestParam(curr => ({
-            ...curr,
-            filter: value
-          }))}
-        >
-          <ToggleButton value="waiting_payment">Menunggu Pembayaran</ToggleButton>
-          <ToggleButton value="paid">Dibayar</ToggleButton>
-        </ToggleButtonGroup>
+        <Box flex={3}>
+          <ToggleButtonGroup
+            color="primary"
+            value={requestParam?.payment_status}
+            exclusive
+            onChange={(event, value) => {
+              setRequestParam(curr => ({
+                ...curr,
+                payment_status: value
+              }));
+              setFetched(true);
+            }}
+          >
+            <ToggleButton value="false">Menunggu Pembayaran</ToggleButton>
+            <ToggleButton value="true">Dibayar</ToggleButton>
+          </ToggleButtonGroup>
+        </Box>
+        <Box flex={1}>
+          <DatepickerComponent
+            value={requestParam?.date ?? null}
+            onChange={(val) => {
+              setRequestParam((curr) => ({
+                ...curr,
+                date: val,
+              }));
+              setFetched(true);
+            }}
+            disableFuture
+            placeholder="Pilih Tanggal"
+          />
+        </Box>
       </Box>
       <DataGrid
         ref={tableRef}

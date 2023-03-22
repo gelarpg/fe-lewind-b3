@@ -1,10 +1,10 @@
 import React from "react";
 import { Box } from "@mui/material";
 
-import useFetch from 'app/hooks/useFetch';
+import useFetch from "app/hooks/useFetch";
 import useAxiosFunction from "app/hooks/useAxiosFunction";
 import { withSnackbar } from "app/components/SnackbarComponent";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from "react-router-dom";
 import CustomForm from "./form";
 import Div from "@jumbo/shared/Div";
 import { CircularProgress } from "@mui/material";
@@ -26,8 +26,12 @@ const EditClient = (props) => {
     const temp = {
       ...payload,
       waste_id: payload.waste_id.value,
-      transaction_fee: Number(payload.transaction_fee.replace(/[$.]+/g, '').replace(/[$,]+/g, '.')),
+      transaction_fee: Number(
+        payload.transaction_fee.replace(/[$.]+/g, "").replace(/[$,]+/g, ".")
+      ),
     };
+    delete temp.waste_type;
+    delete temp.price_per_unit;
     axiosFetch({
       method: "put",
       url: `/clients/edit/${params.id}`,
@@ -35,8 +39,8 @@ const EditClient = (props) => {
         data: temp,
       },
       onSuccess: () => {
-        props.snackbarShowMessage('Data client berhasil diubah');
-        setTimeout(() => navigate('/clients'), 1500);
+        props.snackbarShowMessage("Data client berhasil diubah");
+        setTimeout(() => navigate("/clients"), 1500);
       },
     });
   };
@@ -44,7 +48,7 @@ const EditClient = (props) => {
   return (
     <Box>
       <Box p={5} mx={4}>
-      {isLoadingDetail ? (
+        {isLoadingDetail ? (
           <Div
             sx={{
               position: "absolute",
@@ -63,8 +67,25 @@ const EditClient = (props) => {
               name: clientDetail?.name ?? "",
               address: clientDetail?.address ?? "",
               offer_number: clientDetail?.offer_number ?? "",
-              transaction_fee: clientDetail?.transaction_fee?.toString()?.replace(/[$.]+/g, ',') ?? '',
-              waste_id: clientDetail?.waste_id ? {value: clientDetail?.waste_id, label: `${clientDetail?.waste_name} - ${clientDetail?.waste_type}`} : null,
+              transaction_fee:
+                clientDetail?.transaction_fee
+                  ?.toString()
+                  ?.replace(/[$.]+/g, ",") ?? "",
+              waste_id: clientDetail?.waste_id
+                ? {
+                    value: clientDetail?.waste_id,
+                    label: `${clientDetail?.waste_name}`,
+                  }
+                : null,
+              waste_type: clientDetail?.waste_type ?? "",
+              price_per_unit: clientDetail?.waste_price_unit
+                ? `${new Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                  }).format(clientDetail?.waste_price_unit)} / ${
+                    clientDetail?.waste_weight_unit
+                  }`
+                : "",
             }}
           />
         )}

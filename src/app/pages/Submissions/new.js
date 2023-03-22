@@ -95,7 +95,7 @@ const NewSubmission = (props) => {
       <Box p={3}>
         <CustomForm
           onSubmit={onSubmitData}
-          isLoading={isLoading}
+          isLoading={isLoading || isLoadingAPI}
           initialValues={{
             client_id: null,
             transportation_id: null,
