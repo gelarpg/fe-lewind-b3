@@ -403,22 +403,27 @@ const CustomForm = ({
                 {
                   id: 2,
                   name: "Prosess",
+                  isDisabled: initialValues?.status?.value > 2
                 },
                 {
                   id: 3,
                   name: "Waiting Pickup",
+                  isDisabled: (initialValues?.status?.value > 3 ? initialValues?.status?.value === 6 ? false : true : false)
                 },
                 {
                   id: 4,
                   name: "Pickup",
+                  isDisabled: (initialValues?.status?.value > 4 ? initialValues?.status?.value === 6 ? false : true : false)
                 },
                 {
                   id: 5,
                   name: "Selesai",
+                  isDisabled: (initialValues?.status?.value > 5 ? initialValues?.status?.value === 6 ? false : true : false)
                 },
                 {
                   id: 6,
                   name: "Dibatalkan",
+                  isDisabled: initialValues?.status?.value > 6
                 },
               ]}
             />

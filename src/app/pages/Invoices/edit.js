@@ -38,21 +38,57 @@ const EditInvoice = (props) => {
 
   const [isLoading, setLoading] = React.useState(false);
 
-  const onSubmitData = (payload) => {
-    setLoading(true);
-    const temp = {};
-    temp.payment_status = payload.status.value;
+  const editStatus = (payload, callback) => {
     axiosFetch({
       method: "put",
       url: `/bills/edit/payment-status/${params.id}`,
       requestConfig: {
-        data: temp,
+        data: payload,
       },
       onSuccess: () => {
-        props.snackbarShowMessage("Data tagihan berhasil diubah");
-        setTimeout(() => navigate("/invoices"), 1500);
+        if (callback) callback();
       },
       finally: () => setLoading(false),
+    });
+  }
+
+  const onSubmitData = (payload) => {
+    setLoading(true);
+    const temp = {};
+    const tempEdit = {};
+    const promises = [];
+    temp.payment_status = payload.status.value;
+
+    if (payload.invoice_file) {
+      if (typeof payload.invoice_file === "string") {
+        temp.invoice_file = payload.invoice_file.replace(PDF_BASE_URL, "");
+      } else if (typeof payload.invoice_file === "object") {
+        promises.push({
+          key: "invoice_file",
+          payload: payload.invoice_file,
+        });
+      }
+    }
+
+    uploadFileHandler(promises).then((values) => {
+      let dataToSend = {
+        ...tempEdit,
+        ...values,
+      };
+      editStatus(temp, () => {
+        axiosFetch({
+          method: "put",
+          url: `/bills/edit/${params.id}`,
+          requestConfig: {
+            data: dataToSend,
+          },
+          onSuccess: () => {
+            props.snackbarShowMessage("Data tagihan berhasil diubah");
+            setTimeout(() => navigate("/invoices"), 1500);
+          },
+          finally: () => setLoading(false),
+        });
+      });
     });
   };
 

@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import useFetch from "app/hooks/useFetch";
 import useAxiosFunction from "app/hooks/useAxiosFunction";
 import usePrevious from "app/hooks/usePrevious";
-import {isEqual} from "lodash";
+import { isEqual } from "lodash";
 
 const Users = () => {
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
@@ -54,13 +54,14 @@ const Users = () => {
         headerName: "No",
         renderCell: (index) =>
           rowsPerPage * currentPage + (index.api.getRowIndex(index.row.id) + 1),
-        flex: 0.5
+        flex: 0.5,
       },
       {
         field: "first_name",
         headerName: "Nama",
         flex: 1,
-        renderCell: (params) => `${params?.value ?? ''} ${params?.row?.last_name ?? ''}`,
+        renderCell: (params) =>
+          `${params?.value ?? ""} ${params?.row?.last_name ?? ""}`,
         sortable: false,
       },
       {
@@ -82,17 +83,21 @@ const Users = () => {
         headerName: "",
         type: "actions",
         getActions: (params) => {
-          return [
+          const arr = [
             <CustomEditIconButton
               size="small"
               sx={{ mr: 2 }}
               onClick={() => navigate(`/users/${params.row.id}/edit`)}
             />,
-            <CustomDeleteIconButton
-              size="small"
-              onClick={() => deleteData(params.row.id)}
-            />,
           ];
+          if (params?.row?.roles_slug !== "super_admin")
+            arr.push(
+              <CustomDeleteIconButton
+                size="small"
+                onClick={() => deleteData(params.row.id)}
+              />
+            );
+          return arr;
         },
         flex: 1,
       },

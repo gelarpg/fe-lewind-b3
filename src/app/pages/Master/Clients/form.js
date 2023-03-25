@@ -110,7 +110,6 @@ const CustomForm = ({
               name="waste_id"
               placeholder="Pilih Jenis Limbah"
               onChange={(value) => {
-                console.log(value)
                 methods.setValue("waste_type", value?.type ?? "");
                 methods.setValue(
                   "price_per_unit",

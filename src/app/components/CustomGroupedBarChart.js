@@ -36,6 +36,8 @@ const CustomGroupedBarChart = ({
     let valueAxis = chartRef.current.yAxes.push(new am4charts.ValueAxis());
     valueAxis.tooltip.disabled = true;
     valueAxis.min = 0;
+    valueAxis.maxPrecision = 0;
+    valueAxis.integersOnly = true;
 
     // Create series
     let columnSeries = chartRef.current.series.push(

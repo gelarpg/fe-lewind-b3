@@ -118,7 +118,7 @@ const Recaps = () => {
               onClick={() => navigate(`/orders/${params.row.id}/edit`)}
             />,
           ];
-          if (params.row.status.toString() === "4") arr = [];
+          if (params.row.status.toString() === "5") arr = [];
           return arr;
         },
         width: 75,
@@ -186,17 +186,32 @@ const Recaps = () => {
             <ToggleButton value="2">Proses</ToggleButton>
             <ToggleButton value="3">Waiting Pickup</ToggleButton>
             <ToggleButton value="4">Pickup</ToggleButton>
-            <ToggleButton value="5">Dibatalkan</ToggleButton>
-            <ToggleButton value="6">Selesai</ToggleButton>
+            <ToggleButton value="5">Selesai</ToggleButton>
+            <ToggleButton value="6">Dibatalkan</ToggleButton>
           </ToggleButtonGroup>
         </Box>
         <Box flex={1}>
           <DatepickerComponent
             value={requestParam?.date ?? null}
             onChange={(val) => {
+              if (val) {
+                setRequestParam((curr) => ({
+                  ...curr,
+                  date: moment(val).format('YYYY-MM-DD'),
+                }));
+                setFetched(true);
+              } else {
+                setRequestParam((curr) => ({
+                  ...curr,
+                  date: undefined,
+                }));
+                setFetched(true);
+              }
+            }}
+            onClear={() => {
               setRequestParam((curr) => ({
                 ...curr,
-                date: val,
+                date: undefined,
               }));
               setFetched(true);
             }}

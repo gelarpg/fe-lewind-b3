@@ -341,7 +341,7 @@ const CustomForm = ({
               </Typography>
               <FormikUploadFile
                 name="provider_file"
-                disabled={false}
+                disabled={true}
                 defaultFileName={initialValues?.provider_file}
               />
             </Grid>
@@ -353,7 +353,7 @@ const CustomForm = ({
               </Typography>
               <FormikUploadFile
                 name="transporter_file"
-                disabled={false}
+                disabled={true}
                 defaultFileName={initialValues?.transporter_file}
               />
             </Grid>
@@ -363,7 +363,7 @@ const CustomForm = ({
               </Typography>
               <FormikUploadFile
                 name="waste_receipt_file"
-                disabled={false}
+                disabled={true}
                 defaultFileName={initialValues?.waste_receipt_file}
               />
             </Grid>
@@ -375,7 +375,7 @@ const CustomForm = ({
               </Typography>
               <FormikUploadFile
                 name="bast_file"
-                disabled={false}
+                disabled={true}
                 defaultFileName={initialValues?.bast_file}
               />
             </Grid>
@@ -385,7 +385,7 @@ const CustomForm = ({
               </Typography>
               <FormikUploadFile
                 name="travel_document_file"
-                disabled={false}
+                disabled={true}
                 defaultFileName={initialValues?.travel_document_file}
               />
             </Grid>

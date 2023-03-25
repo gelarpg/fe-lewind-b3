@@ -2,14 +2,7 @@ import React from 'react';
 import Stack from "@mui/material/Stack";
 import useJumboLayoutSidebar from "@jumbo/hooks/useJumboLayoutSidebar";
 import AuthUserDropdown from "../../../../shared/widgets/AuthUserDropdown";
-import NotificationsDropdown from "../../../../shared/NotificationsDropdown";
-import MessagesDropdown from "../../../../shared/MessagesDropdown";
-import SearchGlobal from "../../../../shared/SearchGlobal";
 import {IconButton, Slide, useMediaQuery} from "@mui/material";
-import Div from "@jumbo/shared/Div";
-import CloseIcon from '@mui/icons-material/Close';
-import SearchIcon from '@mui/icons-material/Search';
-import JumboIconButton from "@jumbo/components/JumboIconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import Logo from "../../../../shared/Logo";
@@ -109,7 +102,7 @@ const Header = () => {
                     </JumboIconButton>
                 } */}
                 {/* <MessagesDropdown/> */}
-                <NotificationsDropdown/>
+                {/* <NotificationsDropdown/> */}
                 <AuthUserDropdown/>
             </Stack>
         </React.Fragment>

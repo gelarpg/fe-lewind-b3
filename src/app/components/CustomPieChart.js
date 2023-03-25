@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Typography, Stack } from "@mui/material";
+import { Typography, Stack, Box } from "@mui/material";
 import { Tooltip, Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import Div from "@jumbo/shared/Div";
@@ -24,7 +24,7 @@ const renderCustomizedLabel = ({
       x={x}
       y={y}
       fill="white"
-      textAnchor={x > cx ? "start" : "end"}
+      textAnchor={"middle"}
       dominantBaseline="central"
     >
       {`${(percent * 100).toFixed(0)}%`}
@@ -67,21 +67,21 @@ const PieChartLegend = ({ payload }) => {
   );
 };
 
-const CustomTooltip = ({active, payload}) => {
+const CustomTooltip = ({ active, payload }) => {
   if (active) {
-      return (
-          <div className="mytooltip">
-            {`${payload[0].name} : ${payload[0].value}%`}
-          </div>
-      );
+    return (
+      <div className="mytooltip">
+        {`${payload[0].name} : ${payload[0].value}`}
+      </div>
+    );
   }
   return null;
 };
 
 const CustomPieChart = ({ data }) => {
-  return (
+  return data?.some((x) => x.value > 0) ? (
     <Stack direction="row" spacing={2} sx={{ height: 200 }}>
-      <PieChartLegend payload={data} />
+      <PieChartLegend payload={data?.filter(x => x.value > 0)} />
       <Div
         sx={{
           display: "flex",
@@ -93,7 +93,7 @@ const CustomPieChart = ({ data }) => {
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
-              data={data}
+              data={data?.filter(x => x.value > 0)}
               paddingAngle={5}
               dataKey="value"
               innerRadius={60}
@@ -102,15 +102,32 @@ const CustomPieChart = ({ data }) => {
               labelLine={false}
               label={renderCustomizedLabel}
             >
-              {data.map((item, index) => (
+              {data?.filter(x => x.value > 0).map((item, index) => (
                 <Cell key={index} fill={item.color} />
               ))}
             </Pie>
-            <Tooltip content={<CustomTooltip/>} wrapperStyle={{ outline: "none" }}/>
+            <Tooltip
+              content={<CustomTooltip />}
+              wrapperStyle={{ outline: "none" }}
+            />
           </PieChart>
         </ResponsiveContainer>
       </Div>
     </Stack>
+  ) : (
+    <Box
+      sx={{
+        width: "100%",
+        height: 200,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Typography variant={"body1"} fontSize={"14px"} sx={{ color: "#000000" }}>
+        Tidak ada data untuk ditampilkan
+      </Typography>
+    </Box>
   );
 };
 

@@ -192,9 +192,24 @@ const Invoices = () => {
           <DatepickerComponent
             value={requestParam?.date ?? null}
             onChange={(val) => {
+              if (val) {
+                setRequestParam((curr) => ({
+                  ...curr,
+                  date: moment(val).format('YYYY-MM-DD'),
+                }));
+                setFetched(true);
+              } else {
+                setRequestParam((curr) => ({
+                  ...curr,
+                  date: undefined,
+                }));
+                setFetched(true);
+              }
+            }}
+            onClear={() => {
               setRequestParam((curr) => ({
                 ...curr,
-                date: val,
+                date: undefined,
               }));
               setFetched(true);
             }}

@@ -38,21 +38,116 @@ const EditOrder = (props) => {
 
   const [isLoading, setLoading] = React.useState(false);
 
-  const onSubmitData = (payload) => {
-    setLoading(true);
-    const temp = {};
-    temp.status = payload.status.value;
+  const editStatus = (payload, callback) => {
     axiosFetch({
       method: "put",
       url: `/orders/edit/status/${params.id}`,
       requestConfig: {
-        data: temp,
+        data: payload,
       },
       onSuccess: () => {
-        props.snackbarShowMessage("Data rekap order berhasil diubah");
-        setTimeout(() => navigate("/orders"), 1500);
+        if (callback) callback();
       },
       finally: () => setLoading(false),
+    });
+  }
+
+  const onSubmitData = (payload) => {
+    setLoading(true);
+    const temp = {};
+    const tempEdit = {};
+    const promises = [];
+    temp.status = payload.status.value;
+
+    if (payload.invoice_file) {
+      if (typeof payload.invoice_file === "string") {
+        temp.invoice_file = payload.invoice_file.replace(PDF_BASE_URL, "");
+      } else if (typeof payload.invoice_file === "object") {
+        promises.push({
+          key: "invoice_file",
+          payload: payload.invoice_file,
+        });
+      }
+    }
+    if (payload.travel_document_file) {
+      if (typeof payload.travel_document_file === "string") {
+        temp.travel_document_file = payload.travel_document_file.replace(
+          PDF_BASE_URL,
+          ""
+        );
+      } else if (typeof payload.travel_document_file === "object") {
+        promises.push({
+          key: "travel_document_file",
+          payload: payload.travel_document_file,
+        });
+      }
+    }
+    if (payload.bast_file) {
+      if (typeof payload.bast_file === "string") {
+        temp.bast_file = payload.bast_file.replace(PDF_BASE_URL, "");
+      } else if (typeof payload.bast_file === "object") {
+        promises.push({
+          key: "bast_file",
+          payload: payload.bast_file,
+        });
+      }
+    }
+    if (payload.transporter_file) {
+      if (typeof payload.transporter_file === "string") {
+        temp.transporter_file = payload.transporter_file.replace(
+          PDF_BASE_URL,
+          ""
+        );
+      } else if (typeof payload.transporter_file === "object") {
+        promises.push({
+          key: "transporter_file",
+          payload: payload.transporter_file,
+        });
+      }
+    }
+    if (payload.provider_file) {
+      if (typeof payload.provider_file === "string") {
+        temp.provider_file = payload.provider_file.replace(PDF_BASE_URL, "");
+      } else if (typeof payload.provider_file === "object") {
+        promises.push({
+          key: "provider_file",
+          payload: payload.provider_file,
+        });
+      }
+    }
+    if (payload.waste_receipt_file) {
+      if (typeof payload.waste_receipt_file === "string") {
+        temp.waste_receipt_file = payload.waste_receipt_file.replace(
+          PDF_BASE_URL,
+          ""
+        );
+      } else if (typeof payload.waste_receipt_file === "object") {
+        promises.push({
+          key: "waste_receipt_file",
+          payload: payload.waste_receipt_file,
+        });
+      }
+    }
+
+    uploadFileHandler(promises).then((values) => {
+      let dataToSend = {
+        ...tempEdit,
+        ...values,
+      };
+      editStatus(temp, () => {
+        axiosFetch({
+          method: "put",
+          url: `/orders/edit/${params.id}`,
+          requestConfig: {
+            data: dataToSend,
+          },
+          onSuccess: () => {
+            props.snackbarShowMessage("Data rekap order berhasil diubah");
+            setTimeout(() => navigate("/orders"), 1500);
+          },
+          finally: () => setLoading(false),
+        });
+      });
     });
   };
 
