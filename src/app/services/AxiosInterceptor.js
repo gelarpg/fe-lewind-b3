@@ -45,7 +45,7 @@ const AxiosInterceptor = ({ children }) => {
         }
       }
       enqueueSnackbar(error?.response?.data?.meta?.message ?? "Something went wrong", {
-        autoHideDuration: 2500,
+        autoHideDuration: 2000,
         variant: 'error'
       });
       return Promise.reject(error);

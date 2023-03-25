@@ -49,7 +49,8 @@ function App() {
                                                 vertical: 'top',
                                                 horizontal: 'right',
                                             }}
-                                            maxSnack={3}>
+                                            maxSnack={3}
+                                            disableWindowBlurListener={true}>
                                             <JumboAuthProvider>
                                                 <AxiosInterceptor>
                                                     <AppLayout>

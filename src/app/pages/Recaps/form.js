@@ -92,7 +92,7 @@ const validationSchema = yup.object({
   invoice_file: yup
     .mixed()
     .nullable()
-    .required("Dokumen Invoice harus diisi")
+    // .required("Dokumen Invoice harus diisi")
     .test("fileSize", "Dokumen Invoice maksimal 5MB", (value) => {
       if (value && value.size) return value.size <= 5000000;
       return true;

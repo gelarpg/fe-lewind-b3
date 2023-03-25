@@ -53,10 +53,10 @@ const EditSubmission = (props) => {
     };
     if (payload.service_fee_file) {
       if (typeof payload.service_fee_file === "string") {
-        temp.service_fee_file = payload.service_fee_file.replace(
-          PDF_BASE_URL,
-          ""
-        );
+        // temp.service_fee_file = payload.service_fee_file.replace(
+        //   PDF_BASE_URL,
+        //   ""
+        // );
       } else if (typeof payload.service_fee_file === "object") {
         promises.push({
           key: "service_fee_file",
@@ -66,7 +66,7 @@ const EditSubmission = (props) => {
     }
     if (payload.invoice_file) {
       if (typeof payload.invoice_file === "string") {
-        temp.invoice_file = payload.invoice_file.replace(PDF_BASE_URL, "");
+        // temp.invoice_file = payload.invoice_file.replace(PDF_BASE_URL, "");
       } else if (typeof payload.invoice_file === "object") {
         promises.push({
           key: "invoice_file",
@@ -76,10 +76,10 @@ const EditSubmission = (props) => {
     }
     if (payload.travel_document_file) {
       if (typeof payload.travel_document_file === "string") {
-        temp.travel_document_file = payload.travel_document_file.replace(
-          PDF_BASE_URL,
-          ""
-        );
+        // temp.travel_document_file = payload.travel_document_file.replace(
+        //   PDF_BASE_URL,
+        //   ""
+        // );
       } else if (typeof payload.travel_document_file === "object") {
         promises.push({
           key: "travel_document_file",
@@ -89,7 +89,7 @@ const EditSubmission = (props) => {
     }
     if (payload.bast_file) {
       if (typeof payload.bast_file === "string") {
-        temp.bast_file = payload.bast_file.replace(PDF_BASE_URL, "");
+        // temp.bast_file = payload.bast_file.replace(PDF_BASE_URL, "");
       } else if (typeof payload.bast_file === "object") {
         promises.push({
           key: "bast_file",
@@ -99,10 +99,10 @@ const EditSubmission = (props) => {
     }
     if (payload.transporter_file) {
       if (typeof payload.transporter_file === "string") {
-        temp.transporter_file = payload.transporter_file.replace(
-          PDF_BASE_URL,
-          ""
-        );
+        // temp.transporter_file = payload.transporter_file.replace(
+        //   PDF_BASE_URL,
+        //   ""
+        // );
       } else if (typeof payload.transporter_file === "object") {
         promises.push({
           key: "transporter_file",
@@ -112,7 +112,7 @@ const EditSubmission = (props) => {
     }
     if (payload.provider_file) {
       if (typeof payload.provider_file === "string") {
-        temp.provider_file = payload.provider_file.replace(PDF_BASE_URL, "");
+        // temp.provider_file = payload.provider_file.replace(PDF_BASE_URL, "");
       } else if (typeof payload.provider_file === "object") {
         promises.push({
           key: "provider_file",
@@ -122,10 +122,10 @@ const EditSubmission = (props) => {
     }
     if (payload.waste_receipt_file) {
       if (typeof payload.waste_receipt_file === "string") {
-        temp.waste_receipt_file = payload.waste_receipt_file.replace(
-          PDF_BASE_URL,
-          ""
-        );
+        // temp.waste_receipt_file = payload.waste_receipt_file.replace(
+        //   PDF_BASE_URL,
+        //   ""
+        // );
       } else if (typeof payload.waste_receipt_file === "object") {
         promises.push({
           key: "waste_receipt_file",

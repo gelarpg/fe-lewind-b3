@@ -23,8 +23,8 @@ const transactionsStatus = [
   { status: false, name: "Menunggu Pembayaran", value: 0, color: "#66C7FF" },
 ];
 const wastesData = [
-  { status: 5, name: "Dibatalkan", value: 0, color: "#EA4569" },
-  { status: 6, name: "Selesai", value: 0, color: "#5273E8" },
+  { status: 6, name: "Dibatalkan", value: 0, color: "#EA4569" },
+  { status: 5, name: "Selesai", value: 0, color: "#5273E8" },
 ];
 
 const gradientSubmissionColor = new am4core.LinearGradient();
@@ -196,19 +196,43 @@ const Home = () => {
             placeholder="End Date"
             disableFuture
             value={endDate}
+            disabled={!startDate}
             onChange={setEndDate}
             minDate={moment(startDate).toDate()}
           />
         </Grid>
         <Grid item>
-          <Button
-            type="button"
-            variant="contained"
-            onClick={onClickFilter}
-            disabled={!startDate || !endDate}
-          >
-            Filter
-          </Button>
+          <Stack direction="row" spacing={2}>
+            <Button
+              type="button"
+              variant="contained"
+              onClick={onClickFilter}
+              disabled={!startDate || !endDate}
+            >
+              Filter
+            </Button>
+            {(startDate && endDate) ? (
+              <Button
+                type="button"
+                variant="contained"
+                sx={{ backgroundColor: 'gray', color: '#fff', ":hover": {
+                  backgroundColor: 'gray', color: '#fff'
+                } }}
+                onClick={() => {
+                  setStartDate(null);
+                  setEndDate(null);
+                  const qParams = {};
+                  qParams["start_date"] = undefined;
+                  qParams["end_date"] = undefined;
+                  refetch({
+                    params: qParams,
+                  });
+                }}
+              >
+                Reset
+              </Button>
+            ) : null}
+          </Stack>
         </Grid>
       </Grid>
       <Stack direction="row" spacing={2} mb={4}>

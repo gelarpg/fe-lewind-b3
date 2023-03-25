@@ -61,7 +61,7 @@ const EditInvoice = (props) => {
 
     if (payload.invoice_file) {
       if (typeof payload.invoice_file === "string") {
-        temp.invoice_file = payload.invoice_file.replace(PDF_BASE_URL, "");
+        // temp.invoice_file = payload.invoice_file.replace(PDF_BASE_URL, "");
       } else if (typeof payload.invoice_file === "object") {
         promises.push({
           key: "invoice_file",
@@ -78,7 +78,7 @@ const EditInvoice = (props) => {
       editStatus(temp, () => {
         axiosFetch({
           method: "put",
-          url: `/bills/edit/${params.id}`,
+          url: `/orders/edit/${params.id}`,
           requestConfig: {
             data: dataToSend,
           },

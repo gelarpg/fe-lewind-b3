@@ -251,7 +251,7 @@ const CustomForm = ({
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
               Periode
             </Typography>
-            <FormikDatepicker name="period" disabled={isDetail} disableFuture />
+            <FormikDatepicker name="period" disabled={isDetail} disablePast />
           </Box>
           <Box flex={1} mb={3}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
