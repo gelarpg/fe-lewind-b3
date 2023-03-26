@@ -38,10 +38,25 @@ const EditOrder = (props) => {
 
   const [isLoading, setLoading] = React.useState(false);
 
-  const editStatus = (payload, callback) => {
+  const editStatus = (payload) => {
     axiosFetch({
       method: "put",
       url: `/orders/edit/status/${params.id}`,
+      requestConfig: {
+        data: payload,
+      },
+      onSuccess: () => {
+        props.snackbarShowMessage("Data rekap order berhasil diubah");
+        setTimeout(() => navigate("/orders"), 1500);
+      },
+      finally: () => setLoading(false),
+    });
+  }
+
+  const updateData = (payload, callback) => {
+    axiosFetch({
+      method: "put",
+      url: `/orders/edit/${params.id}`,
       requestConfig: {
         data: payload,
       },
@@ -134,20 +149,7 @@ const EditOrder = (props) => {
         ...tempEdit,
         ...values,
       };
-      editStatus(temp, () => {
-        axiosFetch({
-          method: "put",
-          url: `/orders/edit/${params.id}`,
-          requestConfig: {
-            data: dataToSend,
-          },
-          onSuccess: () => {
-            props.snackbarShowMessage("Data rekap order berhasil diubah");
-            setTimeout(() => navigate("/orders"), 1500);
-          },
-          finally: () => setLoading(false),
-        });
-      });
+      updateData(dataToSend, () => editStatus(temp));
     });
   };
 

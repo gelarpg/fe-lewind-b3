@@ -3,8 +3,10 @@ import baseAxios from 'app/services/AxiosInterceptor';
 import axios from 'axios';
 import usePrevious from './usePrevious';
 import {isEqual, isEmpty} from 'lodash';
+import useJumboAuth from "@jumbo/hooks/useJumboAuth";
 
 const useFetch = (configObject) => {
+  const { authUser } = useJumboAuth();
   const { axiosInstance = baseAxios, url, requestConfig = {} } = configObject;
 
   const [isLoading, setLoading] = useState(false);
@@ -19,7 +21,7 @@ const useFetch = (configObject) => {
   };
 
   const fetch = async (configOptions, source, isMounted) => {
-    if (isMounted) {
+    if (isMounted && !isEmpty(authUser)) {
       setLoading(true);
       try {
         const { data: response } = await axiosInstance.get(url, {

@@ -39,6 +39,7 @@ gradientWastesColor.cy = am4core.percent(100);
 gradientWastesColor.rotation = 90;
 
 const Home = () => {
+
   const {
     isLoading: isLoadingDashboard,
     data: dashboardData,
@@ -179,7 +180,6 @@ const Home = () => {
       params: qParams,
     });
   }, [endDate, startDate]);
-
   return (
     <Div xs={{ width: "100%" }}>
       <Grid container spacing={2} mb={4} alignItems="center">
@@ -465,15 +465,33 @@ const Home = () => {
                   <CircularProgress sx={{ m: "-40px auto 0" }} />
                 </Div>
               </Box>
-            ) : submissionChartData.length &&
-              !isEmpty(submissionOriginalData) ? (
+            ) : wastesChartData.length &&
+            wastesChartData.some(x => x.value > 0) ? (
               <CustomGroupedBarChart
                 chartId="wastesCalculation"
                 generatedData={wastesChartData}
                 chartColor="#98ECFF"
                 isGroupped={false}
               />
-            ) : null}
+            ) : (
+              <Box
+                sx={{
+                  width: "100%",
+                  height: 300,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  variant={"body1"}
+                  fontSize={"14px"}
+                  sx={{ color: "#000000" }}
+                >
+                  Tidak ada data untuk ditampilkan
+                </Typography>
+              </Box>
+            )}
           </CardContent>
         </Card>
         <Card sx={{ width: "100%" }}>
