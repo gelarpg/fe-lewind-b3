@@ -18,16 +18,15 @@ const NewSubmission = (props) => {
   const onSubmitData = (payload) => {
     setLoading(true);
     const promises = [];
-    const temp = {
-      ...payload,
-      service_fee: Number(
-        payload.service_fee.replace(/[$.]+/g, "").replace(/[$,]+/g, ".")
-      ),
-      client_id: payload.client_id.value,
-      transportation_id: payload.transportation_id.value,
-      driver_id: payload.driver_id.value,
-      period: moment(payload.period).format("YYYY-MM-DD HH:mm:ss"),
-    };
+    let temp = {};
+    if (payload?.client_id?.value) temp.client_id = payload.client_id.value;
+    if (payload?.service_fee) temp.service_fee = Number(
+      payload.service_fee.replace(/[$.]+/g, "").replace(/[$,]+/g, ".")
+    );
+    if (payload?.waste_cost) temp.waste_cost = Number(payload.waste_cost.replace(/[$.]+/g, '').replace(/[$,]+/g, '.'));
+    if (payload?.period) temp.period = moment(payload.period).format("YYYY-MM-DD HH:mm:ss");
+    if (payload?.transportation_id?.value) temp.transportation_id = payload.transportation_id.value;
+    if (payload?.driver_id?.value) temp.driver_id = payload.driver_id.value;
     if (payload.service_fee_file) {
       promises.push({
         key: "service_fee_file",
@@ -100,6 +99,7 @@ const NewSubmission = (props) => {
             client_id: null,
             transportation_id: null,
             waste_name: "",
+            waste_cost: "",
             driver_id: null,
             address: "",
             period: "",
@@ -111,6 +111,7 @@ const NewSubmission = (props) => {
             waste_receipt_file: null,
             transporter_file: null,
             provider_file: null,
+            travel_fee: null,
           }}
         />
       </Box>

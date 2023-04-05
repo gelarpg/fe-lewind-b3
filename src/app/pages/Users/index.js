@@ -137,7 +137,7 @@ const Users = () => {
     });
   };
 
-  const onChangePage = useCallback((event, page) => {
+  const onChangePage = useCallback((page) => {
     setCurrentPage(page);
     setRequestParam((curr) => ({
       ...curr,
@@ -181,7 +181,7 @@ const Users = () => {
         page={currentPage}
         pageSize={rowsPerPage}
         loading={isLoadingList}
-        // paginationMode="server"
+        paginationMode="server"
         rowCount={pagination?.itemCount ?? 10}
         rowsPerPageOptions={[10, 25, 50]}
       />

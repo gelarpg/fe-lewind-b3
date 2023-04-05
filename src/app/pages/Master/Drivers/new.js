@@ -5,6 +5,7 @@ import CustomForm from './form';
 import { withSnackbar } from "app/components/SnackbarComponent";
 import { useNavigate } from "react-router-dom";
 import { uploadFileHandler } from "app/utils/helpers";
+import moment from "moment";
 
 const NewDriver = (props) => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const NewDriver = (props) => {
     temp.address = payload.address;
     temp.sim_number = payload.sim_number;
     temp.ktp_number = payload.ktp_number;
+    temp.sim_validity_period = moment(payload.sim_validity_period).format("YYYY-MM-DD");
 
     if (payload.sim_file) {
       promises.push({
@@ -61,6 +63,7 @@ const NewDriver = (props) => {
             onSubmit={onSubmitData}
             isLoading={isLoading || isLoadingAPI}
             initialValues={{
+              sim_validity_period: "",
               name: "",
               age: "",
               phone_number: "",

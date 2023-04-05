@@ -9,6 +9,7 @@ import { ReactComponent as Growth } from "app/assets/icons/growth.svg";
 
 const menus = [
   {
+    id: "dashboard",
     uri: "/dashboard",
     label: "Dashboard",
     type: "nav-item",
@@ -19,6 +20,7 @@ const menus = [
     ),
   },
   {
+    id: "master-data",
     label: "Master Data",
     type: "section",
     children: [
@@ -28,21 +30,25 @@ const menus = [
         icon: <AccountCircleOutlinedIcon sx={{ fontSize: 20 }} />,
         children: [
           {
+            id: "vehicles",
             uri: "/vehicles",
             label: "Kendaraan",
             type: "nav-item",
           },
           {
+            id: "drivers",
             uri: "/drivers",
             label: "Driver",
             type: "nav-item",
           },
           {
+            id: "wastes",
             uri: "/wastes",
             label: "Limbah",
             type: "nav-item",
           },
           {
+            id: "clients",
             uri: "/clients",
             label: "Client",
             type: "nav-item",
@@ -52,6 +58,7 @@ const menus = [
     ],
   },
   {
+    id: "submissions",
     uri: "/submissions",
     label: "Pengajuan",
     type: "nav-item",
@@ -60,6 +67,7 @@ const menus = [
     ),
   },
   {
+    id: "orders",
     uri: "/orders",
     label: "Rekap Order",
     type: "nav-item",
@@ -70,6 +78,7 @@ const menus = [
     ),
   },
   {
+    id: "invoices",
     uri: "/invoices",
     label: "Tagihan",
     type: "nav-item",
@@ -80,6 +89,7 @@ const menus = [
     ),
   },
   {
+    id: "users",
     uri: "/users",
     label: "User Management",
     type: "nav-item",

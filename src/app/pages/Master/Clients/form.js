@@ -12,6 +12,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 const validationSchema = yup.object({
+  company_name: yup.string().required("Nama perusahaan harus diisi"),
   name: yup.string().required("Nama client harus diisi"),
   address: yup.string().required("Alamat harus diisi"),
   offer_number: yup.string().required("Nomor penawaran harus diisi"),
@@ -66,6 +67,18 @@ const CustomForm = ({
           </Box>
           <Box flex={1} mb={3}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+              Nama Perusahaan
+            </Typography>
+            <JumboTextField
+              variant="standard"
+              disabled={isDetail}
+              size="small"
+              fullWidth
+              name="company_name"
+            />
+          </Box>
+          <Box flex={1} mb={3}>
+            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
               Alamat
             </Typography>
             <JumboTextField
@@ -92,7 +105,7 @@ const CustomForm = ({
           </Box>
           <Box flex={1} mb={3}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-              Biaya Transaksi
+              Biaya Transport
             </Typography>
             <FormikNumberInput
               disabled={isDetail}
@@ -107,6 +120,7 @@ const CustomForm = ({
               Limbah
             </Typography>
             <FormikWasteSelection
+              isDisabled={isDetail}
               name="waste_id"
               placeholder="Pilih Jenis Limbah"
               onChange={(value) => {
@@ -137,7 +151,7 @@ const CustomForm = ({
               </Box>
               <Box flex={1}>
                 <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-                  Harga Satuan
+                  Harga Acuan
                 </Typography>
                 <JumboTextField
                   variant="standard"

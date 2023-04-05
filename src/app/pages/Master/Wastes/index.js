@@ -10,6 +10,7 @@ import { Button, Box, Typography } from "@mui/material";
 import {
   CustomEditIconButton,
   CustomDeleteIconButton,
+  CustomDetailButton,
 } from "app/components/CustomIconButton";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
@@ -17,9 +18,10 @@ import useFetch from "app/hooks/useFetch";
 import useAxiosFunction from "app/hooks/useAxiosFunction";
 import usePrevious from "app/hooks/usePrevious";
 import { withSnackbar } from "app/components/SnackbarComponent";
-import {isEqual} from "lodash";
+import { withRoles } from "app/components/withRoles";
 
 const Wastes = (props) => {
+  const {isAdminDireksi, isSuperAdmin} = props;
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
   const {
     isLoading: isLoadingList,
@@ -81,7 +83,7 @@ const Wastes = (props) => {
       },
       {
         field: "price_unit",
-        headerName: "Harga Satuan",
+        headerName: "Harga Acuan",
         flex: 1,
         valueFormatter: (params) => {
           return `${new Intl.NumberFormat('id-ID', {
@@ -96,6 +98,12 @@ const Wastes = (props) => {
         headerName: "",
         type: "actions",
         getActions: (params) => {
+          if (isAdminDireksi) return [
+            <CustomDetailButton
+              size="small"
+              onClick={() => navigate(`/wastes/${params.row.id}/detail`)}
+            />
+          ];
           return [
             <CustomEditIconButton
               size="small"
@@ -111,7 +119,7 @@ const Wastes = (props) => {
         flex: 1,
       },
     ];
-  }, [currentPage, rowsPerPage]);
+  }, [currentPage, rowsPerPage, isAdminDireksi]);
 
   useEffect(() => {
     if (wastesData?.waste && wastesData?.paginator) {
@@ -149,7 +157,7 @@ const Wastes = (props) => {
     });
   };
 
-  const onChangePage = useCallback((event, page) => {
+  const onChangePage = useCallback((page) => {
     setCurrentPage(page);
     setRequestParam((curr) => ({
       ...curr,
@@ -172,13 +180,15 @@ const Wastes = (props) => {
   return (
     <Fragment>
       <Box display="flex" justifyContent="flex-end" mb={4}>
-        <Button
-          type="button"
-          variant="contained"
-          onClick={() => navigate(`/wastes/new`)}
-        >
-          Tambah Data
-        </Button>
+      {isSuperAdmin ? (
+          <Button
+            type="button"
+            variant="contained"
+            onClick={() => navigate(`/wastes/new`)}
+          >
+            Tambah Data
+          </Button>
+        ) : null}
       </Box>
       <DataGrid
         ref={tableRef}
@@ -195,7 +205,7 @@ const Wastes = (props) => {
         page={currentPage}
         pageSize={rowsPerPage}
         loading={isLoadingList}
-        // paginationMode="server"
+        paginationMode="server"
         rowCount={pagination?.itemCount ?? 10}
         rowsPerPageOptions={[10, 25, 50]}
       />
@@ -203,4 +213,4 @@ const Wastes = (props) => {
   );
 };
 
-export default withSnackbar(Wastes);
+export default withRoles(withSnackbar(Wastes));

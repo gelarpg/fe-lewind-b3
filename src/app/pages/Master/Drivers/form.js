@@ -11,8 +11,10 @@ import FormikUploadFile from "app/components/FormikUploadFile";
 import { useNavigate } from "react-router-dom";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import FormikDatepicker from "app/components/FormikDatepicker";
 
 const validationSchema = yup.object({
+  sim_validity_period: yup.string().required("Masa berlaku SIM harus diisi"),
   name: yup.string().required("Nama kendaraan harus diisi"),
   age: yup
     .number()
@@ -195,6 +197,21 @@ const CustomForm = ({
               </Grid>
               <Grid item xs={12} md={6} lg={8}>
                 <FormikUploadFile name="sim_file" disabled={isDetail} defaultFileName={initialValues?.sim_file} />
+              </Grid>
+            </Grid>
+          </Box>
+          <Box flex={1} mb={3}>
+            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+              Masa Berlaku SIM
+            </Typography>
+            <Grid
+              container
+              spacing={3}
+              direction="row"
+              alignItems="start"
+            >
+              <Grid item xs={12} md={6} lg={4}>
+                <FormikDatepicker disabled={isDetail} name="sim_validity_period" disablePast />
               </Grid>
             </Grid>
           </Box>

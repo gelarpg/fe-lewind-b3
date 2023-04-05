@@ -44,10 +44,12 @@ const AxiosInterceptor = ({ children }) => {
           return;
         }
       }
-      enqueueSnackbar(error?.response?.data?.meta?.message ?? "Something went wrong", {
-        autoHideDuration: 2000,
-        variant: 'error'
-      });
+      if (!axios.isCancel(error)) {
+        enqueueSnackbar(error?.response?.data?.meta?.message ?? "Something went wrong", {
+          autoHideDuration: 2000,
+          variant: 'error'
+        });
+      }
       return Promise.reject(error);
     };
 

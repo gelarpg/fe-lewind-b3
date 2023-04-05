@@ -11,6 +11,7 @@ import { Button, Box, Typography } from "@mui/material";
 import {
   CustomEditIconButton,
   CustomDeleteIconButton,
+  CustomDetailButton,
 } from "app/components/CustomIconButton";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
@@ -18,9 +19,10 @@ import useFetch from "app/hooks/useFetch";
 import useAxiosFunction from "app/hooks/useAxiosFunction";
 import usePrevious from "app/hooks/usePrevious";
 import { withSnackbar } from "app/components/SnackbarComponent";
-import {isEqual} from "lodash";
+import { withRoles } from "app/components/withRoles";
 
 const Drivers = (props) => {
+  const {isAdminDireksi, isSuperAdmin} = props;
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
   const {
     isLoading: isLoadingList,
@@ -93,6 +95,12 @@ const Drivers = (props) => {
         headerName: "",
         type: "actions",
         getActions: (params) => {
+          if (isAdminDireksi) return [
+            <CustomDetailButton
+              size="small"
+              onClick={() => navigate(`/drivers/${params.row.id}/detail`)}
+            />
+          ];
           return [
             <CustomEditIconButton
               size="small"
@@ -108,7 +116,7 @@ const Drivers = (props) => {
         flex: 1,
       },
     ];
-  }, [currentPage, rowsPerPage]);
+  }, [currentPage, rowsPerPage, isAdminDireksi]);
 
   useEffect(() => {
     if (driversData?.driver && driversData?.paginator) {
@@ -146,7 +154,7 @@ const Drivers = (props) => {
     });
   };
 
-  const onChangePage = useCallback((event, page) => {
+  const onChangePage = useCallback((page) => {
     setCurrentPage(page);
     setRequestParam((curr) => ({
       ...curr,
@@ -169,13 +177,15 @@ const Drivers = (props) => {
   return (
     <Fragment>
       <Box display="flex" justifyContent="flex-end" mb={4}>
-        <Button
-          type="button"
-          variant="contained"
-          onClick={() => navigate(`/drivers/new`)}
-        >
-          Tambah Data
-        </Button>
+      {isSuperAdmin ? (
+          <Button
+            type="button"
+            variant="contained"
+            onClick={() => navigate(`/drivers/new`)}
+          >
+            Tambah Data
+          </Button>
+        ) : null}
       </Box>
       <DataGrid
         ref={tableRef}
@@ -192,7 +202,7 @@ const Drivers = (props) => {
         page={currentPage}
         pageSize={rowsPerPage}
         loading={isLoadingList}
-        // paginationMode="server"
+        paginationMode="server"
         rowCount={pagination?.itemCount ?? 10}
         rowsPerPageOptions={[10, 25, 50]}
       />
@@ -200,4 +210,4 @@ const Drivers = (props) => {
   );
 };
 
-export default withSnackbar(Drivers);
+export default withRoles(withSnackbar(Drivers));

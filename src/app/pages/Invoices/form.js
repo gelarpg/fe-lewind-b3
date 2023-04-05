@@ -69,6 +69,8 @@ const validationSchema = yup.object({
     .nullable(),
   address: yup.string(),
   waste_name: yup.string(),
+  waste_cost: yup.string(),
+  waste_reference_price: yup.string(),
   period: yup.string().required("Periode harus diisi"),
   service_fee: yup.string().required("Biaya Layanan harus diisi"),
   service_fee_file: yup
@@ -248,6 +250,32 @@ const CustomForm = ({
           </Box>
           <Box flex={1} mb={3}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+              Harga Acuan Limbah
+            </Typography>
+            <JumboTextField
+              variant="standard"
+              disabled={true}
+              size="small"
+              fullWidth
+              name="waste_reference_price"
+              placeholder="Harga Acuan Limbah"
+            />
+          </Box>
+          <Box flex={1} mb={3}>
+            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+              Biaya Limbah
+            </Typography>
+            <FormikNumberInput
+              disabled={true}
+              variant="standard"
+              size="small"
+              fullWidth
+              name="waste_cost"
+              placeholder="Biaya Limbah"
+            />
+          </Box>
+          <Box flex={1} mb={3}>
+            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
               Alamat
             </Typography>
             <JumboTextField
@@ -331,7 +359,7 @@ const CustomForm = ({
               </Typography>
               <FormikUploadFile
                 name="invoice_file"
-                disabled={false}
+                disabled={isDetail}
                 defaultFileName={initialValues?.invoice_file}
               />
             </Grid>

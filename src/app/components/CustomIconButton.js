@@ -4,12 +4,21 @@ import { IconButton, Button, Dialog, DialogTitle, DialogContent, DialogContentTe
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckIcon from '@mui/icons-material/Check';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const IconButtonDelete = styled(IconButton)({
   backgroundColor: "#DC4343",
   borderRadius: "5px",
   "&:hover, &:focus": {
     backgroundColor: "#DC4343",
+  },
+});
+
+const IconButtonDetail = styled(IconButton)({
+  backgroundColor: "#007E03",
+  borderRadius: "5px",
+  "&:hover, &:focus": {
+    backgroundColor: "#007E03",
   },
 });
 
@@ -41,6 +50,12 @@ const GreyButton = styled(Button)({
   color: "#2b2b2b",
   textTransform: "none",
 });
+
+const CustomDetailButton = (props) => (
+  <IconButtonDetail type="button" {...props}>
+    <VisibilityIcon sx={{ color: "white" }} />
+  </IconButtonDetail>
+)
 
 const CustomEditIconButton = (props) => {
   return (
@@ -112,4 +127,4 @@ const ApproveIconButton = ({ onClick, ...props }) => {
   );
 };
 
-export { CustomEditIconButton, CustomDeleteIconButton, GreyButton, ApproveIconButton };
+export { CustomEditIconButton, CustomDeleteIconButton, GreyButton, ApproveIconButton, CustomDetailButton };

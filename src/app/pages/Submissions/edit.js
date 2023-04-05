@@ -14,9 +14,7 @@ import {
 import Div from "@jumbo/shared/Div";
 import { CircularProgress } from "@mui/material";
 import moment from "moment";
-
-let PDF_BASE_URL = process.env.REACT_APP_API_BASE_URL_EXPORT;
-PDF_BASE_URL = PDF_BASE_URL.substring(0, PDF_BASE_URL.length - 1);
+import { withRoles } from "app/components/withRoles";
 
 const EditSubmission = (props) => {
   const navigate = useNavigate();
@@ -41,16 +39,17 @@ const EditSubmission = (props) => {
   const onSubmitData = (payload) => {
     setLoading(true);
     const promises = [];
-    const temp = {
-      ...payload,
-      service_fee: Number(
-        payload.service_fee.replace(/[$.]+/g, "").replace(/[$,]+/g, ".")
-      ),
-      client_id: payload.client_id.value,
-      transportation_id: payload.transportation_id.value,
-      driver_id: payload.driver_id.value,
-      period: moment(payload.period).format("YYYY-MM-DD HH:mm:ss"),
-    };
+    let temp = {};
+    temp.travel_fee = Boolean(payload.travel_fee.value);
+    if (payload?.client_id?.value) temp.client_id = payload.client_id.value;
+    if (payload?.service_fee) temp.service_fee = Number(
+      payload.service_fee.replace(/[$.]+/g, "").replace(/[$,]+/g, ".")
+    );
+    if (payload?.waste_cost) temp.waste_cost = Number(payload.waste_cost.replace(/[$.]+/g, '').replace(/[$,]+/g, '.'));
+    if (payload?.period) temp.period = moment(payload.period).format("YYYY-MM-DD HH:mm:ss");
+    if (payload?.transportation_id?.value) temp.transportation_id = payload.transportation_id.value;
+    if (payload?.driver_id?.value) temp.driver_id = payload.driver_id.value;
+
     if (payload.service_fee_file) {
       if (typeof payload.service_fee_file === "string") {
         if (temp.service_fee_file) delete temp.service_fee_file;
@@ -176,10 +175,16 @@ const EditSubmission = (props) => {
           </Div>
         ) : (
           <CustomForm
+            isDetail={window.location.pathname.includes('/detail')}
             onSubmit={onSubmitData}
             isLoading={isLoading || isLoadingAPI}
             initialValues={{
               waste_name: submissionDetail?.waste_name ?? "",
+              waste_cost: submissionDetail?.waste_cost?.toString()?.replace(/[$.]+/g, ',') ?? '',
+              waste_reference_price: submissionDetail?.waste_price_unit ? `${new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+              }).format(submissionDetail?.waste_price_unit)}` : "",
               client_id: submissionDetail?.client_id
                 ? {
                     value: submissionDetail?.client_id,
@@ -201,7 +206,7 @@ const EditSubmission = (props) => {
               address: submissionDetail?.client_address ?? "",
               period: submissionDetail?.period
                 ? moment(submissionDetail?.period)
-                : null,
+                : "",
               service_fee:
                 submissionDetail?.service_fee
                   ?.toString()
@@ -225,6 +230,15 @@ const EditSubmission = (props) => {
                 "transporter"
               ),
               provider_file: getDocumentPath(submissionDetail, "provider"),
+              travel_fee: submissionDetail?.travel_fee
+                ? {
+                    value: true,
+                    label: "Sudah Ditransfer",
+                  }
+                : {
+                  value: false,
+                  label: "Belum Ditransfer",
+                },
             }}
           />
         )}
@@ -233,4 +247,4 @@ const EditSubmission = (props) => {
   );
 };
 
-export default withSnackbar(EditSubmission);
+export default withRoles(withSnackbar(EditSubmission));

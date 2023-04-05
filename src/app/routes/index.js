@@ -65,6 +65,10 @@ const routesForAuthenticatedOnly = [
     path: "/submissions/:id/edit",
     element: <Page component={EditSubmissions} />,
   },
+  {
+    path: "/submissions/:id/detail",
+    element: <Page component={EditSubmissions} />,
+  },
 
   {
     path: "/orders",
@@ -72,6 +76,10 @@ const routesForAuthenticatedOnly = [
   },
   {
     path: "/orders/:id/edit",
+    element: <Page component={EditRecaps} />,
+  },
+  {
+    path: "/orders/:id/detail",
     element: <Page component={EditRecaps} />,
   },
 
@@ -104,6 +112,10 @@ const routesForAuthenticatedOnly = [
     path: "/vehicles/:id/edit",
     element: <Page component={EditVehicles} />,
   },
+  {
+    path: "/vehicles/:id/detail",
+    element: <Page component={EditVehicles} />,
+  },
 
   {
     path: "/wastes",
@@ -115,6 +127,10 @@ const routesForAuthenticatedOnly = [
   },
   {
     path: "/wastes/:id/edit",
+    element: <Page component={EditWastes} />,
+  },
+  {
+    path: "/wastes/:id/detail",
     element: <Page component={EditWastes} />,
   },
 
@@ -130,6 +146,10 @@ const routesForAuthenticatedOnly = [
     path: "/drivers/:id/edit",
     element: <Page component={EditDrivers} />,
   },
+  {
+    path: "/drivers/:id/detail",
+    element: <Page component={EditDrivers} />,
+  },
 
   {
     path: "/clients",
@@ -143,6 +163,10 @@ const routesForAuthenticatedOnly = [
     path: "/clients/:id/edit",
     element: <Page component={EditClients} />,
   },
+  {
+    path: "/clients/:id/detail",
+    element: <Page component={EditClients} />,
+  },
 
   {
     path: "/invoices",
@@ -150,6 +174,10 @@ const routesForAuthenticatedOnly = [
   },
   {
     path: "/invoices/:id/edit",
+    element: <Page component={EditInvoices} />,
+  },
+  {
+    path: "/invoices/:id/detail",
     element: <Page component={EditInvoices} />,
   },
 ];

@@ -61,9 +61,11 @@ const EditClient = (props) => {
           </Div>
         ) : (
           <CustomForm
+            isDetail={window.location.pathname.includes('/detail')}
             onSubmit={onSubmitData}
             isLoading={isLoading}
             initialValues={{
+              company_name: clientDetail?.company_name ?? "",
               name: clientDetail?.name ?? "",
               address: clientDetail?.address ?? "",
               offer_number: clientDetail?.offer_number ?? "",

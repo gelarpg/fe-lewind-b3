@@ -15,7 +15,7 @@ const FormikDatepicker = (props) => {
   const [isOpen, setOpen] = React.useState(false);
 
   const handleClickInput = React.useCallback(() => {
-    setOpen(true);
+    if (!props.disabled) setOpen(true);
   }, []);
 
   return (

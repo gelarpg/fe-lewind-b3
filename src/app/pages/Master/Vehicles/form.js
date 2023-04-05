@@ -15,6 +15,19 @@ import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 const validationSchema = yup.object({
+  validity_period_kir: yup.string().required("Masa berlaku KIR harus diisi"),
+  validity_period_rekom: yup
+    .string()
+    .required("Masa berlaku rekom harus diisi"),
+  validity_period_supervision_card: yup
+    .string()
+    .required("Masa berlaku kartu pengawasan harus diisi"),
+  stnk_validity_period: yup
+    .string()
+    .required("Masa berlaku pajak STNK harus diisi"),
+  validity_period_departement_permit: yup
+    .string()
+    .required("Masa berlaku izin Dinas Perhubungan harus diisi"),
   name: yup.string().required("Nama kendaraan harus diisi"),
   no_police: yup
     .string()
@@ -32,11 +45,8 @@ const validationSchema = yup.object({
       );
     }),
   capacity: yup
-    .number()
-    .typeError("Kapasitas angkut tidak valid")
-    .integer("Kapasitas angkut harus berupa angka")
-    .required("Kapasitas angkut harus diisi")
-    .min(1, "Kapasitas angkut minimal 1"),
+    .string()
+    .required("Kapasitas angkut harus diisi"),
   fuel_type: yup.string().required("Jenis bahan bakar harus diisi"),
   transportation_type_id: yup
     .object()
@@ -160,6 +170,7 @@ const CustomForm = ({
             <FormikDatepicker
               views={["year"]}
               name="year"
+              disabled={isDetail}
               shouldDisableYear={(year) => moment(year).isAfter(moment())}
             />
           </Box>
@@ -168,13 +179,11 @@ const CustomForm = ({
               Kapasitas Angkut
             </Typography>
             <FormikNumberInput
-              variant="standard"
               disabled={isDetail}
+              variant="standard"
               size="small"
               fullWidth
               name="capacity"
-              type="tel"
-              min={1}
             />
           </Box>
           <Box flex={1} mb={3}>
@@ -188,6 +197,35 @@ const CustomForm = ({
               fullWidth
               name="fuel_type"
             />
+          </Box>
+          <Box flex={1}>
+            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+              Surat Jalan
+            </Typography>
+            <Grid
+              container
+              spacing={2}
+              direction="row"
+              alignItems="start"
+              mb={3}
+            >
+              <Grid item xs={12} md={6} lg={4}>
+                <JumboTextField
+                  variant="standard"
+                  disabled={isDetail}
+                  size="small"
+                  fullWidth
+                  name="travel_document_number"
+                />
+              </Grid>
+              <Grid item xs={12} md={6} lg={8}>
+                <FormikUploadFile
+                  name="travel_document_file"
+                  disabled={isDetail}
+                  defaultFileName={initialValues?.travel_document_file}
+                />
+              </Grid>
+            </Grid>
           </Box>
           <Box flex={1}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
@@ -220,7 +258,7 @@ const CustomForm = ({
           </Box>
           <Box flex={1}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-              Surat Jalan
+              Masa Berlaku Pajak STNK
             </Typography>
             <Grid
               container
@@ -230,19 +268,90 @@ const CustomForm = ({
               mb={3}
             >
               <Grid item xs={12} md={6} lg={4}>
-                <JumboTextField
-                  variant="standard"
+                <FormikDatepicker
                   disabled={isDetail}
-                  size="small"
-                  fullWidth
-                  name="travel_document_number"
+                  name="stnk_validity_period"
+                  disablePast
                 />
               </Grid>
-              <Grid item xs={12} md={6} lg={8}>
-                <FormikUploadFile
-                  name="travel_document_file"
+            </Grid>
+          </Box>
+          <Box flex={1}>
+            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+              Masa Berlaku KIR
+            </Typography>
+            <Grid
+              container
+              spacing={2}
+              direction="row"
+              alignItems="start"
+              mb={3}
+            >
+              <Grid item xs={12} md={6} lg={4}>
+                <FormikDatepicker
                   disabled={isDetail}
-                  defaultFileName={initialValues?.travel_document_file}
+                  name="validity_period_kir"
+                  disablePast
+                />
+              </Grid>
+            </Grid>
+          </Box>
+          <Box flex={1}>
+            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+              Masa Berlaku Rekom
+            </Typography>
+            <Grid
+              container
+              spacing={2}
+              direction="row"
+              alignItems="start"
+              mb={3}
+            >
+              <Grid item xs={12} md={6} lg={4}>
+                <FormikDatepicker
+                  disabled={isDetail}
+                  name="validity_period_rekom"
+                  disablePast
+                />
+              </Grid>
+            </Grid>
+          </Box>
+          <Box flex={1}>
+            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+              Masa Berlaku Kartu Pengawasan
+            </Typography>
+            <Grid
+              container
+              spacing={2}
+              direction="row"
+              alignItems="start"
+              mb={3}
+            >
+              <Grid item xs={12} md={6} lg={4}>
+                <FormikDatepicker
+                  disabled={isDetail}
+                  name="validity_period_supervision_card"
+                  disablePast
+                />
+              </Grid>
+            </Grid>
+          </Box>
+          <Box flex={1}>
+            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+              Masa Berlaku Izin Dinas Perhubungan
+            </Typography>
+            <Grid
+              container
+              spacing={2}
+              direction="row"
+              alignItems="start"
+              mb={3}
+            >
+              <Grid item xs={12} md={6} lg={4}>
+                <FormikDatepicker
+                  disabled={isDetail}
+                  name="validity_period_departement_permit"
+                  disablePast
                 />
               </Grid>
             </Grid>

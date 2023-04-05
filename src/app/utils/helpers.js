@@ -57,3 +57,11 @@ export const getDocumentNumber = (object, prop) => {
   }
   return doc_number
 }
+export const getDocumentProperty = (object, prop, objProperty) => {
+  let property = null;
+  if (object?.documents && object?.documents?.length) {
+    const doc = object?.documents.find((x) => x.type === prop);
+    if (doc && doc[objProperty]) property = `${doc[objProperty]}`;
+  }
+  return property
+}

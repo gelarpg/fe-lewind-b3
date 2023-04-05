@@ -58,6 +58,7 @@ const EditWaste = (props) => {
         ) : (
           <CustomForm
             onSubmit={onSubmitData}
+            isDetail={window.location.pathname.includes('/detail')}
             isLoading={isLoading}
             initialValues={{
               name: wasteDetail?.name ?? "",

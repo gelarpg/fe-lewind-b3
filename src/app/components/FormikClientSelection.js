@@ -51,6 +51,7 @@ const FormikClientSelection = ({
           address: x.address,
           waste_name: x.waste_name,
           waste_type: x.waste_type,
+          waste_reference_price: x?.waste_price_unit ?? ""
         })),
       ]);
       NEXT_PAGE = clientData?.paginator?.nextPage;

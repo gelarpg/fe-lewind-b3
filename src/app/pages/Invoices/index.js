@@ -10,17 +10,19 @@ import { Button, Box, Typography, ToggleButtonGroup, ToggleButton } from "@mui/m
 import {
   CustomEditIconButton,
   CustomDeleteIconButton,
+  CustomDetailButton,
 } from "app/components/CustomIconButton";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import useFetch from "app/hooks/useFetch";
 import useAxiosFunction from "app/hooks/useAxiosFunction";
 import usePrevious from "app/hooks/usePrevious";
-import {isEqual} from "lodash";
+import { withRoles } from "app/components/withRoles";
 import moment from "moment";
 import DatepickerComponent from "app/components/DatepickerComponent";
 
-const Invoices = () => {
+const Invoices = (props) => {
+  const {isAdminDireksi, isAdminOperasional} = props;
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
   const {
     isLoading: isLoadingList,
@@ -115,17 +117,25 @@ const Invoices = () => {
         headerName: "",
         type: "actions",
         getActions: (params) => {
-          return [
+          let arr = [];
+          if (isAdminDireksi) arr = [
+            <CustomDetailButton
+              size="small"
+              onClick={() => navigate(`/invoices/${params.row.id}/detail`)}
+            />
+          ];
+          if (isAdminOperasional) arr = [
             <CustomEditIconButton
               size="small"
               onClick={() => navigate(`/invoices/${params.row.id}/edit`)}
             />,
           ];
+          return arr;
         },
         width: 75,
       },
     ];
-  }, [currentPage, rowsPerPage]);
+  }, [currentPage, rowsPerPage, isAdminDireksi]);
 
   useEffect(() => {
     if (invoicesData?.submission && invoicesData?.paginator) {
@@ -148,7 +158,7 @@ const Invoices = () => {
     }
   }, [fetched]);
 
-  const onChangePage = useCallback((event, page) => {
+  const onChangePage = useCallback((page) => {
     setCurrentPage(page);
     setRequestParam((curr) => ({
       ...curr,
@@ -233,7 +243,7 @@ const Invoices = () => {
         page={currentPage}
         pageSize={rowsPerPage}
         loading={isLoadingList}
-        // paginationMode="server"
+        paginationMode="server"
         rowCount={pagination?.itemCount ?? 10}
         rowsPerPageOptions={[10, 25, 50]}
       />
@@ -241,4 +251,4 @@ const Invoices = () => {
   );
 };
 
-export default Invoices;
+export default withRoles(Invoices);

@@ -76,6 +76,7 @@ const EditOrder = (props) => {
 
     if (payload.invoice_file) {
       if (typeof payload.invoice_file === "string") {
+        if (temp.invoice_file) delete temp.invoice_file
         // temp.invoice_file = payload.invoice_file.replace(PDF_BASE_URL, "");
       } else if (typeof payload.invoice_file === "object") {
         promises.push({
@@ -86,6 +87,7 @@ const EditOrder = (props) => {
     }
     if (payload.travel_document_file) {
       if (typeof payload.travel_document_file === "string") {
+        if (temp.travel_document_file) delete temp.travel_document_file
         // temp.travel_document_file = payload.travel_document_file.replace(
         //   PDF_BASE_URL,
         //   ""
@@ -99,6 +101,7 @@ const EditOrder = (props) => {
     }
     if (payload.bast_file) {
       if (typeof payload.bast_file === "string") {
+        if (temp.bast_file) delete temp.bast_file
         // temp.bast_file = payload.bast_file.replace(PDF_BASE_URL, "");
       } else if (typeof payload.bast_file === "object") {
         promises.push({
@@ -109,6 +112,7 @@ const EditOrder = (props) => {
     }
     if (payload.transporter_file) {
       if (typeof payload.transporter_file === "string") {
+        if (temp.transporter_file) delete temp.transporter_file
         // temp.transporter_file = payload.transporter_file.replace(
         //   PDF_BASE_URL,
         //   ""
@@ -122,6 +126,7 @@ const EditOrder = (props) => {
     }
     if (payload.provider_file) {
       if (typeof payload.provider_file === "string") {
+        if (temp.provider_file) delete temp.provider_file
         // temp.provider_file = payload.provider_file.replace(PDF_BASE_URL, "");
       } else if (typeof payload.provider_file === "object") {
         promises.push({
@@ -132,6 +137,7 @@ const EditOrder = (props) => {
     }
     if (payload.waste_receipt_file) {
       if (typeof payload.waste_receipt_file === "string") {
+        if (temp.waste_receipt_file) delete temp.waste_receipt_file
         // temp.waste_receipt_file = payload.waste_receipt_file.replace(
         //   PDF_BASE_URL,
         //   ""
@@ -169,10 +175,16 @@ const EditOrder = (props) => {
           </Div>
         ) : (
           <CustomForm
+            isDetail={window.location.pathname.includes('/detail')}
             onSubmit={onSubmitData}
             isLoading={isLoading}
             initialValues={{
               waste_name: orderDetail?.waste_name ?? "",
+              waste_cost: orderDetail?.waste_cost?.toString()?.replace(/[$.]+/g, ',') ?? '',
+              waste_reference_price: orderDetail?.waste_price_unit ? `${new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+              }).format(orderDetail?.waste_price_unit)}` : "",
               status: orderDetail?.status
                 ? {
                     value: orderDetail?.status,
@@ -200,7 +212,7 @@ const EditOrder = (props) => {
               address: orderDetail?.client_address ?? "",
               period: orderDetail?.period
                 ? moment(orderDetail?.period)
-                : null,
+                : "",
               service_fee:
                 orderDetail?.service_fee
                   ?.toString()

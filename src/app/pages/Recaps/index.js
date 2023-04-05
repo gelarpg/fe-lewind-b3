@@ -7,7 +7,7 @@ import React, {
   useMemo,
 } from "react";
 import { Box, ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { CustomEditIconButton } from "app/components/CustomIconButton";
+import { CustomDetailButton, CustomEditIconButton } from "app/components/CustomIconButton";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import useFetch from "app/hooks/useFetch";
@@ -16,8 +16,10 @@ import usePrevious from "app/hooks/usePrevious";
 import { isEqual } from "lodash";
 import DatepickerComponent from "app/components/DatepickerComponent";
 import moment from "moment";
+import { withRoles } from "app/components/withRoles";
 
-const Recaps = () => {
+const Recaps = (props) => {
+  const {isAdminDireksi, isAdminOperasional} = props;
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
   const {
     isLoading: isLoadingList,
@@ -112,19 +114,25 @@ const Recaps = () => {
         headerName: "",
         type: "actions",
         getActions: (params) => {
-          let arr = [
+          let arr = [];
+          if (isAdminOperasional) arr = [
             <CustomEditIconButton
               size="small"
               onClick={() => navigate(`/orders/${params.row.id}/edit`)}
             />,
           ];
-          if (params.row.status.toString() === "5") arr = [];
+          if (params.row.status.toString() === "5" || isAdminDireksi) arr = [
+            <CustomDetailButton
+              size="small"
+              onClick={() => navigate(`/orders/${params.row.id}/detail`)}
+            />
+          ];
           return arr;
         },
         width: 75,
       },
     ];
-  }, [currentPage, rowsPerPage]);
+  }, [currentPage, rowsPerPage, isAdminDireksi, isAdminOperasional]);
 
   useEffect(() => {
     if (recapsData?.submission && recapsData?.paginator) {
@@ -147,7 +155,7 @@ const Recaps = () => {
     }
   }, [fetched]);
 
-  const onChangePage = useCallback((event, page) => {
+  const onChangePage = useCallback((page) => {
     setCurrentPage(page);
     setRequestParam((curr) => ({
       ...curr,
@@ -235,7 +243,7 @@ const Recaps = () => {
         page={currentPage}
         pageSize={rowsPerPage}
         loading={isLoadingList}
-        // paginationMode="server"
+        paginationMode="server"
         rowCount={pagination?.itemCount ?? 10}
         rowsPerPageOptions={[10, 25, 50]}
       />
@@ -243,4 +251,4 @@ const Recaps = () => {
   );
 };
 
-export default Recaps;
+export default withRoles(Recaps);

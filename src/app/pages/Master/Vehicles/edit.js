@@ -7,7 +7,7 @@ import { withSnackbar } from "app/components/SnackbarComponent";
 import { useNavigate, useParams } from "react-router-dom";
 import CustomForm from "./form";
 import moment from "moment";
-import { uploadFileHandler, getDocumentNumber, getDocumentPath } from "app/utils/helpers";
+import { uploadFileHandler, getDocumentNumber, getDocumentPath, getDocumentProperty } from "app/utils/helpers";
 import Div from "@jumbo/shared/Div";
 import { CircularProgress } from "@mui/material";
 
@@ -39,13 +39,20 @@ const EditVehicles = (props) => {
     const promises = [];
     const temp = {
       ...payload,
+      capacity: Number(payload.capacity.replace(/[$.]+/g, '').replace(/[$,]+/g, '.')),
       transportation_type_id: payload.transportation_type_id.value,
       fuel_type: payload.fuel_type,
       year: moment(payload.year).format("YYYY"),
+      validity_period_kir: moment(payload.validity_period_kir).format("YYYY-MM-DD"),
+      validity_period_rekom: moment(payload.validity_period_rekom).format("YYYY-MM-DD"),
+      validity_period_supervision_card: moment(payload.validity_period_supervision_card).format("YYYY-MM-DD"),
+      stnk_validity_period: moment(payload.stnk_validity_period).format("YYYY-MM-DD"),
+      validity_period_departement_permit: moment(payload.validity_period_departement_permit).format("YYYY-MM-DD"),
     };
     if (payload.stnk_file) {
       if (typeof payload.stnk_file === "string") {
-        temp.stnk_file = payload.stnk_file.replace(PDF_BASE_URL, '');
+        // temp.stnk_file = payload.stnk_file.replace(PDF_BASE_URL, '');
+        if (temp.stnk_file) delete temp.stnk_file
       } else if (typeof payload.stnk_file === "object") {
         promises.push({
           key: "stnk_file",
@@ -55,7 +62,8 @@ const EditVehicles = (props) => {
     }
     if (payload.travel_document_file) {
       if (typeof payload.travel_document_file === "string") {
-        temp.travel_document_file = payload.travel_document_file.replace(PDF_BASE_URL, '');
+        // temp.travel_document_file = payload.travel_document_file.replace(PDF_BASE_URL, '');
+        if (temp.travel_document_file) delete temp.travel_document_file
       } else if (typeof payload.travel_document_file === "object") {
         promises.push({
           key: "travel_document_file",
@@ -101,7 +109,13 @@ const EditVehicles = (props) => {
           <CustomForm
             onSubmit={onSubmitData}
             isLoading={isLoading || isLoadingAPI}
+            isDetail={window.location.pathname.includes('/detail')}
             initialValues={{
+              validity_period_kir: vehicleDetail?.validity_period_kir ? moment(vehicleDetail?.validity_period_kir) : "",
+              validity_period_rekom: vehicleDetail?.validity_period_rekom ? moment(vehicleDetail?.validity_period_rekom) : "",
+              validity_period_supervision_card: vehicleDetail?.validity_period_supervision_card ? moment(vehicleDetail?.validity_period_supervision_card) : "",
+              stnk_validity_period: getDocumentProperty(vehicleDetail, "stnk", "validity_period") ? moment(getDocumentProperty(vehicleDetail, "stnk", "validity_period")) : "",
+              validity_period_departement_permit: vehicleDetail?.validity_period_departement_permit ? moment(vehicleDetail?.validity_period_departement_permit) : "",
               name: vehicleDetail?.name ?? "",
               no_police: vehicleDetail?.no_police ?? "",
               year: vehicleDetail?.year ?? "",

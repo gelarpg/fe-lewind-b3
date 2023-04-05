@@ -76,6 +76,7 @@ const EditInvoice = (props) => {
 
     if (payload.invoice_file) {
       if (typeof payload.invoice_file === "string") {
+        if (temp.invoice_file) delete temp.invoice_file
         // temp.invoice_file = payload.invoice_file.replace(PDF_BASE_URL, "");
       } else if (typeof payload.invoice_file === "object") {
         promises.push({
@@ -110,10 +111,16 @@ const EditInvoice = (props) => {
           </Div>
         ) : (
           <CustomForm
+            isDetail={window.location.pathname.includes('/detail')}
             onSubmit={onSubmitData}
             isLoading={isLoading}
             initialValues={{
               waste_name: invoiceDetail?.waste_name ?? "",
+              waste_cost: invoiceDetail?.waste_cost?.toString()?.replace(/[$.]+/g, ',') ?? '',
+              waste_reference_price: invoiceDetail?.waste_price_unit ? `${new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+              }).format(invoiceDetail?.waste_price_unit)}` : "",
               status: invoiceDetail?.payment_status
                 ? {
                     value: true,
@@ -144,7 +151,7 @@ const EditInvoice = (props) => {
               address: invoiceDetail?.client_address ?? "",
               period: invoiceDetail?.period
                 ? moment(invoiceDetail?.period)
-                : null,
+                : "",
               service_fee:
                 invoiceDetail?.service_fee
                   ?.toString()
