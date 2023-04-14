@@ -25,7 +25,7 @@ const EditWaste = (props) => {
   const onSubmitData = (payload) => {
     const temp = {
       ...payload,
-      price_unit: Number(payload.price_unit.replace(/[$.]+/g, '').replace(/[$,]+/g, '.')),
+      // price_unit: Number(payload.price_unit.replace(/[$.]+/g, '').replace(/[$,]+/g, '.')),
       type: payload.type.value
     };
     axiosFetch({
@@ -64,7 +64,7 @@ const EditWaste = (props) => {
               name: wasteDetail?.name ?? "",
               type: wasteDetail?.waste_type_id ? { value: wasteDetail?.waste_type_id, label: wasteDetail?.type } : null ,
               weight_unit: wasteDetail?.weight_unit ?? "",
-              price_unit: wasteDetail?.price_unit?.toString()?.replace(/[$.]+/g, ',') ?? '',
+              // price_unit: wasteDetail?.price_unit?.toString()?.replace(/[$.]+/g, ',') ?? '',
             }}
           />
         )}

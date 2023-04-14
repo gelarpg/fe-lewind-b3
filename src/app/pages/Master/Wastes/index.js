@@ -81,18 +81,18 @@ const Wastes = (props) => {
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
-      {
-        field: "price_unit",
-        headerName: "Harga Acuan",
-        flex: 1,
-        valueFormatter: (params) => {
-          return `${new Intl.NumberFormat('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
-          }).format(params.value)}`;
-        },
-        sortable: false,
-      },
+      // {
+      //   field: "price_unit",
+      //   headerName: "Harga Acuan",
+      //   flex: 1,
+      //   valueFormatter: (params) => {
+      //     return `${new Intl.NumberFormat('id-ID', {
+      //       style: 'currency',
+      //       currency: 'IDR',
+      //     }).format(params.value)}`;
+      //   },
+      //   sortable: false,
+      // },
       {
         field: "actions",
         headerName: "",

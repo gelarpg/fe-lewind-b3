@@ -32,6 +32,10 @@ const Clients = React.lazy(() => import("app/pages/Master/Clients"));
 const NewClients = React.lazy(() => import("app/pages/Master/Clients/new"));
 const EditClients = React.lazy(() => import("app/pages/Master/Clients/edit"));
 
+const Licenses = React.lazy(() => import("app/pages/Master/Licenses"));
+const NewLicenses = React.lazy(() => import("app/pages/Master/Licenses/new"));
+const EditLicenses = React.lazy(() => import("app/pages/Master/Licenses/edit"));
+
 const Invoices = React.lazy(() => import("app/pages/Invoices"));
 const EditInvoices = React.lazy(() => import("app/pages/Invoices/edit"));
 
@@ -166,6 +170,23 @@ const routesForAuthenticatedOnly = [
   {
     path: "/clients/:id/detail",
     element: <Page component={EditClients} />,
+  },
+
+  {
+    path: "/licenses",
+    element: <Page component={Licenses} />,
+  },
+  {
+    path: "/licenses/new",
+    element: <Page component={NewLicenses} />,
+  },
+  {
+    path: "/licenses/:id/edit",
+    element: <Page component={EditLicenses} />,
+  },
+  {
+    path: "/licenses/:id/detail",
+    element: <Page component={EditLicenses} />,
   },
 
   {

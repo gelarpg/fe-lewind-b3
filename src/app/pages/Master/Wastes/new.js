@@ -15,7 +15,7 @@ const NewWaste = (props) => {
   const onSubmitData = (payload) => {
     const temp = {
       ...payload,
-      price_unit: Number(payload.price_unit.replace(/[$.]+/g, '').replace(/[$,]+/g, '.')),
+      // price_unit: Number(payload.price_unit.replace(/[$.]+/g, '').replace(/[$,]+/g, '.')),
       type: payload.type.value
     };
     axiosFetch({

@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useMemo,
 } from "react";
-import { Button, Box, Typography, ToggleButtonGroup, ToggleButton } from "@mui/material";
+import { Button, Box, Typography } from "@mui/material";
 import {
   CustomEditIconButton,
   CustomDeleteIconButton,
@@ -17,25 +17,24 @@ import { useNavigate } from "react-router-dom";
 import useFetch from "app/hooks/useFetch";
 import useAxiosFunction from "app/hooks/useAxiosFunction";
 import usePrevious from "app/hooks/usePrevious";
+import { withSnackbar } from "app/components/SnackbarComponent";
 import { withRoles } from "app/components/withRoles";
 import moment from "moment";
-import DatepickerComponent from "app/components/DatepickerComponent";
 
-const Invoices = (props) => {
-  const {isAdminDireksi, isAdminOperasional, isSuperAdmin} = props;
+const Licenses = (props) => {
+  const {isAdminDireksi, isSuperAdmin} = props;
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
   const {
     isLoading: isLoadingList,
-    data: invoicesData,
-    error: errorInvoicesData,
+    data: vehiclesData,
+    error: errorvehiclesData,
     refetch,
   } = useFetch({
-    url: "/bills",
+    url: "/transportation-license",
     requestConfig: {
       params: {
         page: 1,
         limit: 10,
-        payment_status: "false",
       },
     },
   });
@@ -49,7 +48,6 @@ const Invoices = (props) => {
   const [requestParam, setRequestParam] = useState({
     page: 1,
     limit: 10,
-    payment_status: "false",
   });
   const [fetched, setFetched] = useState(false);
   const prevParam = usePrevious(requestParam);
@@ -61,55 +59,55 @@ const Invoices = (props) => {
         headerName: "No",
         renderCell: (index) =>
           rowsPerPage * currentPage + (index.api.getRowIndex(index.row.id) + 1),
-        width: 50
+        width: 50,
       },
       {
-        field: "order_id",
-        headerName: "No Order",
-        width: 200,
+        field: "name",
+        headerName: "Nama Kendaraan",
+        width: 250,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
-        field: "client_name",
-        headerName: "Nama Klien",
-        width: 200,
+        field: "no_police",
+        headerName: "No Polisi",
+        width: 100,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
-        field: "waste_name",
-        headerName: "Jenis Limbah",
-        width: 200,
-        valueFormatter: (params) => params?.value ?? "-",
+        field: "validity_period_stnk",
+        headerName: "Masa Berlaku Pajak STNK",
+        width: 250,
+        valueFormatter: (params) => params?.value ? moment(params?.value).format('DD MMMM YYYY') : "-",
         sortable: false,
       },
       {
-        field: "period",
-        headerName: "Periode",
+        field: "validity_period_kir",
+        headerName: "Masa Berlaku KIR",
         width: 150,
         valueFormatter: (params) => params?.value ? moment(params?.value).format('DD MMMM YYYY') : "-",
         sortable: false,
       },
       {
-        field: "driver_name",
-        headerName: "Nama Driver",
+        field: "validity_period_rekom",
+        headerName: "Masa Berlaku Rekom",
         width: 200,
-        valueFormatter: (params) => params?.value ?? "-",
+        valueFormatter: (params) => params?.value ? moment(params?.value).format('DD MMMM YYYY') : "-",
         sortable: false,
       },
       {
-        field: "transportation_name",
-        headerName: "Kendaraan",
-        width: 200,
-        valueFormatter: (params) => params?.value ?? "-",
+        field: "validity_period_supervision_card",
+        headerName: "Masa Berlaku Kartu Pengawasan",
+        width: 250,
+        valueFormatter: (params) => params?.value ? moment(params?.value).format('DD MMMM YYYY') : "-",
         sortable: false,
       },
       {
-        field: "payment_status",
-        headerName: "Status",
-        width: 200,
-        valueFormatter: (params) => Boolean(params?.value) ? "Dibayar" : "Menunggu Pembayaran",
+        field: "validity_period_departement_permit",
+        headerName: "Masa Berlaku Izin Dinas Perhubungan",
+        width: 300,
+        valueFormatter: (params) => params?.value ? moment(params?.value).format('DD MMMM YYYY') : "-",
         sortable: false,
       },
       {
@@ -117,33 +115,36 @@ const Invoices = (props) => {
         headerName: "",
         type: "actions",
         getActions: (params) => {
-          let arr = [];
-          if (isAdminDireksi) arr = [
+          if (isAdminDireksi) return [
             <CustomDetailButton
               size="small"
-              onClick={() => navigate(`/invoices/${params.row.id}/detail`)}
+              onClick={() => navigate(`/licenses/${params.row.id}/detail`)}
             />
           ];
-          if (isAdminOperasional || isSuperAdmin) arr = [
+          return [
             <CustomEditIconButton
               size="small"
-              onClick={() => navigate(`/invoices/${params.row.id}/edit`)}
+              sx={{ mr: 2 }}
+              onClick={() => navigate(`/licenses/${params.row.id}/edit`)}
+            />,
+            <CustomDeleteIconButton
+              size="small"
+              onClick={() => deleteData(params.row.id)}
             />,
           ];
-          return arr;
         },
-        width: 75,
+        width: 200,
       },
     ];
-  }, [currentPage, rowsPerPage, isAdminDireksi, isSuperAdmin]);
+  }, [currentPage, rowsPerPage, isAdminDireksi]);
 
   useEffect(() => {
-    if (invoicesData?.submission && invoicesData?.paginator) {
-      setDatas(invoicesData.submission);
-      setPagination(invoicesData.paginator);
+    if (vehiclesData?.transportation_license && vehiclesData?.paginator) {
+      setDatas(vehiclesData.transportation_license);
+      setPagination(vehiclesData.paginator);
       if (tableRef && tableRef.current) tableRef.current.scrollIntoView();
     }
-  }, [invoicesData]);
+  }, [vehiclesData]);
 
   useEffect(() => {
     if (tableRef && tableRef.current) tableRef.current.scrollIntoView();
@@ -156,7 +157,22 @@ const Invoices = (props) => {
       });
       setFetched(false);
     }
-  }, [fetched]);
+  }, [fetched, requestParam]);
+
+  const deleteData = (id) => {
+    axiosFetch({
+      method: "delete",
+      url: `/transportation/license/delete/${id}`,
+      onSuccess: () => {
+        props.snackbarShowMessage('Data berhasil dihapus')
+        setRequestParam((curr) => ({
+          ...curr,
+          page: 1,
+        }));
+        setFetched(true);
+      },
+    });
+  };
 
   const onChangePage = useCallback((page) => {
     setCurrentPage(page);
@@ -180,53 +196,16 @@ const Invoices = (props) => {
 
   return (
     <Fragment>
-      <Box display="flex" mb={4}>
-        <Box flex={3}>
-          <ToggleButtonGroup
-            color="primary"
-            value={requestParam?.payment_status}
-            exclusive
-            onChange={(event, value) => {
-              setRequestParam(curr => ({
-                ...curr,
-                payment_status: value
-              }));
-              setFetched(true);
-            }}
+      <Box display="flex" justifyContent="flex-end" mb={4}>
+      {isSuperAdmin ? (
+          <Button
+            type="button"
+            variant="contained"
+            onClick={() => navigate(`/licenses/new`)}
           >
-            <ToggleButton value="false">Menunggu Pembayaran</ToggleButton>
-            <ToggleButton value="true">Dibayar</ToggleButton>
-          </ToggleButtonGroup>
-        </Box>
-        <Box flex={1}>
-          <DatepickerComponent
-            value={requestParam?.date ?? null}
-            onChange={(val) => {
-              if (val) {
-                setRequestParam((curr) => ({
-                  ...curr,
-                  date: moment(val).format('YYYY-MM-DD'),
-                }));
-                setFetched(true);
-              } else {
-                setRequestParam((curr) => ({
-                  ...curr,
-                  date: undefined,
-                }));
-                setFetched(true);
-              }
-            }}
-            onClear={() => {
-              setRequestParam((curr) => ({
-                ...curr,
-                date: undefined,
-              }));
-              setFetched(true);
-            }}
-            disableFuture
-            placeholder="Pilih Tanggal"
-          />
-        </Box>
+            Tambah Data
+          </Button>
+        ) : null}
       </Box>
       <DataGrid
         ref={tableRef}
@@ -251,4 +230,4 @@ const Invoices = (props) => {
   );
 };
 
-export default withRoles(Invoices);
+export default withRoles(withSnackbar(Licenses));

@@ -27,7 +27,7 @@ const validationSchema = yup.object({
   })
   .nullable(),
   weight_unit: yup.string().required("Berat satuan harus diisi"),
-  price_unit: yup.string().required("Harga acuan harus diisi"),
+  // price_unit: yup.string().required("Harga acuan harus diisi"),
 });
 
 const CustomForm = ({
@@ -82,7 +82,7 @@ const CustomForm = ({
               placeholder="Kilogram, Gram, dll"
             />
           </Box>
-          <Box flex={1} mb={3}>
+          {/* <Box flex={1} mb={3}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
               Harga Acuan
             </Typography>
@@ -93,7 +93,7 @@ const CustomForm = ({
               fullWidth
               name="price_unit"
             />
-          </Box>
+          </Box> */}
         </Box>
         <Box display="flex" alignItems="center" justifyContent="end">
           <GreyButton

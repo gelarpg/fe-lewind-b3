@@ -53,6 +53,12 @@ const menus = [
             label: "Client",
             type: "nav-item",
           },
+          {
+            id: "licenses",
+            uri: "/licenses",
+            label: "Perizinan",
+            type: "nav-item",
+          },
         ],
       },
     ],

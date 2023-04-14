@@ -19,7 +19,7 @@ import moment from "moment";
 import { withRoles } from "app/components/withRoles";
 
 const Recaps = (props) => {
-  const {isAdminDireksi, isAdminOperasional} = props;
+  const {isAdminDireksi, isAdminOperasional, isSuperAdmin} = props;
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
   const {
     isLoading: isLoadingList,
@@ -115,7 +115,7 @@ const Recaps = (props) => {
         type: "actions",
         getActions: (params) => {
           let arr = [];
-          if (isAdminOperasional) arr = [
+          if (isAdminOperasional || isSuperAdmin) arr = [
             <CustomEditIconButton
               size="small"
               onClick={() => navigate(`/orders/${params.row.id}/edit`)}
@@ -132,7 +132,7 @@ const Recaps = (props) => {
         width: 75,
       },
     ];
-  }, [currentPage, rowsPerPage, isAdminDireksi, isAdminOperasional]);
+  }, [currentPage, rowsPerPage, isAdminDireksi, isAdminOperasional, isSuperAdmin]);
 
   useEffect(() => {
     if (recapsData?.submission && recapsData?.paginator) {

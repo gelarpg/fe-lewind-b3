@@ -24,6 +24,8 @@ const FormikReactSelect = ({
   optionsData = [],
   additionalKey = null,
   additionalProp = null,
+  additionalKey2 = null,
+  additionalProp2 = null,
   ...props
 }) => {
   const { name } = props;
@@ -51,6 +53,7 @@ const FormikReactSelect = ({
           ...datas[objectProp].map((x) => {
             const value = { value: x[valueProp], label: x[labelProp] };
             if (additionalKey && additionalProp) value[additionalKey] = x[additionalProp];
+            if (additionalKey2 && additionalProp2) value[additionalKey2] = x[additionalProp2];
             return value;
           }),
         ]);
