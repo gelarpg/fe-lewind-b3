@@ -73,24 +73,31 @@ const EditClient = (props) => {
                 clientDetail?.transaction_fee
                   ?.toString()
                   ?.replace(/[$.]+/g, ",") ?? "",
-              waste_id: clientDetail?.waste_id
-                ? [{
-                    value: clientDetail?.waste_id,
-                    label: `${clientDetail?.waste_name}`,
-                  }]
-                : [{
-                  value: null,
-                  label: null
-                }],
-              waste_type: clientDetail?.waste_type ?? "",
-              price_per_unit: clientDetail?.waste_price_unit
-                ? `${new Intl.NumberFormat("id-ID", {
-                    style: "currency",
-                    currency: "IDR",
-                  }).format(clientDetail?.waste_price_unit)} / ${
-                    clientDetail?.waste_weight_unit
-                  }`
-                : "",
+              waste_ids: [{
+                id: clientDetail?.waste_id ? {
+                  value: clientDetail?.waste_id,
+                  label: `${clientDetail?.waste_name}`,
+                } : null,
+                name: clientDetail?.waste_type,
+              }],
+              // waste_id: clientDetail?.waste_id
+              //   ? [{
+              //       value: clientDetail?.waste_id,
+              //       label: `${clientDetail?.waste_name}`,
+              //     }]
+              //   : [{
+              //     value: null,
+              //     label: null
+              //   }],
+              // waste_type: clientDetail?.waste_type ?? "",
+              // price_per_unit: clientDetail?.waste_price_unit
+              //   ? `${new Intl.NumberFormat("id-ID", {
+              //       style: "currency",
+              //       currency: "IDR",
+              //     }).format(clientDetail?.waste_price_unit)} / ${
+              //       clientDetail?.waste_weight_unit
+              //     }`
+              //   : "",
             }}
           />
         )}

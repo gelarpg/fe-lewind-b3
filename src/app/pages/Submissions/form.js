@@ -316,7 +316,7 @@ const CustomForm = ({
                     transportation_id: null,
                     driver_id: null,
                     period: "",
-                    isSelected: false,
+                    isSelected: key === 0 ? true: false,
                     waste_name: val?.waste_name,
                   })
                 );
@@ -460,7 +460,7 @@ const CustomForm = ({
               placeholder="Biaya Limbah"
             />
           </Box>
-          <Box flex={1} mb={3}>
+          {/* <Box flex={1} mb={3}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
               Alamat
             </Typography>
@@ -473,7 +473,7 @@ const CustomForm = ({
               multiline
               rows={3}
             />
-          </Box>
+          </Box> */}
           <Box flex={1}>
             <Grid
               container

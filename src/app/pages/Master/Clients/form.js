@@ -21,23 +21,25 @@ const validationSchema = yup.object({
   address: yup.string().required("Alamat harus diisi"),
   offer_number: yup.string().required("Nomor penawaran harus diisi"),
   transaction_fee: yup.string().required("Biaya transaksi harus diisi"),
-  waste_id: yup.array().of(
-    yup
-      .object()
-      .shape({
-        label: yup.string().required(),
-        value: yup.string().required(),
-      })
-      .test("required", "Jenis limbah harus diisi", (value, ctx) => {
-        if (!value) return false;
-        else if (value !== null) {
-          return !!value.value && !!value.label;
-        }
-        return true;
-      })
-      .nullable()
+  waste_ids: yup.array().of(
+    yup.object().shape({
+      id: yup
+        .object()
+        .shape({
+          label: yup.string().required(),
+          value: yup.string().required(),
+        })
+        .test("required", "Jenis limbah harus diisi", (value, ctx) => {
+          if (!value) return false;
+          else if (value !== null) {
+            return !!value.value && !!value.label;
+          }
+          return true;
+        })
+        .nullable(),
+      name: yup.string(),
+    })
   ),
-  waste_name: yup.array().of(yup.string()),
 });
 
 const IconButtonDelete = styled(IconButton)({
@@ -76,9 +78,10 @@ const CustomForm = ({
     remove: removeWastes,
   } = useFieldArray({
     control: methods.control,
-    name: "waste_id",
+    name: "waste_ids",
   });
 
+  console.log(methods.formState.errors);
   return (
     <FormProvider {...methods}>
       <form
@@ -152,18 +155,24 @@ const CustomForm = ({
           </Box>
           <Box flex={1} mb={3}>
             {fieldsWastes.map((field, index) => (
-              <Stack spacing={3} direction="row" key={field.id} alignItems="center" mb={3}>
+              <Stack
+                spacing={3}
+                direction="row"
+                key={field.id}
+                alignItems="center"
+                mb={3}
+              >
                 <Box flex={1}>
                   <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
                     Limbah
                   </Typography>
                   <FormikWasteSelection
                     isDisabled={isDetail}
-                    name={`waste_id[${index}]`}
+                    name={`waste_ids.${index}.id`}
                     placeholder="Pilih Jenis Limbah"
                     onChange={(value) => {
                       methods.setValue(
-                        `waste_type[${index}]`,
+                        `waste_ids.${index}.name`,
                         value?.type ?? ""
                       );
                       // methods.setValue(
@@ -185,7 +194,7 @@ const CustomForm = ({
                     disabled={true}
                     size="small"
                     fullWidth
-                    name={`waste_type[${index}]`}
+                    name={`waste_ids.${index}.name`}
                   />
                 </Box>
                 {!isDetail ? (
@@ -201,7 +210,7 @@ const CustomForm = ({
                       type="button"
                       onClick={() => {
                         if (fieldsWastes.length < 5) {
-                          appendWastes("");
+                          appendWastes(null);
                         }
                       }}
                     >

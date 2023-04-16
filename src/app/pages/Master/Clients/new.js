@@ -13,23 +13,22 @@ const NewClient = (props) => {
   const onSubmitData = (payload) => {
     const temp = {
       ...payload,
-      waste_id: payload.waste_id.value,
+      waste_ids: payload.waste_ids.map(x => x.id.value)[0],
       transaction_fee: Number(payload.transaction_fee.replace(/[$.]+/g, '').replace(/[$,]+/g, '.')),
     };
-    console.log(payload)
-    // delete temp.waste_type;
-    // delete temp.price_per_unit;
-    // axiosFetch({
-    //   method: "post",
-    //   url: "/clients/create",
-    //   requestConfig: {
-    //     data: temp,
-    //   },
-    //   onSuccess: () => {
-    //     props.snackbarShowMessage('Data client berhasil ditambahkan');
-    //     setTimeout(() => navigate('/clients'), 1500);
-    //   },
-    // });
+    if (temp.waste_type) delete temp.waste_type;
+    if (temp.price_per_unit) delete temp.price_per_unit;
+    axiosFetch({
+      method: "post",
+      url: "/clients/create",
+      requestConfig: {
+        data: temp,
+      },
+      onSuccess: () => {
+        props.snackbarShowMessage('Data client berhasil ditambahkan');
+        setTimeout(() => navigate('/clients'), 1500);
+      },
+    });
   };
 
   return (
@@ -43,9 +42,9 @@ const NewClient = (props) => {
             address: "",
             offer_number: "",
             transaction_fee: "",
-            waste_id: [{
-              value: null,
-              label: null,
+            waste_ids: [{
+              id: null,
+              name: "",
             }],
           }}
         />

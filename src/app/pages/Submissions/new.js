@@ -24,9 +24,12 @@ const NewSubmission = (props) => {
       payload.service_fee.replace(/[$.]+/g, "").replace(/[$,]+/g, ".")
     );
     if (payload?.waste_cost) temp.waste_cost = Number(payload.waste_cost.replace(/[$.]+/g, '').replace(/[$,]+/g, '.'));
-    if (payload?.period) temp.period = moment(payload.period).format("YYYY-MM-DD HH:mm:ss");
-    if (payload?.transportation_id?.value) temp.transportation_id = payload.transportation_id.value;
-    if (payload?.driver_id?.value) temp.driver_id = payload.driver_id.value;
+    // if (payload?.period) temp.period = moment(payload.period).format("YYYY-MM-DD HH:mm:ss");
+    if (payload?.test?.length) temp.period = moment(payload.test[0].period).format("YYYY-MM-DD HH:mm:ss");
+    // if (payload?.transportation_id?.value) temp.transportation_id = payload.transportation_id.value;
+    if (payload?.test?.length) temp.transportation_id = payload.test[0].transportation_id.value;
+    // if (payload?.driver_id?.value) temp.driver_id = payload.driver_id.value;
+    if (payload?.test?.length) temp.driver_id = payload.test[0].driver_id.value;
     if (payload.service_fee_file) {
       promises.push({
         key: "service_fee_file",
@@ -70,24 +73,24 @@ const NewSubmission = (props) => {
       });
     }
     console.log(payload, temp)
-    // uploadFileHandler(promises).then((values) => {
-    //   let dataToSend = {
-    //     ...temp,
-    //     ...values,
-    //   };
-    //   axiosFetch({
-    //     method: "post",
-    //     url: "/submission/create",
-    //     requestConfig: {
-    //       data: dataToSend,
-    //     },
-    //     onSuccess: () => {
-    //       props.snackbarShowMessage("Data pengajuan berhasil ditambahkan");
-    //       setTimeout(() => navigate('/submissions'), 1500);
-    //     },
-    //     finally: () => setLoading(false)
-    //   });
-    // });
+    uploadFileHandler(promises).then((values) => {
+      let dataToSend = {
+        ...temp,
+        ...values,
+      };
+      axiosFetch({
+        method: "post",
+        url: "/submission/create",
+        requestConfig: {
+          data: dataToSend,
+        },
+        onSuccess: () => {
+          props.snackbarShowMessage("Data pengajuan berhasil ditambahkan");
+          setTimeout(() => navigate('/submissions'), 1500);
+        },
+        finally: () => setLoading(false)
+      });
+    });
   };
 
   return (

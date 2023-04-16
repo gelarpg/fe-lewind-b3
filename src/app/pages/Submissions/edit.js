@@ -179,19 +179,8 @@ const EditSubmission = (props) => {
             onSubmit={onSubmitData}
             isLoading={isLoading || isLoadingAPI}
             initialValues={{
-              waste_name: submissionDetail?.waste_name ?? "",
-              waste_cost: submissionDetail?.waste_cost?.toString()?.replace(/[$.]+/g, ',') ?? '',
-              waste_reference_price: submissionDetail?.waste_price_unit ? `${new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-              }).format(submissionDetail?.waste_price_unit)}` : "",
-              client_id: submissionDetail?.client_id
-                ? {
-                    value: submissionDetail?.client_id,
-                    label: submissionDetail?.client_name,
-                  }
-                : null,
-              transportation_id: submissionDetail?.transportation_id
+              test: submissionDetail?.client_id ? [{
+                transportation_id: submissionDetail?.transportation_id
                 ? {
                     value: submissionDetail?.transportation_id,
                     label: submissionDetail?.transportation_name,
@@ -203,10 +192,25 @@ const EditSubmission = (props) => {
                     label: submissionDetail?.driver_name,
                   }
                 : null,
-              address: submissionDetail?.client_address ?? "",
               period: submissionDetail?.period
                 ? moment(submissionDetail?.period)
                 : "",
+              waste_name: submissionDetail?.waste_name ?? "",
+              isSelected: true,
+              }] : [],
+              waste_name: submissionDetail?.waste_name ?? "",
+              waste_cost: submissionDetail?.waste_cost?.toString()?.replace(/[$.]+/g, ',') ?? '',
+              // waste_reference_price: submissionDetail?.waste_price_unit ? `${new Intl.NumberFormat('id-ID', {
+              //   style: 'currency',
+              //   currency: 'IDR',
+              // }).format(submissionDetail?.waste_price_unit)}` : "",
+              client_id: submissionDetail?.client_id
+                ? {
+                    value: submissionDetail?.client_id,
+                    label: submissionDetail?.client_name,
+                  }
+                : null,
+              address: submissionDetail?.client_address ?? "",
               service_fee:
                 submissionDetail?.service_fee
                   ?.toString()
