@@ -1,6 +1,7 @@
 import React from "react";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import ContentPasteOutlinedIcon from '@mui/icons-material/ContentPasteOutlined';
+import ContentPasteOutlinedIcon from "@mui/icons-material/ContentPasteOutlined";
+import FactCheckIcon from '@mui/icons-material/FactCheck';
 import SvgIcon from "@mui/material/SvgIcon";
 import { ReactComponent as Email } from "app/assets/icons/email.svg";
 import { ReactComponent as Graph } from "app/assets/icons/graph.svg";
@@ -53,24 +54,23 @@ const menus = [
             label: "Client",
             type: "nav-item",
           },
-          {
-            id: "licenses",
-            uri: "/licenses",
-            label: "Perizinan",
-            type: "nav-item",
-          },
         ],
       },
     ],
+  },
+  {
+    id: "licenses",
+    uri: "/licenses",
+    label: "Perizinan",
+    type: "nav-item",
+    icon: <FactCheckIcon sx={{ fontSize: 20 }} />,
   },
   {
     id: "submissions",
     uri: "/submissions",
     label: "Pengajuan",
     type: "nav-item",
-    icon: (
-    <ContentPasteOutlinedIcon sx={{ fontSize: 20 }} />
-    ),
+    icon: <ContentPasteOutlinedIcon sx={{ fontSize: 20 }} />,
   },
   {
     id: "orders",
@@ -78,7 +78,7 @@ const menus = [
     label: "Rekap Order",
     type: "nav-item",
     icon: (
-    <SvgIcon sx={{ fontSize: 20 }} viewBox="0 0 20 20">
+      <SvgIcon sx={{ fontSize: 20 }} viewBox="0 0 20 20">
         <Growth />
       </SvgIcon>
     ),
@@ -89,7 +89,7 @@ const menus = [
     label: "Tagihan",
     type: "nav-item",
     icon: (
-    <SvgIcon sx={{ fontSize: 20 }} viewBox="0 0 20 20">
+      <SvgIcon sx={{ fontSize: 20 }} viewBox="0 0 20 20">
         <Email />
       </SvgIcon>
     ),
@@ -100,7 +100,7 @@ const menus = [
     label: "User Management",
     type: "nav-item",
     icon: (
-    <SvgIcon sx={{ fontSize: 20 }} viewBox="0 0 20 20">
+      <SvgIcon sx={{ fontSize: 20 }} viewBox="0 0 20 20">
         <Options />
       </SvgIcon>
     ),

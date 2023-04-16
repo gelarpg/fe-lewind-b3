@@ -1,5 +1,13 @@
 import React, { useMemo } from "react";
-import { Typography, Box, Grid } from "@mui/material";
+import {
+  Typography,
+  Box,
+  Grid,
+  Checkbox,
+  Stack,
+  Card,
+  CardContent,
+} from "@mui/material";
 import * as yup from "yup";
 import LoadingButton from "@mui/lab/LoadingButton";
 
@@ -14,6 +22,7 @@ import FormikReactSelect from "app/components/FormikReactSelect";
 import FormikDatepicker from "app/components/FormikDatepicker";
 import FormikClientSelection from "app/components/FormikClientSelection";
 import { withRoles } from "app/components/withRoles";
+import { Controller, useFieldArray } from "react-hook-form";
 
 const CustomForm = ({
   initialValues,
@@ -23,10 +32,74 @@ const CustomForm = ({
   ...props
 }) => {
   const navigate = useNavigate();
-  const {isAdminPerencanaan, isAdminOperasional, isSuperAdmin} = props;
+  const { isAdminPerencanaan, isAdminOperasional, isSuperAdmin } = props;
 
   const validationSchema = useMemo(() => {
     return yup.object({
+      isSelected: yup.array().of(yup.boolean()),
+      test: yup.array().of(
+        yup.object().shape({
+          isSelected: yup.boolean(),
+          transportation_id: yup
+            .object()
+            .shape({
+              label: yup.string().required(),
+              value: yup.string().required(),
+            })
+            .test("required", "Kendaraan harus diisi", (value, ctx) => {
+              if (
+                (isAdminOperasional || isSuperAdmin) &&
+                ctx.parent.isSelected
+              ) {
+                if (!value) return false;
+                else if (value !== null && value.value && value.label)
+                  return !!value.value && !!value.label;
+              }
+              return true;
+            })
+            .nullable(),
+          driver_id: yup
+            .object()
+            .shape({
+              label: yup.string().required(),
+              value: yup.string().required(),
+            })
+            .test("required", "Nama Driver harus diisi", (value, ctx) => {
+              if (
+                (isAdminOperasional || isSuperAdmin) &&
+                ctx.parent.isSelected
+              ) {
+                if (!value) return false;
+                else if (value !== null && value.value && value.label)
+                  return !!value.value && !!value.label;
+              }
+              return true;
+            })
+            .nullable(),
+          period: yup
+            .string()
+            .test("required", "Periode harus diisi", (value, ctx) => {
+              if (
+                (isAdminOperasional || isSuperAdmin) &&
+                ctx.parent.isSelected
+              ) {
+                if (!value) return false;
+              }
+              return true;
+            }),
+          waste_name: yup
+            .string()
+            .test("required", "Jenis limbah harus diisi", (value, ctx) => {
+              if (
+                (isAdminOperasional || isSuperAdmin) &&
+                ctx.parent.isSelected
+              ) {
+                if (!value) return false;
+              }
+              return true;
+            }),
+        })
+      ),
       travel_fee: yup
         .object()
         .shape({
@@ -57,49 +130,12 @@ const CustomForm = ({
           return true;
         })
         .nullable(),
-      transportation_id: yup
-        .object()
-        .shape({
-          label: yup.string().required(),
-          value: yup.string().required(),
-        })
-        .test("required", "Kendaraan harus diisi", (value, ctx) => {
-          if (isAdminOperasional || isSuperAdmin) {
-            if (!value) return false;
-            else if (value !== null && value.value && value.label)
-              return !!value.value && !!value.label;
-          }
-          return true;
-        })
-        .nullable(),
-      driver_id: yup
-        .object()
-        .shape({
-          label: yup.string().required(),
-          value: yup.string().required(),
-        })
-        .test("required", "Nama Driver harus diisi", (value, ctx) => {
-          if (isAdminOperasional || isSuperAdmin) {
-            if (!value) return false;
-            else if (value !== null && value.value && value.label)
-              return !!value.value && !!value.label;
-          }
-          return true;
-        })
-        .nullable(),
       address: yup.string(),
-      waste_name: yup.string(),
       waste_cost: yup.string().required("Biaya limbah harus diisi"),
-      waste_reference_price: yup.string(),
-      period: yup.string().when([], {
-        is: () => isAdminOperasional || isSuperAdmin,
-        then: yup.string().required("Periode harus diisi"),
-        otherwise: yup.string().notRequired()
-      }),
       service_fee: yup.string().when([], {
         is: () => isAdminOperasional || isSuperAdmin,
         then: yup.string().required("Biaya Layanan harus diisi"),
-        otherwise: yup.string().notRequired()
+        otherwise: yup.string().notRequired(),
       }),
       service_fee_file: yup
         .mixed()
@@ -107,7 +143,7 @@ const CustomForm = ({
         .when([], {
           is: () => isAdminOperasional || isSuperAdmin,
           then: yup.mixed().required("Dokumen Biaya Layanan harus diisi"),
-          otherwise: yup.mixed().notRequired()
+          otherwise: yup.mixed().notRequired(),
         })
         .test("fileSize", "Dokumen Biaya Layanan maksimal 5MB", (value) => {
           if (value && value.size) return value.size <= 5000000;
@@ -253,6 +289,11 @@ const CustomForm = ({
     defaultValues: initialValues,
   });
 
+  const { fields, append, remove } = useFieldArray({
+    control: methods.control,
+    name: "test",
+  });
+
   return (
     <FormProvider {...methods}>
       <form
@@ -270,29 +311,130 @@ const CustomForm = ({
               isDisabled={isDetail || isAdminOperasional}
               name="client_id"
               onChange={(val) => {
-                methods.setValue("waste_name", val?.waste_name);
+                Array.from({ length: 5 }).map((x, key) =>
+                  append({
+                    transportation_id: null,
+                    driver_id: null,
+                    period: "",
+                    isSelected: false,
+                    waste_name: val?.waste_name,
+                  })
+                );
+                // methods.setValue("waste_name", val?.waste_name);
                 methods.setValue("address", val?.address);
-                methods.setValue("waste_reference_price", `${new Intl.NumberFormat('id-ID', {
-                  style: 'currency',
-                  currency: 'IDR',
-                }).format(val?.waste_reference_price)}`);
+                // methods.setValue("waste_reference_price", `${new Intl.NumberFormat('id-ID', {
+                //   style: 'currency',
+                //   currency: 'IDR',
+                // }).format(val?.waste_reference_price)}`);
               }}
             />
           </Box>
           <Box flex={1} mb={3}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-              Jenis Limbah
+              Alamat
             </Typography>
             <JumboTextField
               variant="standard"
               disabled={true}
               size="small"
               fullWidth
-              name="waste_name"
-              placeholder="Jenis Limbah"
+              name="address"
+              multiline
+              rows={3}
             />
           </Box>
           <Box flex={1} mb={3}>
+            {fields.map((x, key) => {
+              return (
+                <Card key={x.id} sx={{ mb: 3 }}>
+                  <CardContent>
+                    <Stack spacing={3} direction="row" alignItems="center">
+                      <Controller
+                        name={`test.${key}.isSelected`}
+                        control={methods.control}
+                        defaultValue={false}
+                        render={({ field, fieldState: { invalid, error } }) => {
+                          return (
+                            <Checkbox
+                              color="primary"
+                              checked={field.value}
+                              onChange={(e) => field.onChange(e.target.checked)}
+                            />
+                          );
+                        }}
+                      />
+                      <Box flex={1} mb={3}>
+                        <Typography
+                          variant={"body1"}
+                          fontWeight="bold"
+                          mb={1.5}
+                        >
+                          Periode
+                        </Typography>
+                        <FormikDatepicker
+                          name={`test.${key}.period`}
+                          disabled={isDetail || isAdminPerencanaan}
+                          disablePast
+                        />
+                      </Box>
+                      <Box flex={1} mb={3}>
+                        <Typography
+                          variant={"body1"}
+                          fontWeight="bold"
+                          mb={1.5}
+                        >
+                          Jenis Limbah
+                        </Typography>
+                        <JumboTextField
+                          variant="standard"
+                          disabled={true}
+                          size="small"
+                          fullWidth
+                          name={`test.${key}.waste_name`}
+                          placeholder="Jenis Limbah"
+                        />
+                      </Box>
+                      <Box flex={1} mb={3}>
+                        <Typography
+                          variant={"body1"}
+                          fontWeight="bold"
+                          mb={1.5}
+                        >
+                          Nama Driver
+                        </Typography>
+                        <FormikReactSelect
+                          isDisabled={isDetail || isAdminPerencanaan}
+                          name={`test.${key}.driver_id`}
+                          placeholder="Nama Driver"
+                          url="/driver"
+                          usePagination
+                          objectProp="driver"
+                        />
+                      </Box>
+                      <Box flex={1} mb={3}>
+                        <Typography
+                          variant={"body1"}
+                          fontWeight="bold"
+                          mb={1.5}
+                        >
+                          Kendaraan
+                        </Typography>
+                        <FormikReactSelect
+                          isDisabled={isDetail || isAdminPerencanaan}
+                          name={`test.${key}.transportation_id`}
+                          placeholder="Kendaraan"
+                          url="/transportation"
+                          usePagination
+                          objectProp="transportation"
+                        />
+                      </Box>
+                    </Stack>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </Box>
+          {/* <Box flex={1} mb={3}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
               Harga Acuan Limbah
             </Typography>
@@ -304,8 +446,8 @@ const CustomForm = ({
               name="waste_reference_price"
               placeholder="Harga Acuan Limbah"
             />
-          </Box>
-          <Box flex={1} mb={3}>
+          </Box> */}
+          <Box flex={1} mb={3} mt={3}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
               Biaya Limbah
             </Typography>
@@ -330,38 +472,6 @@ const CustomForm = ({
               name="address"
               multiline
               rows={3}
-            />
-          </Box>
-          <Box flex={1} mb={3}>
-            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-              Periode
-            </Typography>
-            <FormikDatepicker name="period" disabled={isDetail || isAdminPerencanaan} disablePast />
-          </Box>
-          <Box flex={1} mb={3}>
-            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-              Nama Driver
-            </Typography>
-            <FormikReactSelect
-              isDisabled={isDetail || isAdminPerencanaan}
-              name="driver_id"
-              placeholder="Nama Driver"
-              url="/driver"
-              usePagination
-              objectProp="driver"
-            />
-          </Box>
-          <Box flex={1} mb={3}>
-            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-              Kendaraan
-            </Typography>
-            <FormikReactSelect
-              isDisabled={isDetail || isAdminPerencanaan}
-              name="transportation_id"
-              placeholder="Kendaraan"
-              url="/transportation"
-              usePagination
-              objectProp="transportation"
             />
           </Box>
           <Box flex={1}>

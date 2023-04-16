@@ -43,11 +43,11 @@ const EditVehicles = (props) => {
       transportation_type_id: payload.transportation_type_id.value,
       fuel_type: payload.fuel_type,
       year: moment(payload.year).format("YYYY"),
-      validity_period_kir: moment(payload.validity_period_kir).format("YYYY-MM-DD"),
-      validity_period_rekom: moment(payload.validity_period_rekom).format("YYYY-MM-DD"),
-      validity_period_supervision_card: moment(payload.validity_period_supervision_card).format("YYYY-MM-DD"),
-      stnk_validity_period: moment(payload.stnk_validity_period).format("YYYY-MM-DD"),
-      validity_period_departement_permit: moment(payload.validity_period_departement_permit).format("YYYY-MM-DD"),
+      // validity_period_kir: moment(payload.validity_period_kir).format("YYYY-MM-DD"),
+      // validity_period_rekom: moment(payload.validity_period_rekom).format("YYYY-MM-DD"),
+      // validity_period_supervision_card: moment(payload.validity_period_supervision_card).format("YYYY-MM-DD"),
+      // stnk_validity_period: moment(payload.stnk_validity_period).format("YYYY-MM-DD"),
+      // validity_period_departement_permit: moment(payload.validity_period_departement_permit).format("YYYY-MM-DD"),
     };
     if (payload.stnk_file) {
       if (typeof payload.stnk_file === "string") {
@@ -111,11 +111,11 @@ const EditVehicles = (props) => {
             isLoading={isLoading || isLoadingAPI}
             isDetail={window.location.pathname.includes('/detail')}
             initialValues={{
-              validity_period_kir: vehicleDetail?.validity_period_kir ? moment(vehicleDetail?.validity_period_kir) : "",
-              validity_period_rekom: vehicleDetail?.validity_period_rekom ? moment(vehicleDetail?.validity_period_rekom) : "",
-              validity_period_supervision_card: vehicleDetail?.validity_period_supervision_card ? moment(vehicleDetail?.validity_period_supervision_card) : "",
-              stnk_validity_period: getDocumentProperty(vehicleDetail, "stnk", "validity_period") ? moment(getDocumentProperty(vehicleDetail, "stnk", "validity_period")) : "",
-              validity_period_departement_permit: vehicleDetail?.validity_period_departement_permit ? moment(vehicleDetail?.validity_period_departement_permit) : "",
+              // validity_period_kir: vehicleDetail?.validity_period_kir ? moment(vehicleDetail?.validity_period_kir) : "",
+              // validity_period_rekom: vehicleDetail?.validity_period_rekom ? moment(vehicleDetail?.validity_period_rekom) : "",
+              // validity_period_supervision_card: vehicleDetail?.validity_period_supervision_card ? moment(vehicleDetail?.validity_period_supervision_card) : "",
+              // stnk_validity_period: getDocumentProperty(vehicleDetail, "stnk", "validity_period") ? moment(getDocumentProperty(vehicleDetail, "stnk", "validity_period")) : "",
+              // validity_period_departement_permit: vehicleDetail?.validity_period_departement_permit ? moment(vehicleDetail?.validity_period_departement_permit) : "",
               name: vehicleDetail?.name ?? "",
               no_police: vehicleDetail?.no_police ?? "",
               year: vehicleDetail?.year ?? "",

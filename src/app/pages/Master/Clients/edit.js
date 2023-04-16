@@ -74,11 +74,14 @@ const EditClient = (props) => {
                   ?.toString()
                   ?.replace(/[$.]+/g, ",") ?? "",
               waste_id: clientDetail?.waste_id
-                ? {
+                ? [{
                     value: clientDetail?.waste_id,
                     label: `${clientDetail?.waste_name}`,
-                  }
-                : null,
+                  }]
+                : [{
+                  value: null,
+                  label: null
+                }],
               waste_type: clientDetail?.waste_type ?? "",
               price_per_unit: clientDetail?.waste_price_unit
                 ? `${new Intl.NumberFormat("id-ID", {

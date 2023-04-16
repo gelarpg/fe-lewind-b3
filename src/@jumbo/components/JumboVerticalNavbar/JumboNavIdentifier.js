@@ -17,6 +17,7 @@ const JumboNavIdentifier = ({item, isNested, translate, ...props}) => {
     if(item.type && ['section', 'collapsible', 'nav-item'].includes(item.type)) {
         if (!isSuperAdmin && item.id === "users") return null;
         if (!isSuperAdmin && !isAdminDireksi && item.id === "master-data") return null;
+        if (!isSuperAdmin && !isAdminDireksi && item.id === "licenses") return null;
         const NavComponent = NAV_VARIANTS[item.type];
         return <NavComponent translate item={item} isNested={isNested}/>
     }

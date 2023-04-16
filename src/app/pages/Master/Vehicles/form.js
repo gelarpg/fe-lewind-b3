@@ -15,19 +15,19 @@ import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 const validationSchema = yup.object({
-  validity_period_kir: yup.string().required("Masa berlaku KIR harus diisi"),
-  validity_period_rekom: yup
-    .string()
-    .required("Masa berlaku rekom harus diisi"),
-  validity_period_supervision_card: yup
-    .string()
-    .required("Masa berlaku kartu pengawasan harus diisi"),
-  stnk_validity_period: yup
-    .string()
-    .required("Masa berlaku pajak STNK harus diisi"),
-  validity_period_departement_permit: yup
-    .string()
-    .required("Masa berlaku izin Dinas Perhubungan harus diisi"),
+  // validity_period_kir: yup.string().required("Masa berlaku KIR harus diisi"),
+  // validity_period_rekom: yup
+  //   .string()
+  //   .required("Masa berlaku rekom harus diisi"),
+  // validity_period_supervision_card: yup
+  //   .string()
+  //   .required("Masa berlaku kartu pengawasan harus diisi"),
+  // stnk_validity_period: yup
+  //   .string()
+  //   .required("Masa berlaku pajak STNK harus diisi"),
+  // validity_period_departement_permit: yup
+  //   .string()
+  //   .required("Masa berlaku izin Dinas Perhubungan harus diisi"),
   name: yup.string().required("Nama kendaraan harus diisi"),
   no_police: yup
     .string()
@@ -256,7 +256,7 @@ const CustomForm = ({
               </Grid>
             </Grid>
           </Box>
-          <Box flex={1}>
+          {/* <Box flex={1}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
               Masa Berlaku Pajak STNK
             </Typography>
@@ -355,7 +355,7 @@ const CustomForm = ({
                 />
               </Grid>
             </Grid>
-          </Box>
+          </Box> */}
         </Box>
         <Box display="flex" alignItems="center" justifyContent="end">
           <GreyButton

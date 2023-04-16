@@ -69,24 +69,25 @@ const NewSubmission = (props) => {
         payload: payload.waste_receipt_file,
       });
     }
-    uploadFileHandler(promises).then((values) => {
-      let dataToSend = {
-        ...temp,
-        ...values,
-      };
-      axiosFetch({
-        method: "post",
-        url: "/submission/create",
-        requestConfig: {
-          data: dataToSend,
-        },
-        onSuccess: () => {
-          props.snackbarShowMessage("Data pengajuan berhasil ditambahkan");
-          setTimeout(() => navigate('/submissions'), 1500);
-        },
-        finally: () => setLoading(false)
-      });
-    });
+    console.log(payload, temp)
+    // uploadFileHandler(promises).then((values) => {
+    //   let dataToSend = {
+    //     ...temp,
+    //     ...values,
+    //   };
+    //   axiosFetch({
+    //     method: "post",
+    //     url: "/submission/create",
+    //     requestConfig: {
+    //       data: dataToSend,
+    //     },
+    //     onSuccess: () => {
+    //       props.snackbarShowMessage("Data pengajuan berhasil ditambahkan");
+    //       setTimeout(() => navigate('/submissions'), 1500);
+    //     },
+    //     finally: () => setLoading(false)
+    //   });
+    // });
   };
 
   return (
@@ -96,13 +97,10 @@ const NewSubmission = (props) => {
           onSubmit={onSubmitData}
           isLoading={isLoading || isLoadingAPI}
           initialValues={{
+            test: [],
             client_id: null,
-            transportation_id: null,
-            waste_name: "",
             waste_cost: "",
-            driver_id: null,
             address: "",
-            period: "",
             service_fee: "",
             service_fee_file: null,
             invoice_file: null,
