@@ -58,54 +58,50 @@ const Recaps = (props) => {
         headerName: "No",
         renderCell: (index) =>
           rowsPerPage * currentPage + (index.api.getRowIndex(index.row.id) + 1),
-        width: 50
+        flex: 1,
       },
       {
         field: "order_id",
         headerName: "No Order",
-        width: 200,
+        flex: 1,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
         field: "client_name",
         headerName: "Nama Klien",
-        width: 200,
+        flex: 1,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
-      {
-        field: "waste_name",
-        headerName: "Jenis Limbah",
-        width: 200,
-        valueFormatter: (params) => params?.value ?? "-",
-        sortable: false,
-      },
-      {
-        field: "period",
-        headerName: "Periode",
-        width: 150,
-        valueFormatter: (params) => params?.value ? moment(params?.value).format('DD MMMM YYYY') : "-",
-        sortable: false,
-      },
-      {
-        field: "driver_name",
-        headerName: "Nama Driver",
-        width: 200,
-        valueFormatter: (params) => params?.value ?? "-",
-        sortable: false,
-      },
-      {
-        field: "transportation_name",
-        headerName: "Kendaraan",
-        width: 200,
-        valueFormatter: (params) => params?.value ?? "-",
-        sortable: false,
-      },
+      // {
+      //   field: "waste_name",
+      //   headerName: "Jenis Limbah",
+      //   valueFormatter: (params) => params?.value ?? "-",
+      //   sortable: false,
+      // },
+      // {
+      //   field: "period",
+      //   headerName: "Periode",
+      //   valueFormatter: (params) => params?.value ? moment(params?.value).format('DD MMMM YYYY') : "-",
+      //   sortable: false,
+      // },
+      // {
+      //   field: "driver_name",
+      //   headerName: "Nama Driver",
+      //   valueFormatter: (params) => params?.value ?? "-",
+      //   sortable: false,
+      // },
+      // {
+      //   field: "transportation_name",
+      //   headerName: "Kendaraan",
+      //   valueFormatter: (params) => params?.value ?? "-",
+      //   sortable: false,
+      // },
       {
         field: "status_name",
         headerName: "Status",
-        width: 150,
+        flex: 1,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
@@ -129,7 +125,7 @@ const Recaps = (props) => {
           ];
           return arr;
         },
-        width: 75,
+        flex: 1,
       },
     ];
   }, [currentPage, rowsPerPage, isAdminDireksi, isAdminOperasional, isSuperAdmin]);

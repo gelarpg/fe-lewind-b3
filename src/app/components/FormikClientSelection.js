@@ -6,6 +6,7 @@ import { alpha } from "@mui/material";
 import { useFormContext, Controller } from "react-hook-form";
 import { isEmpty, isEqual } from "lodash";
 import usePrevious from "app/hooks/usePrevious";
+import baseAxios from 'app/services/AxiosInterceptor';
 
 let NEXT_PAGE = null;
 
@@ -19,6 +20,7 @@ const FormikClientSelection = ({
   const { isLoading, data: clientData, error, axiosFetch } = useAxiosFunction();
 
   const [options, setOptions] = useState([]);
+  const [isLoadingDetail, setLoadingDetail] = useState(false);
   const [query, setQuery] = useState({
     page: 0,
     limit: 50,
@@ -74,6 +76,18 @@ const FormikClientSelection = ({
     }
   }, []);
 
+  const getClientDetail = async (id) => {
+    try {
+      setLoadingDetail(true);
+      const { data } = await baseAxios.get(`/clients/detail/${id}`);
+      return data.data;
+    } catch (error) {
+      const errorMessage = error?.response?.data?.meta?.message ?? error?.response?.data?.message ?? 'Something went wrong';
+    } finally {
+      setLoadingDetail(false);
+    }
+  }
+
   return (
     <Box display="flex" flexDirection="column" flex={1}>
       <Controller
@@ -119,12 +133,13 @@ const FormikClientSelection = ({
               value={value}
               isClearable={false}
               isSearchable={false}
-              onChange={(value) => {
+              onChange={async (value) => {
                 onChange(value);
-                if (props?.onChange) props?.onChange(value);
+                const client = await getClientDetail(value.value);
+                if (props?.onChange && client) props?.onChange(client);
               }}
               closeMenuOnSelect={true}
-              isLoading={isLoading}
+              isLoading={isLoading || isLoadingDetail}
               onMenuScrollToBottom={onMenuScrollToBottom}
               onMenuClose={onMenuClose}
               onMenuOpen={onMenuOpen}

@@ -41,7 +41,7 @@ const NewWaste = (props) => {
             name: "",
             type: null,
             weight_unit: "",
-            price_unit: "",
+            // price_unit: "",
           }}
         />
       </Box>

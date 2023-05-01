@@ -115,12 +115,30 @@ const EditInvoice = (props) => {
             onSubmit={onSubmitData}
             isLoading={isLoading}
             initialValues={{
-              waste_name: invoiceDetail?.waste_name ?? "",
-              waste_cost: invoiceDetail?.waste_cost?.toString()?.replace(/[$.]+/g, ',') ?? '',
-              waste_reference_price: invoiceDetail?.waste_price_unit ? `${new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-              }).format(invoiceDetail?.waste_price_unit)}` : "",
+              test: invoiceDetail?.submission_details?.length
+                ? invoiceDetail?.submission_details?.map((x) => ({
+                    transportation_id: x?.transportation_id
+                      ? {
+                          value: x?.transportation_id,
+                          label: x?.transportation_name,
+                        }
+                      : null,
+                    driver_id: x?.driver_id
+                      ? {
+                          value: x?.driver_id,
+                          label: x?.driver_name,
+                        }
+                      : null,
+                    period: x?.period ? moment(x?.period) : "",
+                    waste_name: x?.waste_name ?? "",
+                    qty: x?.qty?.toString()?.replace(/[$.]+/g, ",") ?? "",
+                    isSelected: true,
+                    waste_cost: x?.waste_cost ? `Rp. ${new Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                    }).format(x.waste_cost)}` : '',
+                  }))
+                : [],
               status: invoiceDetail?.payment_status
                 ? {
                     value: true,
@@ -136,22 +154,7 @@ const EditInvoice = (props) => {
                     label: invoiceDetail?.client_name,
                   }
                 : null,
-              transportation_id: invoiceDetail?.transportation_id
-                ? {
-                    value: invoiceDetail?.transportation_id,
-                    label: invoiceDetail?.transportation_name,
-                  }
-                : null,
-              driver_id: invoiceDetail?.driver_id
-                ? {
-                    value: invoiceDetail?.driver_id,
-                    label: invoiceDetail?.driver_name,
-                  }
-                : null,
               address: invoiceDetail?.client_address ?? "",
-              period: invoiceDetail?.period
-                ? moment(invoiceDetail?.period)
-                : "",
               service_fee:
                 invoiceDetail?.service_fee
                   ?.toString()

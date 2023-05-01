@@ -25,13 +25,14 @@ const EditClient = (props) => {
   const onSubmitData = (payload) => {
     const temp = {
       ...payload,
-      waste_id: payload.waste_id.value,
+      waste: payload.waste_ids.map(x => ({ id: x.id.value, waste_cost: Number(x.waste_cost.replace(/[$.]+/g, '').replace(/[$,]+/g, '.')) })),
       transaction_fee: Number(
         payload.transaction_fee.replace(/[$.]+/g, "").replace(/[$,]+/g, ".")
       ),
     };
-    delete temp.waste_type;
-    delete temp.price_per_unit;
+    if (temp.waste_ids) delete temp.waste_ids;
+    if (temp.waste_type) delete temp.waste_type;
+    if (temp.price_per_unit) delete temp.price_per_unit;
     axiosFetch({
       method: "put",
       url: `/clients/edit/${params.id}`,
@@ -73,31 +74,15 @@ const EditClient = (props) => {
                 clientDetail?.transaction_fee
                   ?.toString()
                   ?.replace(/[$.]+/g, ",") ?? "",
-              waste_ids: [{
-                id: clientDetail?.waste_id ? {
-                  value: clientDetail?.waste_id,
-                  label: `${clientDetail?.waste_name}`,
-                } : null,
-                name: clientDetail?.waste_type,
-              }],
-              // waste_id: clientDetail?.waste_id
-              //   ? [{
-              //       value: clientDetail?.waste_id,
-              //       label: `${clientDetail?.waste_name}`,
-              //     }]
-              //   : [{
-              //     value: null,
-              //     label: null
-              //   }],
-              // waste_type: clientDetail?.waste_type ?? "",
-              // price_per_unit: clientDetail?.waste_price_unit
-              //   ? `${new Intl.NumberFormat("id-ID", {
-              //       style: "currency",
-              //       currency: "IDR",
-              //     }).format(clientDetail?.waste_price_unit)} / ${
-              //       clientDetail?.waste_weight_unit
-              //     }`
-              //   : "",
+              waste_ids: clientDetail?.waste?.map((x) => ({
+                id: {
+                  value: x.waste_id,
+                  label: x.waste_name
+                },
+                name: x.waste_type,
+                waste_cost: x.waste_cost?.toString()
+                ?.replace(/[$.]+/g, ",") ?? ""
+              })),
             }}
           />
         )}

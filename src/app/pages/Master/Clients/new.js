@@ -13,9 +13,10 @@ const NewClient = (props) => {
   const onSubmitData = (payload) => {
     const temp = {
       ...payload,
-      waste_ids: payload.waste_ids.map(x => x.id.value)[0],
+      waste: payload.waste_ids.map(x => ({ id: x.id.value, waste_cost: Number(x.waste_cost.replace(/[$.]+/g, '').replace(/[$,]+/g, '.')) })),
       transaction_fee: Number(payload.transaction_fee.replace(/[$.]+/g, '').replace(/[$,]+/g, '.')),
     };
+    if (temp.waste_ids) delete temp.waste_ids;
     if (temp.waste_type) delete temp.waste_type;
     if (temp.price_per_unit) delete temp.price_per_unit;
     axiosFetch({
@@ -45,6 +46,7 @@ const NewClient = (props) => {
             waste_ids: [{
               id: null,
               name: "",
+              waste_cost: ""
             }],
           }}
         />

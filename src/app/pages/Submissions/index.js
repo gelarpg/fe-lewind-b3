@@ -70,43 +70,39 @@ const Submissions = (props) => {
       {
         field: "client_name",
         headerName: "Nama Klien",
-        width: 150,
+        flex: 1,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
-      {
-        field: "waste_name",
-        headerName: "Jenis Limbah",
-        width: 150,
-        valueFormatter: (params) => params?.value ?? "-",
-        sortable: false,
-      },
-      {
-        field: "period",
-        headerName: "Periode",
-        width: 150,
-        valueFormatter: (params) =>
-          params?.value ? moment(params?.value).format("DD MMMM YYYY") : "-",
-        sortable: false,
-      },
-      {
-        field: "driver_name",
-        headerName: "Nama Driver",
-        width: 150,
-        valueFormatter: (params) => params?.value ?? "-",
-        sortable: false,
-      },
-      {
-        field: "transportation_name",
-        headerName: "Kendaraan",
-        width: 150,
-        valueFormatter: (params) => params?.value ?? "-",
-        sortable: false,
-      },
+      // {
+      //   field: "waste_name",
+      //   headerName: "Jenis Limbah",
+      //   valueFormatter: (params) => params?.value ?? "-",
+      //   sortable: false,
+      // },
+      // {
+      //   field: "period",
+      //   headerName: "Periode",
+      //   valueFormatter: (params) =>
+      //     params?.value ? moment(params?.value).format("DD MMMM YYYY") : "-",
+      //   sortable: false,
+      // },
+      // {
+      //   field: "driver_name",
+      //   headerName: "Nama Driver",
+      //   valueFormatter: (params) => params?.value ?? "-",
+      //   sortable: false,
+      // },
+      // {
+      //   field: "transportation_name",
+      //   headerName: "Kendaraan",
+      //   valueFormatter: (params) => params?.value ?? "-",
+      //   sortable: false,
+      // },
       {
         field: "status_name",
         headerName: "Status",
-        width: 150,
+        flex: 1,
         sortable: false,
       },
       {
@@ -146,7 +142,7 @@ const Submissions = (props) => {
           }
           return actions;
         },
-        width: 175,
+        flex: 1,
       },
     ];
   }, [

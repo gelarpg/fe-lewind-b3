@@ -48,7 +48,7 @@ const CustomForm = ({
             })
             .test("required", "Kendaraan harus diisi", (value, ctx) => {
               if (
-                (isAdminOperasional || isSuperAdmin) &&
+                (isAdminPerencanaan || isSuperAdmin) &&
                 ctx.parent.isSelected
               ) {
                 if (!value) return false;
@@ -66,7 +66,7 @@ const CustomForm = ({
             })
             .test("required", "Nama Driver harus diisi", (value, ctx) => {
               if (
-                (isAdminOperasional || isSuperAdmin) &&
+                (isAdminPerencanaan || isSuperAdmin) &&
                 ctx.parent.isSelected
               ) {
                 if (!value) return false;
@@ -80,7 +80,7 @@ const CustomForm = ({
             .string()
             .test("required", "Periode harus diisi", (value, ctx) => {
               if (
-                (isAdminOperasional || isSuperAdmin) &&
+                (isAdminPerencanaan || isSuperAdmin) &&
                 ctx.parent.isSelected
               ) {
                 if (!value) return false;
@@ -91,13 +91,25 @@ const CustomForm = ({
             .string()
             .test("required", "Jenis limbah harus diisi", (value, ctx) => {
               if (
-                (isAdminOperasional || isSuperAdmin) &&
+                (isAdminPerencanaan || isSuperAdmin) &&
                 ctx.parent.isSelected
               ) {
                 if (!value) return false;
               }
               return true;
             }),
+          qty: yup
+            .string()
+            .test("required", "Jumlah limbah harus diisi", (value, ctx) => {
+              if (
+                (isAdminPerencanaan || isSuperAdmin) &&
+                ctx.parent.isSelected
+              ) {
+                if (!value) return false;
+              }
+              return true;
+            }),
+          waste_id: yup.string(),
         })
       ),
       travel_fee: yup
@@ -131,7 +143,7 @@ const CustomForm = ({
         })
         .nullable(),
       address: yup.string(),
-      waste_cost: yup.string().required("Biaya limbah harus diisi"),
+      // waste_cost: yup.string().required("Biaya limbah harus diisi"),
       service_fee: yup.string().when([], {
         is: () => isAdminOperasional || isSuperAdmin,
         then: yup.string().required("Biaya Layanan harus diisi"),
@@ -311,21 +323,33 @@ const CustomForm = ({
               isDisabled={isDetail || isAdminOperasional}
               name="client_id"
               onChange={(val) => {
-                Array.from({ length: 5 }).map((x, key) =>
-                  append({
-                    transportation_id: null,
-                    driver_id: null,
-                    period: "",
-                    isSelected: key === 0 ? true: false,
-                    waste_name: val?.waste_name,
-                  })
-                );
-                // methods.setValue("waste_name", val?.waste_name);
-                methods.setValue("address", val?.address);
-                // methods.setValue("waste_reference_price", `${new Intl.NumberFormat('id-ID', {
-                //   style: 'currency',
-                //   currency: 'IDR',
-                // }).format(val?.waste_reference_price)}`);
+                if (val?.waste?.length) {
+                  remove();
+                  val?.waste.map((x, key) => {
+                    append({
+                      transportation_id: null,
+                      driver_id: null,
+                      period: "",
+                      isSelected: key === 0 ? true : false,
+                      waste_name: x?.waste_name,
+                      qty: "",
+                      waste_id: x?.waste_id,
+                      waste_cost: `Rp. ${new Intl.NumberFormat("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                      }).format(x.waste_cost)}`,
+                      waste_weight_unit: x?.waste_weight_unit,
+                    });
+                  });
+                  // methods.setValue("waste_name", val?.waste_name);
+                  methods.setValue("address", val?.address);
+                  // methods.setValue("waste_reference_price", `${new Intl.NumberFormat('id-ID', {
+                  //   style: 'currency',
+                  //   currency: 'IDR',
+                  // }).format(val?.waste_reference_price)}`);
+                } else {
+                  methods.setValue("test", []);
+                }
               }}
             />
           </Box>
@@ -373,7 +397,7 @@ const CustomForm = ({
                         </Typography>
                         <FormikDatepicker
                           name={`test.${key}.period`}
-                          disabled={isDetail || isAdminPerencanaan}
+                          disabled={isDetail || isAdminOperasional}
                           disablePast
                         />
                       </Box>
@@ -383,7 +407,7 @@ const CustomForm = ({
                           fontWeight="bold"
                           mb={1.5}
                         >
-                          Jenis Limbah
+                          Nama Limbah
                         </Typography>
                         <JumboTextField
                           variant="standard"
@@ -391,7 +415,42 @@ const CustomForm = ({
                           size="small"
                           fullWidth
                           name={`test.${key}.waste_name`}
-                          placeholder="Jenis Limbah"
+                          placeholder="Nama Limbah"
+                        />
+                      </Box>
+                      <Box flex={1} mb={3}>
+                        <Typography
+                          variant={"body1"}
+                          fontWeight="bold"
+                          mb={1.5}
+                        >
+                          Biaya Limbah
+                        </Typography>
+                        <FormikNumberInput
+                          disabled={true}
+                          variant="standard"
+                          size="small"
+                          fullWidth
+                          name={`test.${key}.waste_cost`}
+                          placeholder="Biaya Limbah"
+                        />
+                      </Box>
+                      <Box flex={1} mb={3}>
+                        <Typography
+                          variant={"body1"}
+                          fontWeight="bold"
+                          mb={1.5}
+                        >
+                          {/* {`Jumlah Limbah (${x?.waste_weight_unit ?? ''})`} */}
+                          {`Jumlah`}
+                        </Typography>
+                        <FormikNumberInput
+                          disabled={isDetail || isAdminOperasional}
+                          variant="standard"
+                          size="small"
+                          fullWidth
+                          name={`test.${key}.qty`}
+                          placeholder="Jumlah Limbah"
                         />
                       </Box>
                       <Box flex={1} mb={3}>
@@ -403,7 +462,7 @@ const CustomForm = ({
                           Nama Driver
                         </Typography>
                         <FormikReactSelect
-                          isDisabled={isDetail || isAdminPerencanaan}
+                          isDisabled={isDetail || isAdminOperasional}
                           name={`test.${key}.driver_id`}
                           placeholder="Nama Driver"
                           url="/driver"
@@ -420,7 +479,7 @@ const CustomForm = ({
                           Kendaraan
                         </Typography>
                         <FormikReactSelect
-                          isDisabled={isDetail || isAdminPerencanaan}
+                          isDisabled={isDetail || isAdminOperasional}
                           name={`test.${key}.transportation_id`}
                           placeholder="Kendaraan"
                           url="/transportation"
@@ -447,7 +506,7 @@ const CustomForm = ({
               placeholder="Harga Acuan Limbah"
             />
           </Box> */}
-          <Box flex={1} mb={3} mt={3}>
+          {/* <Box flex={1} mb={3} mt={3}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
               Biaya Limbah
             </Typography>
@@ -459,7 +518,7 @@ const CustomForm = ({
               name="waste_cost"
               placeholder="Biaya Limbah"
             />
-          </Box>
+          </Box> */}
           {/* <Box flex={1} mb={3}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
               Alamat

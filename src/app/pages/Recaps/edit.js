@@ -179,12 +179,30 @@ const EditOrder = (props) => {
             onSubmit={onSubmitData}
             isLoading={isLoading}
             initialValues={{
-              waste_name: orderDetail?.waste_name ?? "",
-              waste_cost: orderDetail?.waste_cost?.toString()?.replace(/[$.]+/g, ',') ?? '',
-              waste_reference_price: orderDetail?.waste_price_unit ? `${new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-              }).format(orderDetail?.waste_price_unit)}` : "",
+              test: orderDetail?.submission_details?.length
+                ? orderDetail?.submission_details?.map((x) => ({
+                    transportation_id: x?.transportation_id
+                      ? {
+                          value: x?.transportation_id,
+                          label: x?.transportation_name,
+                        }
+                      : null,
+                    driver_id: x?.driver_id
+                      ? {
+                          value: x?.driver_id,
+                          label: x?.driver_name,
+                        }
+                      : null,
+                    period: x?.period ? moment(x?.period) : "",
+                    waste_name: x?.waste_name ?? "",
+                    qty: x?.qty?.toString()?.replace(/[$.]+/g, ",") ?? "",
+                    isSelected: true,
+                    waste_cost: x?.waste_cost ? `Rp. ${new Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                    }).format(x.waste_cost)}` : '',
+                  }))
+                : [],
               status: orderDetail?.status
                 ? {
                     value: orderDetail?.status,
@@ -197,22 +215,7 @@ const EditOrder = (props) => {
                     label: orderDetail?.client_name,
                   }
                 : null,
-              transportation_id: orderDetail?.transportation_id
-                ? {
-                    value: orderDetail?.transportation_id,
-                    label: orderDetail?.transportation_name,
-                  }
-                : null,
-              driver_id: orderDetail?.driver_id
-                ? {
-                    value: orderDetail?.driver_id,
-                    label: orderDetail?.driver_name,
-                  }
-                : null,
               address: orderDetail?.client_address ?? "",
-              period: orderDetail?.period
-                ? moment(orderDetail?.period)
-                : "",
               service_fee:
                 orderDetail?.service_fee
                   ?.toString()

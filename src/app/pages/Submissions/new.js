@@ -10,7 +10,12 @@ import { useNavigate } from "react-router-dom";
 import { uploadFileHandler } from "app/utils/helpers";
 
 const NewSubmission = (props) => {
-  const { isLoading: isLoadingAPI, data, error, axiosFetch } = useAxiosFunction();
+  const {
+    isLoading: isLoadingAPI,
+    data,
+    error,
+    axiosFetch,
+  } = useAxiosFunction();
   const navigate = useNavigate();
 
   const [isLoading, setLoading] = useState(false);
@@ -19,17 +24,26 @@ const NewSubmission = (props) => {
     setLoading(true);
     const promises = [];
     let temp = {};
+    if (payload?.travel_fee?.value) temp.travel_fee = Boolean(payload.travel_fee.value);
     if (payload?.client_id?.value) temp.client_id = payload.client_id.value;
-    if (payload?.service_fee) temp.service_fee = Number(
-      payload.service_fee.replace(/[$.]+/g, "").replace(/[$,]+/g, ".")
-    );
-    if (payload?.waste_cost) temp.waste_cost = Number(payload.waste_cost.replace(/[$.]+/g, '').replace(/[$,]+/g, '.'));
-    // if (payload?.period) temp.period = moment(payload.period).format("YYYY-MM-DD HH:mm:ss");
-    if (payload?.test?.length) temp.period = moment(payload.test[0].period).format("YYYY-MM-DD HH:mm:ss");
-    // if (payload?.transportation_id?.value) temp.transportation_id = payload.transportation_id.value;
-    if (payload?.test?.length) temp.transportation_id = payload.test[0].transportation_id.value;
-    // if (payload?.driver_id?.value) temp.driver_id = payload.driver_id.value;
-    if (payload?.test?.length) temp.driver_id = payload.test[0].driver_id.value;
+    if (payload?.service_fee)
+      temp.service_fee = Number(
+        payload.service_fee.replace(/[$.]+/g, "").replace(/[$,]+/g, ".")
+      );
+    if (payload?.test?.length) {
+      temp.waste = [];
+      payload?.test
+        .filter((a) => a.isSelected)
+        .map((x, key) => {
+          temp.waste.push({
+            transportation_id: x.transportation_id.value,
+            driver_id: x.driver_id.value,
+            period: moment(x.period).format("YYYY-MM-DD"),
+            waste_id: x.waste_id,
+            qty: Number(x.qty.replace(/[$.]+/g, "").replace(/[$,]+/g, ".")),
+          });
+        });
+    }
     if (payload.service_fee_file) {
       promises.push({
         key: "service_fee_file",
@@ -72,7 +86,7 @@ const NewSubmission = (props) => {
         payload: payload.waste_receipt_file,
       });
     }
-    console.log(payload, temp)
+
     uploadFileHandler(promises).then((values) => {
       let dataToSend = {
         ...temp,
@@ -86,23 +100,22 @@ const NewSubmission = (props) => {
         },
         onSuccess: () => {
           props.snackbarShowMessage("Data pengajuan berhasil ditambahkan");
-          setTimeout(() => navigate('/submissions'), 1500);
+          setTimeout(() => navigate("/submissions"), 1500);
         },
-        finally: () => setLoading(false)
+        finally: () => setLoading(false),
       });
     });
   };
 
   return (
     <Box>
-      <Box p={3}>
+      <Box>
         <CustomForm
           onSubmit={onSubmitData}
           isLoading={isLoading || isLoadingAPI}
           initialValues={{
             test: [],
             client_id: null,
-            waste_cost: "",
             address: "",
             service_fee: "",
             service_fee_file: null,

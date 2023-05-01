@@ -38,6 +38,7 @@ const validationSchema = yup.object({
         })
         .nullable(),
       name: yup.string(),
+      waste_cost: yup.string().required("Harga Limbah harus diisi")
     })
   ),
 });
@@ -81,7 +82,6 @@ const CustomForm = ({
     name: "waste_ids",
   });
 
-  console.log(methods.formState.errors);
   return (
     <FormProvider {...methods}>
       <form
@@ -197,6 +197,18 @@ const CustomForm = ({
                     name={`waste_ids.${index}.name`}
                   />
                 </Box>
+                <Box flex={1}>
+                  <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+                    Harga Per Unit
+                  </Typography>
+                  <FormikNumberInput
+                    disabled={isDetail}
+                    variant="standard"
+                    size="small"
+                    fullWidth
+                    name={`waste_ids.${index}.waste_cost`}
+                  />
+                </Box>
                 {!isDetail ? (
                   index > 0 ? (
                     <IconButtonDelete
@@ -218,18 +230,6 @@ const CustomForm = ({
                     </IconButtonAdd>
                   )
                 ) : null}
-                {/* <Box flex={1}>
-              <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-                Harga Acuan
-              </Typography>
-              <JumboTextField
-                variant="standard"
-                disabled={true}
-                size="small"
-                fullWidth
-                name="price_per_unit"
-              />
-            </Box> */}
               </Stack>
             ))}
           </Box>

@@ -42,6 +42,96 @@ const validationSchema = yup.object({
       return true;
     })
     .nullable(),
+  attachment_stnk: yup
+    .mixed()
+    .nullable()
+    .required("Dokumen STNK harus diisi")
+    .test("fileSize", "Dokumen STNK maksimal 5MB", (value) => {
+      if (value && value.size) return value.size <= 5000000;
+      return true;
+    })
+    .test(
+      "fileFormat",
+      "Dokumen STNK harus dalam format .pdf atau .png atau .jpeg",
+      (value) => {
+        if (value && value.type) {
+          ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
+        }
+        return true;
+      }
+    ),
+  attachment_kir: yup
+    .mixed()
+    .nullable()
+    .required("Dokumen KIR harus diisi")
+    .test("fileSize", "Dokumen KIR maksimal 5MB", (value) => {
+      if (value && value.size) return value.size <= 5000000;
+      return true;
+    })
+    .test(
+      "fileFormat",
+      "Dokumen KIR harus dalam format .pdf atau .png atau .jpeg",
+      (value) => {
+        if (value && value.type) {
+          ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
+        }
+        return true;
+      }
+    ),
+  attachment_rekom: yup
+    .mixed()
+    .nullable()
+    .required("Dokumen Rekom harus diisi")
+    .test("fileSize", "Dokumen Rekom maksimal 5MB", (value) => {
+      if (value && value.size) return value.size <= 5000000;
+      return true;
+    })
+    .test(
+      "fileFormat",
+      "Dokumen Rekom harus dalam format .pdf atau .png atau .jpeg",
+      (value) => {
+        if (value && value.type) {
+          ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
+        }
+        return true;
+      }
+    ),
+  attachment_supervision_card: yup
+    .mixed()
+    .nullable()
+    .required("Dokumen Kartu Pengawasan harus diisi")
+    .test("fileSize", "Dokumen Kartu Pengawasan maksimal 5MB", (value) => {
+      if (value && value.size) return value.size <= 5000000;
+      return true;
+    })
+    .test(
+      "fileFormat",
+      "Dokumen Kartu Pengawasan harus dalam format .pdf atau .png atau .jpeg",
+      (value) => {
+        if (value && value.type) {
+          ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
+        }
+        return true;
+      }
+    ),
+  attachment_departement_permit: yup
+    .mixed()
+    .nullable()
+    .required("Dokumen Izin Dinas Perhubungan harus diisi")
+    .test("fileSize", "Dokumen Izin Dinas Perhubungan maksimal 5MB", (value) => {
+      if (value && value.size) return value.size <= 5000000;
+      return true;
+    })
+    .test(
+      "fileFormat",
+      "Dokumen Izin Dinas Perhubungan harus dalam format .pdf atau .png atau .jpeg",
+      (value) => {
+        if (value && value.type) {
+          ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
+        }
+        return true;
+      }
+    ),
 });
 
 const CustomForm = ({
@@ -135,9 +225,9 @@ const CustomForm = ({
                   STNK
                 </Typography>
                 <FormikUploadFile
-                  name="travel_document_file"
+                  name="attachment_stnk"
                   disabled={isDetail}
-                  defaultFileName={initialValues?.travel_document_file}
+                  defaultFileName={initialValues?.attachment_stnk}
                 />
               </Box>
             </Grid>
@@ -161,9 +251,9 @@ const CustomForm = ({
                   KIR
                 </Typography>
                 <FormikUploadFile
-                  name="travel_document_file"
+                  name="attachment_kir"
                   disabled={isDetail}
-                  defaultFileName={initialValues?.travel_document_file}
+                  defaultFileName={initialValues?.attachment_kir}
                 />
               </Box>
             </Grid>
@@ -187,9 +277,9 @@ const CustomForm = ({
                   Rekom
                 </Typography>
                 <FormikUploadFile
-                  name="travel_document_file"
+                  name="attachment_rekom"
                   disabled={isDetail}
-                  defaultFileName={initialValues?.travel_document_file}
+                  defaultFileName={initialValues?.attachment_rekom}
                 />
               </Box>
             </Grid>
@@ -213,9 +303,9 @@ const CustomForm = ({
                   Kartu Pengawasan
                 </Typography>
                 <FormikUploadFile
-                  name="travel_document_file"
+                  name="attachment_supervision_card"
                   disabled={isDetail}
-                  defaultFileName={initialValues?.travel_document_file}
+                  defaultFileName={initialValues?.attachment_supervision_card}
                 />
               </Box>
             </Grid>
@@ -239,9 +329,9 @@ const CustomForm = ({
                   Izin Dinas Perhubungan
                 </Typography>
                 <FormikUploadFile
-                  name="travel_document_file"
+                  name="attachment_departement_permit"
                   disabled={isDetail}
-                  defaultFileName={initialValues?.travel_document_file}
+                  defaultFileName={initialValues?.attachment_departement_permit}
                 />
               </Box>
             </Grid>

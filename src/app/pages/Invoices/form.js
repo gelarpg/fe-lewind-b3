@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Box, Grid } from "@mui/material";
+import { Typography, Box, Grid, Card, CardContent, Checkbox, Stack } from "@mui/material";
 import * as yup from "yup";
 import LoadingButton from "@mui/lab/LoadingButton";
 
@@ -8,7 +8,7 @@ import { GreyButton } from "app/components/CustomIconButton";
 import FormikNumberInput from "app/components/FormikNumberInput";
 import FormikUploadFile from "app/components/FormikUploadFile";
 import { useNavigate } from "react-router-dom";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, useFieldArray, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import FormikReactSelect from "app/components/FormikReactSelect";
 import FormikDatepicker from "app/components/FormikDatepicker";
@@ -28,19 +28,19 @@ const validationSchema = yup.object({
       return true;
     })
     .nullable(),
-  transportation_id: yup
-    .object()
-    .shape({
-      label: yup.string().required(),
-      value: yup.string().required(),
-    })
-    .test("required", "Kendaraan harus diisi", (value, ctx) => {
-      if (!value) return false;
-      else if (value !== null && value.value && value.label)
-        return !!value.value && !!value.label;
-      return true;
-    })
-    .nullable(),
+  // transportation_id: yup
+  //   .object()
+  //   .shape({
+  //     label: yup.string().required(),
+  //     value: yup.string().required(),
+  //   })
+  //   .test("required", "Kendaraan harus diisi", (value, ctx) => {
+  //     if (!value) return false;
+  //     else if (value !== null && value.value && value.label)
+  //       return !!value.value && !!value.label;
+  //     return true;
+  //   })
+  //   .nullable(),
   status: yup
     .object()
     .shape({
@@ -54,24 +54,24 @@ const validationSchema = yup.object({
       return true;
     })
     .nullable(),
-  driver_id: yup
-    .object()
-    .shape({
-      label: yup.string().required(),
-      value: yup.string().required(),
-    })
-    .test("required", "Nama Driver harus diisi", (value, ctx) => {
-      if (!value) return false;
-      else if (value !== null && value.value && value.label)
-        return !!value.value && !!value.label;
-      return true;
-    })
-    .nullable(),
+  // driver_id: yup
+  //   .object()
+  //   .shape({
+  //     label: yup.string().required(),
+  //     value: yup.string().required(),
+  //   })
+  //   .test("required", "Nama Driver harus diisi", (value, ctx) => {
+  //     if (!value) return false;
+  //     else if (value !== null && value.value && value.label)
+  //       return !!value.value && !!value.label;
+  //     return true;
+  //   })
+  //   .nullable(),
   address: yup.string(),
   waste_name: yup.string(),
   waste_cost: yup.string(),
   waste_reference_price: yup.string(),
-  period: yup.string().required("Periode harus diisi"),
+  // period: yup.string().required("Periode harus diisi"),
   service_fee: yup.string().required("Biaya Layanan harus diisi"),
   service_fee_file: yup
     .mixed()
@@ -213,6 +213,11 @@ const CustomForm = ({
     defaultValues: initialValues,
   });
 
+  const { fields, append, remove } = useFieldArray({
+    control: methods.control,
+    name: "test",
+  });
+
   return (
     <FormProvider {...methods}>
       <form
@@ -237,45 +242,6 @@ const CustomForm = ({
           </Box>
           <Box flex={1} mb={3}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-              Jenis Limbah
-            </Typography>
-            <JumboTextField
-              variant="standard"
-              disabled={true}
-              size="small"
-              fullWidth
-              name="waste_name"
-              placeholder="Jenis Limbah"
-            />
-          </Box>
-          <Box flex={1} mb={3}>
-            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-              Harga Acuan Limbah
-            </Typography>
-            <JumboTextField
-              variant="standard"
-              disabled={true}
-              size="small"
-              fullWidth
-              name="waste_reference_price"
-              placeholder="Harga Acuan Limbah"
-            />
-          </Box>
-          <Box flex={1} mb={3}>
-            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-              Biaya Limbah
-            </Typography>
-            <FormikNumberInput
-              disabled={true}
-              variant="standard"
-              size="small"
-              fullWidth
-              name="waste_cost"
-              placeholder="Biaya Limbah"
-            />
-          </Box>
-          <Box flex={1} mb={3}>
-            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
               Alamat
             </Typography>
             <JumboTextField
@@ -289,36 +255,130 @@ const CustomForm = ({
             />
           </Box>
           <Box flex={1} mb={3}>
-            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-              Periode
-            </Typography>
-            <FormikDatepicker name="period" disabled={true} disableFuture />
-          </Box>
-          <Box flex={1} mb={3}>
-            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-              Nama Driver
-            </Typography>
-            <FormikReactSelect
-              isDisabled={true}
-              name="driver_id"
-              placeholder="Nama Driver"
-              url="/driver"
-              usePagination
-              objectProp="driver"
-            />
-          </Box>
-          <Box flex={1} mb={3}>
-            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-              Kendaraan
-            </Typography>
-            <FormikReactSelect
-              isDisabled={true}
-              name="transportation_id"
-              placeholder="Kendaraan"
-              url="/transportation"
-              usePagination
-              objectProp="transportation"
-            />
+            {fields.map((x, key) => {
+              return (
+                <Card key={x.id} sx={{ mb: 3 }}>
+                  <CardContent>
+                    <Stack spacing={3} direction="row" alignItems="center">
+                      <Controller
+                        name={`test.${key}.isSelected`}
+                        control={methods.control}
+                        defaultValue={false}
+                        render={({ field, fieldState: { invalid, error } }) => {
+                          return (
+                            <Checkbox
+                              color="primary"
+                              checked={field.value}
+                              onChange={(e) => field.onChange(e.target.checked)}
+                            />
+                          );
+                        }}
+                      />
+                      <Box flex={1} mb={3}>
+                        <Typography
+                          variant={"body1"}
+                          fontWeight="bold"
+                          mb={1.5}
+                        >
+                          Periode
+                        </Typography>
+                        <FormikDatepicker
+                          name={`test.${key}.period`}
+                          disabled={true}
+                          disablePast
+                        />
+                      </Box>
+                      <Box flex={1} mb={3}>
+                        <Typography
+                          variant={"body1"}
+                          fontWeight="bold"
+                          mb={1.5}
+                        >
+                          Nama Limbah
+                        </Typography>
+                        <JumboTextField
+                          variant="standard"
+                          disabled={true}
+                          size="small"
+                          fullWidth
+                          name={`test.${key}.waste_name`}
+                          placeholder="Nama Limbah"
+                        />
+                      </Box>
+                      <Box flex={1} mb={3}>
+                        <Typography
+                          variant={"body1"}
+                          fontWeight="bold"
+                          mb={1.5}
+                        >
+                          Biaya Limbah
+                        </Typography>
+                        <FormikNumberInput
+                          disabled={true}
+                          variant="standard"
+                          size="small"
+                          fullWidth
+                          name={`test.${key}.waste_cost`}
+                          placeholder="Biaya Limbah"
+                        />
+                      </Box>
+                      <Box flex={1} mb={3}>
+                        <Typography
+                          variant={"body1"}
+                          fontWeight="bold"
+                          mb={1.5}
+                        >
+                          {/* {`Jumlah Limbah (${x?.waste_weight_unit ?? ''})`} */}
+                          {`Jumlah`}
+                        </Typography>
+                        <FormikNumberInput
+                          disabled={true}
+                          variant="standard"
+                          size="small"
+                          fullWidth
+                          name={`test.${key}.qty`}
+                          placeholder="Jumlah Limbah"
+                        />
+                      </Box>
+                      <Box flex={1} mb={3}>
+                        <Typography
+                          variant={"body1"}
+                          fontWeight="bold"
+                          mb={1.5}
+                        >
+                          Nama Driver
+                        </Typography>
+                        <FormikReactSelect
+                          disabled={true}
+                          name={`test.${key}.driver_id`}
+                          placeholder="Nama Driver"
+                          url="/driver"
+                          usePagination
+                          objectProp="driver"
+                        />
+                      </Box>
+                      <Box flex={1} mb={3}>
+                        <Typography
+                          variant={"body1"}
+                          fontWeight="bold"
+                          mb={1.5}
+                        >
+                          Kendaraan
+                        </Typography>
+                        <FormikReactSelect
+                          disabled={true}
+                          name={`test.${key}.transportation_id`}
+                          placeholder="Kendaraan"
+                          url="/transportation"
+                          usePagination
+                          objectProp="transportation"
+                        />
+                      </Box>
+                    </Stack>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </Box>
           <Box flex={1}>
             <Grid

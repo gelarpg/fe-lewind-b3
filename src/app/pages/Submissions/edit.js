@@ -40,15 +40,27 @@ const EditSubmission = (props) => {
     setLoading(true);
     const promises = [];
     let temp = {};
-    temp.travel_fee = Boolean(payload.travel_fee.value);
+    if (payload?.travel_fee?.value) temp.travel_fee = Boolean(payload.travel_fee.value);
     if (payload?.client_id?.value) temp.client_id = payload.client_id.value;
-    if (payload?.service_fee) temp.service_fee = Number(
-      payload.service_fee.replace(/[$.]+/g, "").replace(/[$,]+/g, ".")
-    );
-    if (payload?.waste_cost) temp.waste_cost = Number(payload.waste_cost.replace(/[$.]+/g, '').replace(/[$,]+/g, '.'));
-    if (payload?.period) temp.period = moment(payload.period).format("YYYY-MM-DD HH:mm:ss");
-    if (payload?.transportation_id?.value) temp.transportation_id = payload.transportation_id.value;
-    if (payload?.driver_id?.value) temp.driver_id = payload.driver_id.value;
+    if (payload?.service_fee)
+      temp.service_fee = Number(
+        payload.service_fee.replace(/[$.]+/g, "").replace(/[$,]+/g, ".")
+      );
+
+    if (payload?.test?.length) {
+      temp.waste = [];
+      payload?.test
+        .filter((a) => a.isSelected)
+        .map((x, key) => {
+          temp.waste.push({
+            transportation_id: x.transportation_id.value,
+            driver_id: x.driver_id.value,
+            period: moment(x.period).format("YYYY-MM-DD"),
+            waste_id: x.waste_id,
+            qty: Number(x.qty.replace(/[$.]+/g, "").replace(/[$,]+/g, ".")),
+          });
+        });
+    }
 
     if (payload.service_fee_file) {
       if (typeof payload.service_fee_file === "string") {
@@ -161,7 +173,7 @@ const EditSubmission = (props) => {
 
   return (
     <Box>
-      <Box p={5} mx={4}>
+      <Box>
         {isLoadingDetail ? (
           <Div
             sx={{
@@ -175,35 +187,34 @@ const EditSubmission = (props) => {
           </Div>
         ) : (
           <CustomForm
-            isDetail={window.location.pathname.includes('/detail')}
+            isDetail={window.location.pathname.includes("/detail")}
             onSubmit={onSubmitData}
             isLoading={isLoading || isLoadingAPI}
             initialValues={{
-              test: submissionDetail?.client_id ? [{
-                transportation_id: submissionDetail?.transportation_id
-                ? {
-                    value: submissionDetail?.transportation_id,
-                    label: submissionDetail?.transportation_name,
-                  }
-                : null,
-              driver_id: submissionDetail?.driver_id
-                ? {
-                    value: submissionDetail?.driver_id,
-                    label: submissionDetail?.driver_name,
-                  }
-                : null,
-              period: submissionDetail?.period
-                ? moment(submissionDetail?.period)
-                : "",
-              waste_name: submissionDetail?.waste_name ?? "",
-              isSelected: true,
-              }] : [],
-              waste_name: submissionDetail?.waste_name ?? "",
-              waste_cost: submissionDetail?.waste_cost?.toString()?.replace(/[$.]+/g, ',') ?? '',
-              // waste_reference_price: submissionDetail?.waste_price_unit ? `${new Intl.NumberFormat('id-ID', {
-              //   style: 'currency',
-              //   currency: 'IDR',
-              // }).format(submissionDetail?.waste_price_unit)}` : "",
+              test: submissionDetail?.submission_details?.length
+                ? submissionDetail?.submission_details?.map((x) => ({
+                    transportation_id: x?.transportation_id
+                      ? {
+                          value: x?.transportation_id,
+                          label: x?.transportation_name,
+                        }
+                      : null,
+                    driver_id: x?.driver_id
+                      ? {
+                          value: x?.driver_id,
+                          label: x?.driver_name,
+                        }
+                      : null,
+                    period: x?.period ? moment(x?.period) : "",
+                    waste_name: x?.waste_name ?? "",
+                    qty: x?.qty?.toString()?.replace(/[$.]+/g, ",") ?? "",
+                    isSelected: true,
+                    waste_cost: x?.waste_cost ? `Rp. ${new Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                    }).format(x.waste_cost)}` : '',
+                  }))
+                : [],
               client_id: submissionDetail?.client_id
                 ? {
                     value: submissionDetail?.client_id,
@@ -240,9 +251,9 @@ const EditSubmission = (props) => {
                     label: "Sudah Ditransfer",
                   }
                 : {
-                  value: false,
-                  label: "Belum Ditransfer",
-                },
+                    value: false,
+                    label: "Belum Ditransfer",
+                  },
             }}
           />
         )}
