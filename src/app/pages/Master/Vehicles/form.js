@@ -62,9 +62,9 @@ const validationSchema = yup.object({
     })
     .nullable(),
   stnk_number: yup.string().required("Nomor STNK Kendaraan harus diisi"),
-  travel_document_number: yup
-    .string()
-    .required("Nomor Surat Jalan harus diisi"),
+  // travel_document_number: yup
+  //   .string()
+  //   .required("Nomor Surat Jalan harus diisi"),
   stnk_file: yup
     .mixed()
     .nullable()
@@ -83,28 +83,28 @@ const validationSchema = yup.object({
         return true;
       }
     ),
-  travel_document_file: yup
-    .mixed()
-    .nullable()
-    .required("Dokumen Surat Jalan harus diisi")
-    .test("fileSize", "Dokumen Surat Jalan maksimal 5MB", (value) => {
-      if (value && value.size) {
-        return value.size <= 5000000;
-      }
-      return true;
-    })
-    .test(
-      "fileFormat",
-      "Dokumen Surat Jalan harus dalam format .pdf atau .png atau .jpeg",
-      (value) => {
-        if (value && value.type) {
-          return ["application/pdf", "image/png", "image/jpeg"].includes(
-            value.type
-          );
-        }
-        return true;
-      }
-    ),
+  // travel_document_file: yup
+  //   .mixed()
+  //   .nullable()
+  //   .required("Dokumen Surat Jalan harus diisi")
+  //   .test("fileSize", "Dokumen Surat Jalan maksimal 5MB", (value) => {
+  //     if (value && value.size) {
+  //       return value.size <= 5000000;
+  //     }
+  //     return true;
+  //   })
+  //   .test(
+  //     "fileFormat",
+  //     "Dokumen Surat Jalan harus dalam format .pdf atau .png atau .jpeg",
+  //     (value) => {
+  //       if (value && value.type) {
+  //         return ["application/pdf", "image/png", "image/jpeg"].includes(
+  //           value.type
+  //         );
+  //       }
+  //       return true;
+  //     }
+  //   ),
 });
 
 const CustomForm = ({
@@ -198,7 +198,7 @@ const CustomForm = ({
               name="fuel_type"
             />
           </Box>
-          <Box flex={1}>
+          {/* <Box flex={1}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
               Surat Jalan
             </Typography>
@@ -226,7 +226,7 @@ const CustomForm = ({
                 />
               </Grid>
             </Grid>
-          </Box>
+          </Box> */}
           <Box flex={1}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
               No STNK Kendaraan

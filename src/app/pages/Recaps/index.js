@@ -188,8 +188,8 @@ const Recaps = (props) => {
             }}
           >
             <ToggleButton value="2">Proses</ToggleButton>
-            <ToggleButton value="3">Waiting Pickup</ToggleButton>
-            <ToggleButton value="4">Pickup</ToggleButton>
+            {/* <ToggleButton value="3">Waiting Pickup</ToggleButton>
+            <ToggleButton value="4">Pickup</ToggleButton> */}
             <ToggleButton value="5">Selesai</ToggleButton>
             <ToggleButton value="6">Dibatalkan</ToggleButton>
           </ToggleButtonGroup>

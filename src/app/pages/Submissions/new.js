@@ -50,12 +50,12 @@ const NewSubmission = (props) => {
         payload: payload.service_fee_file,
       });
     }
-    if (payload.invoice_file) {
-      promises.push({
-        key: "invoice_file",
-        payload: payload.invoice_file,
-      });
-    }
+    // if (payload.invoice_file) {
+    //   promises.push({
+    //     key: "invoice_file",
+    //     payload: payload.invoice_file,
+    //   });
+    // }
     if (payload.travel_document_file) {
       promises.push({
         key: "travel_document_file",
@@ -74,12 +74,12 @@ const NewSubmission = (props) => {
         payload: payload.transporter_file,
       });
     }
-    if (payload.provider_file) {
-      promises.push({
-        key: "provider_file",
-        payload: payload.provider_file,
-      });
-    }
+    // if (payload.provider_file) {
+    //   promises.push({
+    //     key: "provider_file",
+    //     payload: payload.provider_file,
+    //   });
+    // }
     if (payload.waste_receipt_file) {
       promises.push({
         key: "waste_receipt_file",
@@ -119,12 +119,12 @@ const NewSubmission = (props) => {
             address: "",
             service_fee: "",
             service_fee_file: null,
-            invoice_file: null,
+            // invoice_file: null,
             travel_document_file: null,
             bast_file: null,
             waste_receipt_file: null,
             transporter_file: null,
-            provider_file: null,
+            // provider_file: null,
             travel_fee: null,
           }}
         />

@@ -67,7 +67,7 @@ const EditClient = (props) => {
             isLoading={isLoading}
             initialValues={{
               company_name: clientDetail?.company_name ?? "",
-              name: clientDetail?.name ?? "",
+              // name: clientDetail?.name ?? "",
               address: clientDetail?.address ?? "",
               offer_number: clientDetail?.offer_number ?? "",
               transaction_fee:

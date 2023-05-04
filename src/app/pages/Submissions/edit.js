@@ -36,6 +36,20 @@ const EditSubmission = (props) => {
 
   const [isLoading, setLoading] = React.useState(false);
 
+  React.useEffect(() => {
+    if (submissionDetail?.client_id) {
+      setLoading(true);
+      axiosFetch({
+        method: "get",
+        url: `/clients/detail/${submissionDetail?.client_id}`,
+        onSuccess: (data) => {
+          console.log(data)
+        },
+        finally: () => setLoading(false),
+      });
+    }
+  }, [submissionDetail]);
+
   const onSubmitData = (payload) => {
     setLoading(true);
     const promises = [];
@@ -65,10 +79,6 @@ const EditSubmission = (props) => {
     if (payload.service_fee_file) {
       if (typeof payload.service_fee_file === "string") {
         if (temp.service_fee_file) delete temp.service_fee_file;
-        // temp.service_fee_file = payload.service_fee_file.replace(
-        //   PDF_BASE_URL,
-        //   ""
-        // );
       } else if (typeof payload.service_fee_file === "object") {
         promises.push({
           key: "service_fee_file",
@@ -76,24 +86,19 @@ const EditSubmission = (props) => {
         });
       }
     }
-    if (payload.invoice_file) {
-      if (typeof payload.invoice_file === "string") {
-        if (temp.invoice_file) delete temp.invoice_file;
-        // temp.invoice_file = payload.invoice_file.replace(PDF_BASE_URL, "");
-      } else if (typeof payload.invoice_file === "object") {
-        promises.push({
-          key: "invoice_file",
-          payload: payload.invoice_file,
-        });
-      }
-    }
+    // if (payload.invoice_file) {
+    //   if (typeof payload.invoice_file === "string") {
+    //     if (temp.invoice_file) delete temp.invoice_file;
+    //   } else if (typeof payload.invoice_file === "object") {
+    //     promises.push({
+    //       key: "invoice_file",
+    //       payload: payload.invoice_file,
+    //     });
+    //   }
+    // }
     if (payload.travel_document_file) {
       if (typeof payload.travel_document_file === "string") {
         if (temp.travel_document_file) delete temp.travel_document_file;
-        // temp.travel_document_file = payload.travel_document_file.replace(
-        //   PDF_BASE_URL,
-        //   ""
-        // );
       } else if (typeof payload.travel_document_file === "object") {
         promises.push({
           key: "travel_document_file",
@@ -104,7 +109,6 @@ const EditSubmission = (props) => {
     if (payload.bast_file) {
       if (typeof payload.bast_file === "string") {
         if (temp.bast_file) delete temp.bast_file;
-        // temp.bast_file = payload.bast_file.replace(PDF_BASE_URL, "");
       } else if (typeof payload.bast_file === "object") {
         promises.push({
           key: "bast_file",
@@ -115,10 +119,6 @@ const EditSubmission = (props) => {
     if (payload.transporter_file) {
       if (typeof payload.transporter_file === "string") {
         if (temp.transporter_file) delete temp.transporter_file;
-        // temp.transporter_file = payload.transporter_file.replace(
-        //   PDF_BASE_URL,
-        //   ""
-        // );
       } else if (typeof payload.transporter_file === "object") {
         promises.push({
           key: "transporter_file",
@@ -126,24 +126,19 @@ const EditSubmission = (props) => {
         });
       }
     }
-    if (payload.provider_file) {
-      if (typeof payload.provider_file === "string") {
-        if (temp.provider_file) delete temp.provider_file;
-        // temp.provider_file = payload.provider_file.replace(PDF_BASE_URL, "");
-      } else if (typeof payload.provider_file === "object") {
-        promises.push({
-          key: "provider_file",
-          payload: payload.provider_file,
-        });
-      }
-    }
+    // if (payload.provider_file) {
+    //   if (typeof payload.provider_file === "string") {
+    //     if (temp.provider_file) delete temp.provider_file;
+    //   } else if (typeof payload.provider_file === "object") {
+    //     promises.push({
+    //       key: "provider_file",
+    //       payload: payload.provider_file,
+    //     });
+    //   }
+    // }
     if (payload.waste_receipt_file) {
       if (typeof payload.waste_receipt_file === "string") {
         if (temp.waste_receipt_file) delete temp.waste_receipt_file;
-        // temp.waste_receipt_file = payload.waste_receipt_file.replace(
-        //   PDF_BASE_URL,
-        //   ""
-        // );
       } else if (typeof payload.waste_receipt_file === "object") {
         promises.push({
           key: "waste_receipt_file",
@@ -207,6 +202,7 @@ const EditSubmission = (props) => {
                       : null,
                     period: x?.period ? moment(x?.period) : "",
                     waste_name: x?.waste_name ?? "",
+                    waste_code: x?.waste_code ?? "",
                     qty: x?.qty?.toString()?.replace(/[$.]+/g, ",") ?? "",
                     isSelected: true,
                     waste_cost: x?.waste_cost ? `Rp. ${new Intl.NumberFormat("id-ID", {
@@ -230,7 +226,7 @@ const EditSubmission = (props) => {
                 submissionDetail,
                 "service_fee"
               ),
-              invoice_file: getDocumentPath(submissionDetail, "invoice"),
+              // invoice_file: getDocumentPath(submissionDetail, "invoice"),
               travel_document_file: getDocumentPath(
                 submissionDetail,
                 "travel_document"
@@ -244,16 +240,16 @@ const EditSubmission = (props) => {
                 submissionDetail,
                 "transporter"
               ),
-              provider_file: getDocumentPath(submissionDetail, "provider"),
-              travel_fee: submissionDetail?.travel_fee
-                ? {
-                    value: true,
-                    label: "Sudah Ditransfer",
-                  }
-                : {
-                    value: false,
-                    label: "Belum Ditransfer",
-                  },
+              // provider_file: getDocumentPath(submissionDetail, "provider"),
+              // travel_fee: submissionDetail?.travel_fee
+              //   ? {
+              //       value: true,
+              //       label: "Sudah Ditransfer",
+              //     }
+              //   : {
+              //       value: false,
+              //       label: "Belum Ditransfer",
+              //     },
             }}
           />
         )}

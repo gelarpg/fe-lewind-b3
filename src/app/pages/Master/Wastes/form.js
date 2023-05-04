@@ -12,6 +12,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import FormikReactSelect from "app/components/FormikReactSelect";
 
 const validationSchema = yup.object({
+  code: yup.string().required("Kode limbah harus diisi"),
   name: yup.string().required("Nama limbah harus diisi"),
   type: yup
   .object()
@@ -56,6 +57,18 @@ const CustomForm = ({
               size="small"
               fullWidth
               name="name"
+            />
+          </Box>
+          <Box flex={1} mb={3}>
+            <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+              Kode Limbah
+            </Typography>
+            <JumboTextField
+              variant="standard"
+              disabled={isDetail}
+              size="small"
+              fullWidth
+              name="code"
             />
           </Box>
           <Box flex={1} mb={3}>

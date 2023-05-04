@@ -39,7 +39,8 @@ const NewClient = (props) => {
           onSubmit={onSubmitData}
           isLoading={isLoading}
           initialValues={{
-            name: "",
+            // name: "",
+            company_name: "",
             address: "",
             offer_number: "",
             transaction_fee: "",

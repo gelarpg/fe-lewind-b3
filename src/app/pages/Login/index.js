@@ -119,7 +119,7 @@ const Login = () => {
                   fontSize: 14,
                 }}
               >
-                Silahkan Login dengan email & password yang benar.
+                Silahkan Login dengan username & password yang benar.
               </Typography>
             </Div>
           </Div>
@@ -136,7 +136,7 @@ const Login = () => {
                 {errorMessage && <p>{errorMessage}</p>}
                 <Div sx={{ mb: 3, mt: 1 }}>
                   <Typography variant={"body1"} mb={1}>
-                    Email
+                    Username
                   </Typography>
                   <JumboTextField fullWidth name="email" />
                 </Div>

@@ -17,9 +17,9 @@ import { isEmpty } from "lodash";
 
 const validationSchema = yup.object({
   company_name: yup.string().required("Nama perusahaan harus diisi"),
-  name: yup.string().required("Nama client harus diisi"),
+  // name: yup.string().required("Nama client harus diisi"),
   address: yup.string().required("Alamat harus diisi"),
-  offer_number: yup.string().required("Nomor penawaran harus diisi"),
+  offer_number: yup.string().required("Nomor MOU/Perjanjian harus diisi"),
   transaction_fee: yup.string().required("Biaya transaksi harus diisi"),
   waste_ids: yup.array().of(
     yup.object().shape({
@@ -91,7 +91,7 @@ const CustomForm = ({
         onSubmit={methods.handleSubmit(onSubmit)}
       >
         <Box mb={4}>
-          <Box flex={1} mb={3}>
+          {/* <Box flex={1} mb={3}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
               Nama Client
             </Typography>
@@ -102,7 +102,7 @@ const CustomForm = ({
               fullWidth
               name="name"
             />
-          </Box>
+          </Box> */}
           <Box flex={1} mb={3}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
               Nama Perusahaan
@@ -131,7 +131,7 @@ const CustomForm = ({
           </Box>
           <Box flex={1} mb={3}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-              Nomor Penawaran
+              Nomor MOU/Perjanjian
             </Typography>
             <JumboTextField
               variant="standard"

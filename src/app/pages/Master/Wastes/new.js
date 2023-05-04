@@ -38,6 +38,7 @@ const NewWaste = (props) => {
           onSubmit={onSubmitData}
           isLoading={isLoading}
           initialValues={{
+            code: "",
             name: "",
             type: null,
             weight_unit: "",

@@ -61,6 +61,13 @@ const Wastes = (props) => {
         flex: 0.5,
       },
       {
+        field: "code",
+        headerName: "Kode Limbah",
+        flex: 2,
+        valueFormatter: (params) => params?.value ?? "-",
+        sortable: false,
+      },
+      {
         field: "name",
         headerName: "Nama Limbah",
         flex: 2,

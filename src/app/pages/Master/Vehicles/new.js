@@ -23,11 +23,6 @@ const NewVehicle = (props) => {
       capacity: Number(payload.capacity.replace(/[$.]+/g, '').replace(/[$,]+/g, '.')),
       transportation_type_id: payload.transportation_type_id.value,
       year: moment(payload.year).format("YYYY"),
-      // validity_period_kir: moment(payload.validity_period_kir).format("YYYY-MM-DD"),
-      // validity_period_rekom: moment(payload.validity_period_rekom).format("YYYY-MM-DD"),
-      // validity_period_supervision_card: moment(payload.validity_period_supervision_card).format("YYYY-MM-DD"),
-      // stnk_validity_period: moment(payload.stnk_validity_period).format("YYYY-MM-DD"),
-      // validity_period_departement_permit: moment(payload.validity_period_departement_permit).format("YYYY-MM-DD"),
     };
     if (payload.stnk_file) {
       promises.push({
@@ -35,12 +30,12 @@ const NewVehicle = (props) => {
         payload: payload.stnk_file,
       });
     }
-    if (payload.travel_document_file) {
-      promises.push({
-        key: "travel_document_file",
-        payload: payload.travel_document_file,
-      });
-    }
+    // if (payload.travel_document_file) {
+    //   promises.push({
+    //     key: "travel_document_file",
+    //     payload: payload.travel_document_file,
+    //   });
+    // }
     uploadFileHandler(promises).then((values) => {
       let dataToSend = {
         ...temp,
@@ -68,21 +63,16 @@ const NewVehicle = (props) => {
           onSubmit={onSubmitData}
           isLoading={isLoading || isLoadingAPI}
           initialValues={{
-            // validity_period_kir: "",
-            // validity_period_rekom: "",
-            // validity_period_supervision_card: "",
-            // stnk_validity_period: "",
-            // validity_period_departement_permit: "",
             name: "",
             no_police: "",
             year: "",
             capacity: "",
             fuel_type: "",
             transportation_type_id: null,
-            travel_document_number: "",
+            // travel_document_number: "",
             stnk_number: "",
             stnk_file: null,
-            travel_document_file: null,
+            // travel_document_file: null,
           }}
         />
       </Box>

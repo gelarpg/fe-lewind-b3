@@ -61,15 +61,15 @@ const Clients = (props) => {
         flex: 0.5,
       },
       {
-        field: "name",
-        headerName: "Nama Client",
+        field: "company_name",
+        headerName: "Client",
         flex: 2,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
       {
         field: "offer_number",
-        headerName: "Nomor Penawaran",
+        headerName: "Nomor MOU/Perjanjian",
         flex: 2,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,

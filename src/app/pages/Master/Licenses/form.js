@@ -19,7 +19,7 @@ const validationSchema = yup.object({
   validity_period_kir: yup.string().required("Masa berlaku KIR harus diisi"),
   validity_period_rekom: yup
     .string()
-    .required("Masa berlaku rekom harus diisi"),
+    .required("Masa berlaku Rekom KLHK harus diisi"),
   validity_period_supervision_card: yup
     .string()
     .required("Masa berlaku kartu pengawasan harus diisi"),
@@ -81,14 +81,14 @@ const validationSchema = yup.object({
   attachment_rekom: yup
     .mixed()
     .nullable()
-    .required("Dokumen Rekom harus diisi")
-    .test("fileSize", "Dokumen Rekom maksimal 5MB", (value) => {
+    .required("Dokumen Rekom KLHK harus diisi")
+    .test("fileSize", "Dokumen Rekom KLHK maksimal 5MB", (value) => {
       if (value && value.size) return value.size <= 5000000;
       return true;
     })
     .test(
       "fileFormat",
-      "Dokumen Rekom harus dalam format .pdf atau .png atau .jpeg",
+      "Dokumen Rekom KLHK harus dalam format .pdf atau .png atau .jpeg",
       (value) => {
         if (value && value.type) {
           ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
@@ -262,7 +262,7 @@ const CustomForm = ({
             <Grid item xs={12} md={12} lg={5}>
               <Box flex={1}>
                 <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-                  Masa Berlaku Rekom
+                  Masa Berlaku Rekom KLHK
                 </Typography>
                 <FormikDatepicker
                   disabled={!nopolValue}
@@ -274,7 +274,7 @@ const CustomForm = ({
             <Grid item xs={12} md={12} lg={7}>
               <Box flex={1}>
                 <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
-                  Rekom
+                  Rekom KLHK
                 </Typography>
                 <FormikUploadFile
                   name="attachment_rekom"
