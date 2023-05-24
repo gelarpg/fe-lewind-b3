@@ -61,28 +61,28 @@ const validationSchema = yup.object({
       return true;
     })
     .nullable(),
-  stnk_number: yup.string().required("Nomor STNK Kendaraan harus diisi"),
+  // stnk_number: yup.string().required("Nomor STNK Kendaraan harus diisi"),
   // travel_document_number: yup
   //   .string()
   //   .required("Nomor Surat Jalan harus diisi"),
-  stnk_file: yup
-    .mixed()
-    .nullable()
-    .required("Dokumen STNK harus diisi")
-    .test("fileSize", "Dokumen STNK maksimal 5MB", (value) => {
-      if (value && value.size) return value.size <= 5000000;
-      return true;
-    })
-    .test(
-      "fileFormat",
-      "Dokumen STNK harus dalam format .pdf atau .png atau .jpeg",
-      (value) => {
-        if (value && value.type) {
-          ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
-        }
-        return true;
-      }
-    ),
+  // stnk_file: yup
+  //   .mixed()
+  //   .nullable()
+  //   .required("Dokumen STNK harus diisi")
+  //   .test("fileSize", "Dokumen STNK maksimal 5MB", (value) => {
+  //     if (value && value.size) return value.size <= 5000000;
+  //     return true;
+  //   })
+  //   .test(
+  //     "fileFormat",
+  //     "Dokumen STNK harus dalam format .pdf atau .png atau .jpeg",
+  //     (value) => {
+  //       if (value && value.type) {
+  //         ["application/pdf", "image/png", "image/jpeg"].includes(value.type);
+  //       }
+  //       return true;
+  //     }
+  //   ),
   // travel_document_file: yup
   //   .mixed()
   //   .nullable()
@@ -227,7 +227,7 @@ const CustomForm = ({
               </Grid>
             </Grid>
           </Box> */}
-          <Box flex={1}>
+          {/* <Box flex={1}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
               No STNK Kendaraan
             </Typography>
@@ -255,7 +255,7 @@ const CustomForm = ({
                 />
               </Grid>
             </Grid>
-          </Box>
+          </Box> */}
           {/* <Box flex={1}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
               Masa Berlaku Pajak STNK

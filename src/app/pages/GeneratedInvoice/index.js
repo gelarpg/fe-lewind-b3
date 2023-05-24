@@ -8,9 +8,7 @@ import React, {
 } from "react";
 import { Button, Box, Typography } from "@mui/material";
 import {
-  CustomEditIconButton,
-  CustomDeleteIconButton,
-  CustomDetailButton,
+  CustomDownloadIcon
 } from "app/components/CustomIconButton";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
@@ -19,17 +17,18 @@ import useAxiosFunction from "app/hooks/useAxiosFunction";
 import usePrevious from "app/hooks/usePrevious";
 import { withSnackbar } from "app/components/SnackbarComponent";
 import { withRoles } from "app/components/withRoles";
+import moment from "moment";
 
-const Wastes = (props) => {
-  const {isAdminDireksi, isSuperAdmin} = props;
+const GeneratedInvoices = (props) => {
+  const {isSuperAdmin, isAdminFinance} = props;
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
   const {
     isLoading: isLoadingList,
-    data: wastesData,
-    error: errorWastesData,
+    data: invoicesData,
+    error: errorInvoicesData,
     refetch,
   } = useFetch({
-    url: "/waste",
+    url: "/daily-count/list-invoice",
     requestConfig: {
       params: {
         page: 1,
@@ -51,6 +50,16 @@ const Wastes = (props) => {
   const [fetched, setFetched] = useState(false);
   const prevParam = usePrevious(requestParam);
 
+  const downloadPDF = (data) => {
+    import('app/utils/download').then((module) => {
+      module.default(
+        `${process.env.REACT_APP_API_BASE_URL_EXPORT}${data}`,
+        `TPK01_${moment().format('DD-MM-YYYY_HH_mm_ss')}.pdf`,
+      );
+    });
+  };
+
+
   const columns = useMemo(() => {
     return [
       {
@@ -61,80 +70,39 @@ const Wastes = (props) => {
         flex: 0.5,
       },
       {
-        field: "waste_code",
-        headerName: "Kode Limbah",
+        field: "company_name",
+        headerName: "Client",
         flex: 2,
         valueFormatter: (params) => params?.value ?? "-",
         sortable: false,
       },
-      {
-        field: "name",
-        headerName: "Nama Limbah",
-        flex: 2,
-        valueFormatter: (params) => params?.value ?? "-",
-        sortable: false,
-      },
-      {
-        field: "type",
-        headerName: "Jenis Limbah",
-        flex: 2,
-        valueFormatter: (params) => params?.value ?? "-",
-        sortable: false,
-      },
-      {
-        field: "weight_unit",
-        headerName: "Berat Satuan",
-        flex: 1,
-        valueFormatter: (params) => params?.value ?? "-",
-        sortable: false,
-      },
-      // {
-      //   field: "price_unit",
-      //   headerName: "Harga Acuan",
-      //   flex: 1,
-      //   valueFormatter: (params) => {
-      //     return `${new Intl.NumberFormat('id-ID', {
-      //       style: 'currency',
-      //       currency: 'IDR',
-      //     }).format(params.value)}`;
-      //   },
-      //   sortable: false,
-      // },
       {
         field: "actions",
         headerName: "",
         type: "actions",
         getActions: (params) => {
-          if (isAdminDireksi) return [
-            <CustomDetailButton
+          let arr = [];
+          if (isAdminFinance || isSuperAdmin) arr = [
+            <CustomDownloadIcon
+              label={isAdminFinance ? 'Download PDF' : isSuperAdmin ? 'Preview PDF' : ''}
               size="small"
-              onClick={() => navigate(`/wastes/${params.row.id}/detail`)}
-            />
-          ];
-          return [
-            <CustomEditIconButton
-              size="small"
-              sx={{ mr: 2 }}
-              onClick={() => navigate(`/wastes/${params.row.id}/edit`)}
-            />,
-            <CustomDeleteIconButton
-              size="small"
-              onClick={() => deleteData(params.row.id)}
+              onClick={() => downloadPDF(params?.row?.path)}
             />,
           ];
+          return arr;
         },
         flex: 1,
       },
     ];
-  }, [currentPage, rowsPerPage, isAdminDireksi]);
+  }, [currentPage, rowsPerPage, isAdminFinance]);
 
   useEffect(() => {
-    if (wastesData?.waste && wastesData?.paginator) {
-      setDatas(wastesData.waste);
-      setPagination(wastesData.paginator);
+    if (invoicesData?.invoice && invoicesData?.paginator) {
+      setDatas(invoicesData.invoice);
+      setPagination(invoicesData.paginator);
       if (tableRef && tableRef.current) tableRef.current.scrollIntoView();
     }
-  }, [wastesData]);
+  }, [invoicesData]);
 
   useEffect(() => {
     if (tableRef && tableRef.current) tableRef.current.scrollIntoView();
@@ -149,20 +117,6 @@ const Wastes = (props) => {
     }
   }, [fetched]);
 
-  const deleteData = (id) => {
-    axiosFetch({
-      method: "delete",
-      url: `/waste/delete/${id}`,
-      onSuccess: () => {
-        props.snackbarShowMessage('Data berhasil dihapus')
-        setRequestParam((curr) => ({
-          ...curr,
-          page: 1,
-        }));
-        setFetched(true);
-      },
-    });
-  };
 
   const onChangePage = useCallback((page) => {
     setCurrentPage(page);
@@ -186,17 +140,6 @@ const Wastes = (props) => {
 
   return (
     <Fragment>
-      <Box display="flex" justifyContent="flex-end" mb={4}>
-      {isSuperAdmin ? (
-          <Button
-            type="button"
-            variant="contained"
-            onClick={() => navigate(`/wastes/new`)}
-          >
-            Tambah Data
-          </Button>
-        ) : null}
-      </Box>
       <DataGrid
         ref={tableRef}
         disableColumnMenu
@@ -220,4 +163,4 @@ const Wastes = (props) => {
   );
 };
 
-export default withRoles(withSnackbar(Wastes));
+export default withRoles(withSnackbar(GeneratedInvoices));

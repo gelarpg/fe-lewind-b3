@@ -19,7 +19,7 @@ import moment from "moment";
 import { withRoles } from "app/components/withRoles";
 
 const Recaps = (props) => {
-  const {isAdminDireksi, isAdminOperasional, isSuperAdmin} = props;
+  const {isAdminDireksi, isAdminOperasional, isSuperAdmin, isAdminFinance, isAdminPerencanaan} = props;
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
   const {
     isLoading: isLoadingList,
@@ -68,7 +68,7 @@ const Recaps = (props) => {
         sortable: false,
       },
       {
-        field: "client_name",
+        field: "client_company_name",
         headerName: "Nama Klien",
         flex: 1,
         valueFormatter: (params) => params?.value ?? "-",
@@ -111,13 +111,13 @@ const Recaps = (props) => {
         type: "actions",
         getActions: (params) => {
           let arr = [];
-          if (isAdminOperasional || isSuperAdmin) arr = [
+          if (isAdminOperasional) arr = [
             <CustomEditIconButton
               size="small"
               onClick={() => navigate(`/orders/${params.row.id}/edit`)}
             />,
           ];
-          if (params.row.status.toString() === "5" || isAdminDireksi) arr = [
+          if (params.row.status.toString() === "5" || isAdminDireksi || isSuperAdmin || isAdminFinance || isAdminPerencanaan) arr = [
             <CustomDetailButton
               size="small"
               onClick={() => navigate(`/orders/${params.row.id}/detail`)}

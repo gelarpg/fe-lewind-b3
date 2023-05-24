@@ -5,6 +5,18 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckIcon from '@mui/icons-material/Check';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+
+const IconButtonDownload = styled(Button)({
+  backgroundColor: '#007E03',
+  borderRadius: '5px',
+  '&:hover, &:focus': {
+    backgroundColor: '#007E03',
+  },
+  color: '#FFFFFF',
+  textTransform: 'none',
+});
+
 
 const IconButtonDelete = styled(IconButton)({
   backgroundColor: "#DC4343",
@@ -50,6 +62,16 @@ const GreyButton = styled(Button)({
   color: "#2b2b2b",
   textTransform: "none",
 });
+
+const CustomDownloadIcon = (props) => {
+  const {label, ...rest} = props;
+  return (
+    <IconButtonDownload aria-label="delete" type="button" variant="contained" endIcon={<FileDownloadIcon />} {...rest}>
+      {label}
+    </IconButtonDownload>
+  );
+};
+
 
 const CustomDetailButton = (props) => (
   <IconButtonDetail type="button" {...props}>
@@ -127,4 +149,4 @@ const ApproveIconButton = ({ onClick, ...props }) => {
   );
 };
 
-export { CustomEditIconButton, CustomDeleteIconButton, GreyButton, ApproveIconButton, CustomDetailButton };
+export { CustomEditIconButton, CustomDeleteIconButton, GreyButton, ApproveIconButton, CustomDetailButton, CustomDownloadIcon };

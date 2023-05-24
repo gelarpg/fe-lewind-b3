@@ -1,8 +1,11 @@
 import React from "react";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ContentPasteOutlinedIcon from "@mui/icons-material/ContentPasteOutlined";
+import RecentActorsIcon from '@mui/icons-material/RecentActors';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
 import SvgIcon from "@mui/material/SvgIcon";
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import { ReactComponent as Email } from "app/assets/icons/email.svg";
 import { ReactComponent as Graph } from "app/assets/icons/graph.svg";
 import { ReactComponent as Options } from "app/assets/icons/options.svg";
@@ -91,6 +94,39 @@ const menus = [
     icon: (
       <SvgIcon sx={{ fontSize: 20 }} viewBox="0 0 20 20">
         <Email />
+      </SvgIcon>
+    ),
+  },
+  {
+    id: "daily-count",
+    uri: "/daily-count",
+    label: "Daily Count",
+    type: "nav-item",
+    icon: (
+      <SvgIcon sx={{ fontSize: 20 }} viewBox="0 0 20 20">
+        <RecentActorsIcon />
+      </SvgIcon>
+    ),
+  },
+  {
+    id: "generated-invoice",
+    uri: "/generated-invoice",
+    label: "Invoices",
+    type: "nav-item",
+    icon: (
+      <SvgIcon sx={{ fontSize: 20 }} viewBox="0 0 20 20">
+        <ReceiptIcon />
+      </SvgIcon>
+    ),
+  },
+  {
+    id: "loginActivity",
+    uri: "/log-activity",
+    label: "Log Activity",
+    type: "nav-item",
+    icon: (
+      <SvgIcon sx={{ fontSize: 20 }} viewBox="0 0 20 20">
+        <ListAltIcon />
       </SvgIcon>
     ),
   },

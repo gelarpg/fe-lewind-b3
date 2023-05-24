@@ -25,6 +25,11 @@ export const withRoles = (WrappedComponent) => {
       [authUser]
     );
 
+    const isAdminFinance = useMemo(
+      () => authUser && authUser?.roles_id?.toString() === "5",
+      [authUser]
+    );
+
     return (
       <WrappedComponent
         {...props}
@@ -32,6 +37,7 @@ export const withRoles = (WrappedComponent) => {
         isAdminDireksi={isAdminDireksi}
         isAdminPerencanaan={isAdminPerencanaan}
         isAdminOperasional={isAdminOperasional}
+        isAdminFinance={isAdminFinance}
       />
     );
   };

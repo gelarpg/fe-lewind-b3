@@ -7,6 +7,7 @@ import {
   Stack,
   Card,
   CardContent,
+  FormHelperText
 } from "@mui/material";
 import * as yup from "yup";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -36,16 +37,16 @@ const CustomForm = ({
 
   const validationSchema = useMemo(() => {
     return yup.object({
-      destination: yup.string().when([], {
-        is: () => isAdminOperasional || isSuperAdmin,
-        then: yup.string().required("Tujuan pengangkutan harus diisi"),
-        otherwise: yup.string().notRequired(),
-      }),
-      nominal_transfer: yup.string().when([], {
-        is: () => isAdminOperasional || isSuperAdmin,
-        then: yup.string().required("Nominal transfer harus diisi"),
-        otherwise: yup.string().notRequired(),
-      }),
+      transfer_amount: yup
+        .string()
+        .test("required", "Nominal transfer harus diisi", (value, ctx) => {
+          if (
+            (isAdminOperasional || isSuperAdmin)
+          ) {
+            if (!value) return false;
+          }
+          return true;
+        }),
       test: yup.array().of(
         yup.object().shape({
           isSelected: yup.boolean(),
@@ -107,17 +108,6 @@ const CustomForm = ({
               }
               return true;
             }),
-          waste_code: yup
-            .string()
-            .test("required", "Kode limbah harus diisi", (value, ctx) => {
-              if (
-                (isAdminPerencanaan || isSuperAdmin) &&
-                ctx.parent.isSelected
-              ) {
-                if (!value) return false;
-              }
-              return true;
-            }),
           qty: yup
             .string()
             .test("required", "Jumlah limbah harus diisi", (value, ctx) => {
@@ -129,10 +119,35 @@ const CustomForm = ({
               }
               return true;
             }),
+          transport_target: yup
+            .string()
+            .test("required", "Tujuan Pengangkutan harus diisi", (value, ctx) => {
+              if (
+                (isAdminPerencanaan || isSuperAdmin) &&
+                ctx.parent.isSelected
+              ) {
+                if (!value) return false;
+              }
+              return true;
+            }),
+          doc_number: yup
+            .string()
+            .test("required", "Nomor dokumen harus diisi", (value, ctx) => {
+              if (
+                (isAdminPerencanaan || isSuperAdmin) &&
+                ctx.parent.isSelected
+              ) {
+                if (!value) return false;
+              }
+              return true;
+            }),
           waste_id: yup.string(),
+          waste_code: yup.string()
         })
-      ),
-      travel_fee: yup
+      ).test("minOne", "Pilih minimal satu limbah", (value, ctx) => {
+        return value.some(x => x.isSelected);
+      }),
+      travel_fee_status: yup
         .object()
         .shape({
           label: yup.string().required(),
@@ -353,13 +368,15 @@ const CustomForm = ({
                       isSelected: key === 0 ? true : false,
                       waste_name: x?.waste_name,
                       waste_code: x?.waste_code,
+                      doc_number: "",
                       qty: "",
                       waste_id: x?.waste_id,
-                      waste_cost: `Rp. ${new Intl.NumberFormat("id-ID", {
+                      waste_cost: `${new Intl.NumberFormat("id-ID", {
                         style: "currency",
                         currency: "IDR",
-                      }).format(x.waste_cost)}`,
-                      waste_weight_unit: x?.waste_weight_unit,
+                      }).format(x.waste_cost)}/${x?.waste_weight_unit}`,
+                      transport_target: "",
+                      // waste_weight_unit: x?.waste_weight_unit,
                     });
                   });
                   methods.setValue("address", val?.address);
@@ -410,6 +427,23 @@ const CustomForm = ({
                             fontWeight="bold"
                             mb={1.5}
                           >
+                            Nomor Dokumen
+                          </Typography>
+                          <JumboTextField
+                            variant="standard"
+                            disabled={isDetail || isAdminOperasional}
+                            size="small"
+                            fullWidth
+                            name={`test.${key}.doc_number`}
+                            placeholder="Nomor Dokumen"
+                          />
+                        </Box>
+                        <Box flex={1} width={1}>
+                          <Typography
+                            variant={"body1"}
+                            fontWeight="bold"
+                            mb={1.5}
+                          >
                             Kode Limbah
                           </Typography>
                           <JumboTextField
@@ -446,7 +480,7 @@ const CustomForm = ({
                           >
                             Biaya Limbah
                           </Typography>
-                          <FormikNumberInput
+                          <JumboTextField
                             disabled={true}
                             variant="standard"
                             size="small"
@@ -471,6 +505,23 @@ const CustomForm = ({
                             fullWidth
                             name={`test.${key}.qty`}
                             placeholder="Jumlah Limbah"
+                          />
+                        </Box>
+                        <Box flex={1} width={1}>
+                          <Typography
+                            variant={"body1"}
+                            fontWeight="bold"
+                            mb={1.5}
+                          >
+                            Tujuan Pengangkutan
+                          </Typography>
+                          <JumboTextField
+                            disabled={isDetail || isAdminOperasional}
+                            variant="standard"
+                            size="small"
+                            fullWidth
+                            name={`test.${key}.transport_target`}
+                            placeholder="Tujuan Pengangkutan"
                           />
                         </Box>
                       </Stack>
@@ -529,6 +580,9 @@ const CustomForm = ({
                 </Card>
               );
             })}
+            {methods?.formState?.errors?.test?.message && (
+              <FormHelperText sx={{ color: '#dc3545' }}>{methods?.formState?.errors?.test?.message}</FormHelperText>
+            )}
           </Box>
           {/* <Box flex={1} mb={3}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
@@ -621,7 +675,7 @@ const CustomForm = ({
                   variant="standard"
                   size="small"
                   fullWidth
-                  name="nominal_transfer"
+                  name="transfer_amount"
                 />
               </Grid>
               <Grid item xs={12} md={6} lg={6}>
@@ -630,7 +684,7 @@ const CustomForm = ({
                 </Typography>
                 <FormikReactSelect
                   isDisabled={isDetail || isAdminPerencanaan}
-                  name="travel_fee"
+                  name="travel_fee_status"
                   placeholder="Pilih Status"
                   useStaticData
                   optionsData={[
@@ -647,7 +701,7 @@ const CustomForm = ({
               </Grid>
             </Grid>
           </Box>
-          <Box flex={1} mb={3}>
+          {/* <Box flex={1} mb={3}>
             <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
               Tujuan Pengangkutan
             </Typography>
@@ -656,12 +710,12 @@ const CustomForm = ({
               disabled={isDetail || isAdminPerencanaan}
               size="small"
               fullWidth
-              name="destination"
+              name="transport_target"
               placeholder="Tujuan Pengangkutan"
               multiline
               rows={3}
             />
-          </Box>
+          </Box> */}
           <Grid container spacing={1} direction="row" alignItems="start" mb={3}>
             {/* <Grid item xs={12} md={6} lg={6}>
               <Typography variant={"body1"} fontWeight="bold" mb={1.5}>

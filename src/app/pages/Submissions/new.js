@@ -24,7 +24,8 @@ const NewSubmission = (props) => {
     setLoading(true);
     const promises = [];
     let temp = {};
-    if (payload?.travel_fee?.value) temp.travel_fee = Boolean(payload.travel_fee.value);
+    if (payload?.transfer_amount) temp.transfer_amount = Number(payload?.transfer_amount.replace(/[$.]+/g, "").replace(/[$,]+/g, "."));
+    if (payload?.travel_fee_status?.value) temp.travel_fee_status = Boolean(payload.travel_fee_status.value);
     if (payload?.client_id?.value) temp.client_id = payload.client_id.value;
     if (payload?.service_fee)
       temp.service_fee = Number(
@@ -41,6 +42,8 @@ const NewSubmission = (props) => {
             period: moment(x.period).format("YYYY-MM-DD"),
             waste_id: x.waste_id,
             qty: Number(x.qty.replace(/[$.]+/g, "").replace(/[$,]+/g, ".")),
+            doc_number: x.doc_number,
+            transport_target: x?.transport_target
           });
         });
     }
@@ -125,7 +128,8 @@ const NewSubmission = (props) => {
             waste_receipt_file: null,
             transporter_file: null,
             // provider_file: null,
-            travel_fee: null,
+            travel_fee_status: null,
+            transfer_amount: "",
           }}
         />
       </Box>

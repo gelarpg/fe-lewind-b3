@@ -91,7 +91,11 @@ const EditInvoice = (props) => {
         ...tempEdit,
         ...values,
       };
-      updateData(dataToSend, () => editStatus(temp))
+      if (dataToSend) {
+        updateData(dataToSend, () => editStatus(temp))
+      } else {
+        editStatus(temp)
+      }
     });
   };
 
@@ -115,6 +119,7 @@ const EditInvoice = (props) => {
             onSubmit={onSubmitData}
             isLoading={isLoading}
             initialValues={{
+              transfer_amount: invoiceDetail?.transfer_amount?.toString()?.replace(/[$.]+/g, ',') ?? '',
               test: invoiceDetail?.submission_details?.length
                 ? invoiceDetail?.submission_details?.map((x) => ({
                     transportation_id: x?.transportation_id
@@ -131,12 +136,15 @@ const EditInvoice = (props) => {
                       : null,
                     period: x?.period ? moment(x?.period) : "",
                     waste_name: x?.waste_name ?? "",
+                    waste_code: x?.waste_code ?? "",
                     qty: x?.qty?.toString()?.replace(/[$.]+/g, ",") ?? "",
                     isSelected: true,
-                    waste_cost: x?.waste_cost ? `Rp. ${new Intl.NumberFormat("id-ID", {
+                    waste_cost: x?.waste_cost ? `${new Intl.NumberFormat("id-ID", {
                       style: "currency",
                       currency: "IDR",
-                    }).format(x.waste_cost)}` : '',
+                    }).format(x.waste_cost)}${x?.waste_weight_unit ? `/${x?.waste_weight_unit}` : ''}` : '',
+                    doc_number: x?.doc_number ?? '',
+                    transport_target: x?.transport_target,
                   }))
                 : [],
               status: invoiceDetail?.payment_status
@@ -151,7 +159,7 @@ const EditInvoice = (props) => {
               client_id: invoiceDetail?.client_id
                 ? {
                     value: invoiceDetail?.client_id,
-                    label: invoiceDetail?.client_name,
+                    label: invoiceDetail?.client_company_name,
                   }
                 : null,
               address: invoiceDetail?.client_address ?? "",

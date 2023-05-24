@@ -22,7 +22,7 @@ import moment from "moment";
 import DatepickerComponent from "app/components/DatepickerComponent";
 
 const Invoices = (props) => {
-  const {isAdminDireksi, isAdminOperasional, isSuperAdmin} = props;
+  const {isAdminDireksi, isAdminOperasional, isSuperAdmin, isAdminFinance} = props;
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
   const {
     isLoading: isLoadingList,
@@ -71,7 +71,7 @@ const Invoices = (props) => {
         sortable: false,
       },
       {
-        field: "client_name",
+        field: "client_company_name",
         headerName: "Nama Klien",
         flex: 1,
         valueFormatter: (params) => params?.value ?? "-",
@@ -118,13 +118,13 @@ const Invoices = (props) => {
         type: "actions",
         getActions: (params) => {
           let arr = [];
-          if (isAdminDireksi) arr = [
+          if (isAdminDireksi || isSuperAdmin) arr = [
             <CustomDetailButton
               size="small"
               onClick={() => navigate(`/invoices/${params.row.id}/detail`)}
             />
           ];
-          if (isAdminOperasional || isSuperAdmin) arr = [
+          if (isAdminFinance) arr = [
             <CustomEditIconButton
               size="small"
               onClick={() => navigate(`/invoices/${params.row.id}/edit`)}
@@ -135,7 +135,7 @@ const Invoices = (props) => {
         flex: 1,
       },
     ];
-  }, [currentPage, rowsPerPage, isAdminDireksi, isSuperAdmin]);
+  }, [currentPage, rowsPerPage, isAdminDireksi, isSuperAdmin, isAdminFinance]);
 
   useEffect(() => {
     if (invoicesData?.submission && invoicesData?.paginator) {

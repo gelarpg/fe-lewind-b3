@@ -164,6 +164,7 @@ const EditOrder = (props) => {
             onSubmit={onSubmitData}
             isLoading={isLoading}
             initialValues={{
+              transfer_amount: orderDetail?.transfer_amount?.toString()?.replace(/[$.]+/g, ',') ?? '',
               test: orderDetail?.submission_details?.length
                 ? orderDetail?.submission_details?.map((x) => ({
                     transportation_id: x?.transportation_id
@@ -180,12 +181,15 @@ const EditOrder = (props) => {
                       : null,
                     period: x?.period ? moment(x?.period) : "",
                     waste_name: x?.waste_name ?? "",
+                    waste_code: x?.waste_code ?? "",
                     qty: x?.qty?.toString()?.replace(/[$.]+/g, ",") ?? "",
                     isSelected: true,
-                    waste_cost: x?.waste_cost ? `Rp. ${new Intl.NumberFormat("id-ID", {
+                    waste_cost: x?.waste_cost ? `${new Intl.NumberFormat("id-ID", {
                       style: "currency",
                       currency: "IDR",
-                    }).format(x.waste_cost)}` : '',
+                    }).format(x.waste_cost)}${x?.waste_weight_unit ? `/${x?.waste_weight_unit}` : ''}` : '',
+                    doc_number: x?.doc_number ?? '',
+                    transport_target: x?.transport_target,
                   }))
                 : [],
               status: orderDetail?.status
@@ -197,7 +201,7 @@ const EditOrder = (props) => {
               client_id: orderDetail?.client_id
                 ? {
                     value: orderDetail?.client_id,
-                    label: orderDetail?.client_name,
+                    label: orderDetail?.client_company_name,
                   }
                 : null,
               address: orderDetail?.client_address ?? "",

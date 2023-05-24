@@ -68,7 +68,7 @@ const Submissions = (props) => {
           rowsPerPage * currentPage + (index.api.getRowIndex(index.row.id) + 1),
       },
       {
-        field: "client_name",
+        field: "client_company_name",
         headerName: "Nama Klien",
         flex: 1,
         valueFormatter: (params) => params?.value ?? "-",
@@ -111,14 +111,14 @@ const Submissions = (props) => {
         type: "actions",
         getActions: (params) => {
           let actions = [];
-          if (isAdminDireksi) {
+          if (isAdminDireksi || isSuperAdmin) {
             actions = [
               <CustomDetailButton
                 size="small"
                 onClick={() => navigate(`/submissions/${params.row.id}/detail`)}
               />,
             ];
-          } else if (isAdminOperasional || isAdminPerencanaan || isSuperAdmin) {
+          } else if (isAdminOperasional || isAdminPerencanaan) {
             actions = [
               <CustomEditIconButton
                 size="small"
@@ -130,7 +130,7 @@ const Submissions = (props) => {
                 onClick={() => deleteData(params.row.id)}
               />,
             ];
-            if (isAdminOperasional || isSuperAdmin) {
+            if (isAdminOperasional) {
               actions.unshift(
                 <ApproveIconButton
                   size="small"
@@ -227,7 +227,7 @@ const Submissions = (props) => {
   return (
     <Fragment>
       <Box display="flex" justifyContent="flex-end" mb={4}>
-        {isSuperAdmin || isAdminPerencanaan ? (
+        {isAdminPerencanaan ? (
           <Button
             type="button"
             variant="contained"

@@ -167,7 +167,7 @@ const CustomForm = ({
               disabled={isDetail}
               name="no_police"
               placeholder="Pilih Nomor Polisi Kendaraan"
-              url="/transportation"
+              url="transportation-license/transportation"
               usePagination
               objectProp="transportation"
               valueProp="id"

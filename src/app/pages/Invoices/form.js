@@ -270,110 +270,166 @@ const CustomForm = ({
                               color="primary"
                               checked={field.value}
                               onChange={(e) => field.onChange(e.target.checked)}
+                              disabled={true}
                             />
                           );
                         }}
                       />
-                      <Box flex={1} mb={3}>
-                        <Typography
-                          variant={"body1"}
-                          fontWeight="bold"
-                          mb={1.5}
-                        >
-                          Periode
-                        </Typography>
-                        <FormikDatepicker
-                          name={`test.${key}.period`}
-                          disabled={true}
-                          disablePast
-                        />
-                      </Box>
-                      <Box flex={1} mb={3}>
-                        <Typography
-                          variant={"body1"}
-                          fontWeight="bold"
-                          mb={1.5}
-                        >
-                          Nama Limbah
-                        </Typography>
-                        <JumboTextField
-                          variant="standard"
-                          disabled={true}
-                          size="small"
-                          fullWidth
-                          name={`test.${key}.waste_name`}
-                          placeholder="Nama Limbah"
-                        />
-                      </Box>
-                      <Box flex={1} mb={3}>
-                        <Typography
-                          variant={"body1"}
-                          fontWeight="bold"
-                          mb={1.5}
-                        >
-                          Biaya Limbah
-                        </Typography>
-                        <FormikNumberInput
-                          disabled={true}
-                          variant="standard"
-                          size="small"
-                          fullWidth
-                          name={`test.${key}.waste_cost`}
-                          placeholder="Biaya Limbah"
-                        />
-                      </Box>
-                      <Box flex={1} mb={3}>
-                        <Typography
-                          variant={"body1"}
-                          fontWeight="bold"
-                          mb={1.5}
-                        >
-                          {/* {`Jumlah Limbah (${x?.waste_weight_unit ?? ''})`} */}
-                          {`Jumlah`}
-                        </Typography>
-                        <FormikNumberInput
-                          disabled={true}
-                          variant="standard"
-                          size="small"
-                          fullWidth
-                          name={`test.${key}.qty`}
-                          placeholder="Jumlah Limbah"
-                        />
-                      </Box>
-                      <Box flex={1} mb={3}>
-                        <Typography
-                          variant={"body1"}
-                          fontWeight="bold"
-                          mb={1.5}
-                        >
-                          Nama Driver
-                        </Typography>
-                        <FormikReactSelect
-                          disabled={true}
-                          name={`test.${key}.driver_id`}
-                          placeholder="Nama Driver"
-                          url="/driver"
-                          usePagination
-                          objectProp="driver"
-                        />
-                      </Box>
-                      <Box flex={1} mb={3}>
-                        <Typography
-                          variant={"body1"}
-                          fontWeight="bold"
-                          mb={1.5}
-                        >
-                          Kendaraan
-                        </Typography>
-                        <FormikReactSelect
-                          disabled={true}
-                          name={`test.${key}.transportation_id`}
-                          placeholder="Kendaraan"
-                          url="/transportation"
-                          usePagination
-                          objectProp="transportation"
-                        />
-                      </Box>
+                      <Stack spacing={3} direction="column" alignItems="center" flex={1}>
+                        <Box flex={1} width={1}>
+                          <Typography
+                            variant={"body1"}
+                            fontWeight="bold"
+                            mb={1.5}
+                          >
+                            Nomor Dokumen
+                          </Typography>
+                          <JumboTextField
+                            variant="standard"
+                            disabled={true}
+                            size="small"
+                            fullWidth
+                            name={`test.${key}.doc_number`}
+                            placeholder="Nomor Dokumen"
+                          />
+                        </Box>
+                        <Box flex={1} width={1}>
+                          <Typography
+                            variant={"body1"}
+                            fontWeight="bold"
+                            mb={1.5}
+                          >
+                            Kode Limbah
+                          </Typography>
+                          <JumboTextField
+                            variant="standard"
+                            disabled={true}
+                            size="small"
+                            fullWidth
+                            name={`test.${key}.waste_code`}
+                            placeholder="Kode Limbah"
+                          />
+                        </Box>
+                        <Box flex={1} width={1}>
+                          <Typography
+                            variant={"body1"}
+                            fontWeight="bold"
+                            mb={1.5}
+                          >
+                            Nama Limbah
+                          </Typography>
+                          <JumboTextField
+                            variant="standard"
+                            disabled={true}
+                            size="small"
+                            fullWidth
+                            name={`test.${key}.waste_name`}
+                            placeholder="Nama Limbah"
+                          />
+                        </Box>
+                        <Box flex={1} width={1}>
+                          <Typography
+                            variant={"body1"}
+                            fontWeight="bold"
+                            mb={1.5}
+                          >
+                            Biaya Limbah
+                          </Typography>
+                          <JumboTextField
+                            disabled={true}
+                            variant="standard"
+                            size="small"
+                            fullWidth
+                            name={`test.${key}.waste_cost`}
+                            placeholder="Biaya Limbah"
+                          />
+                        </Box>
+                        <Box flex={1} width={1}>
+                          <Typography
+                            variant={"body1"}
+                            fontWeight="bold"
+                            mb={1.5}
+                          >
+                            {/* {`Jumlah Limbah (${x?.waste_weight_unit ?? ''})`} */}
+                            {`Jumlah`}
+                          </Typography>
+                          <FormikNumberInput
+                            disabled={true}
+                            variant="standard"
+                            size="small"
+                            fullWidth
+                            name={`test.${key}.qty`}
+                            placeholder="Jumlah Limbah"
+                          />
+                        </Box>
+                        <Box flex={1} width={1}>
+                          <Typography
+                            variant={"body1"}
+                            fontWeight="bold"
+                            mb={1.5}
+                          >
+                            Tujuan Pengangkutan
+                          </Typography>
+                          <JumboTextField
+                            disabled={true}
+                            variant="standard"
+                            size="small"
+                            fullWidth
+                            name={`test.${key}.transport_target`}
+                            placeholder="Tujuan Pengangkutan"
+                          />
+                        </Box>
+                      </Stack>
+                      <Stack spacing={3} direction="column" alignItems="center" flex={1}>
+                        <Box flex={1} width={1}>
+                          <Typography
+                            variant={"body1"}
+                            fontWeight="bold"
+                            mb={1.5}
+                          >
+                            Periode
+                          </Typography>
+                          <FormikDatepicker
+                            name={`test.${key}.period`}
+                            disabled={true}
+                            disablePast
+                          />
+                        </Box>
+                        <Box flex={1} width={1}>
+                          <Typography
+                            variant={"body1"}
+                            fontWeight="bold"
+                            mb={1.5}
+                          >
+                            Nama Driver
+                          </Typography>
+                          <FormikReactSelect
+                            isDisabled={true}
+                            name={`test.${key}.driver_id`}
+                            placeholder="Nama Driver"
+                            url="/driver"
+                            usePagination
+                            objectProp="driver"
+                          />
+                        </Box>
+                        <Box flex={1} width={1}>
+                          <Typography
+                            variant={"body1"}
+                            fontWeight="bold"
+                            mb={1.5}
+                          >
+                            Kendaraan
+                          </Typography>
+                          <FormikReactSelect
+                            isDisabled={true}
+                            name={`test.${key}.transportation_id`}
+                            placeholder="Kendaraan"
+                            url="/transportation"
+                            usePagination
+                            objectProp="transportation"
+                          />
+                        </Box>
+                      </Stack>
                     </Stack>
                   </CardContent>
                 </Card>
@@ -410,6 +466,50 @@ const CustomForm = ({
                   defaultFileName={initialValues?.service_fee_file}
                 />
               </Grid>
+            </Grid>
+          </Box>
+          <Box flex={1} mb={3}>
+            <Grid
+              container
+              spacing={3}
+              direction="row"
+              alignItems="start"
+              mb={3}
+            >
+              <Grid item xs={12} md={6} lg={6}>
+                <Typography variant={"body1"} fontWeight="bold" mb={3}>
+                  Nominal Transfer
+                </Typography>
+                <FormikNumberInput
+                  placeholder="Nominal Transfer"
+                  disabled={true}
+                  variant="standard"
+                  size="small"
+                  fullWidth
+                  name="transfer_amount"
+                />
+              </Grid>
+              {/* <Grid item xs={12} md={6} lg={6}>
+                <Typography variant={"body1"} fontWeight="bold" mb={1.5}>
+                  Transfer Uang Jalan
+                </Typography>
+                <FormikReactSelect
+                  isDisabled={true}
+                  name="travel_fee_status"
+                  placeholder="Pilih Status"
+                  useStaticData
+                  optionsData={[
+                    {
+                      id: true,
+                      name: "Sudah Ditransfer",
+                    },
+                    {
+                      id: false,
+                      name: "Belum Ditransfer",
+                    },
+                  ]}
+                />
+              </Grid> */}
             </Grid>
           </Box>
           <Grid container spacing={1} direction="row" alignItems="start" mb={3}>

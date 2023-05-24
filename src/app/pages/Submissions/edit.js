@@ -36,25 +36,26 @@ const EditSubmission = (props) => {
 
   const [isLoading, setLoading] = React.useState(false);
 
-  React.useEffect(() => {
-    if (submissionDetail?.client_id) {
-      setLoading(true);
-      axiosFetch({
-        method: "get",
-        url: `/clients/detail/${submissionDetail?.client_id}`,
-        onSuccess: (data) => {
-          console.log(data)
-        },
-        finally: () => setLoading(false),
-      });
-    }
-  }, [submissionDetail]);
+  // React.useEffect(() => {
+  //   if (submissionDetail?.client_id) {
+  //     setLoading(true);
+  //     axiosFetch({
+  //       method: "get",
+  //       url: `/clients/detail/${submissionDetail?.client_id}`,
+  //       onSuccess: (data) => {
+  //         console.log(data)
+  //       },
+  //       finally: () => setLoading(false),
+  //     });
+  //   }
+  // }, [submissionDetail]);
 
   const onSubmitData = (payload) => {
     setLoading(true);
     const promises = [];
     let temp = {};
-    if (payload?.travel_fee?.value) temp.travel_fee = Boolean(payload.travel_fee.value);
+    if (payload?.transfer_amount) temp.transfer_amount = Number(payload?.transfer_amount.replace(/[$.]+/g, "").replace(/[$,]+/g, "."));
+    if (payload?.travel_fee_status?.value) temp.travel_fee_status = Boolean(payload.travel_fee_status.value);
     if (payload?.client_id?.value) temp.client_id = payload.client_id.value;
     if (payload?.service_fee)
       temp.service_fee = Number(
@@ -72,6 +73,8 @@ const EditSubmission = (props) => {
             period: moment(x.period).format("YYYY-MM-DD"),
             waste_id: x.waste_id,
             qty: Number(x.qty.replace(/[$.]+/g, "").replace(/[$,]+/g, ".")),
+            doc_number: x.doc_number,
+            transport_target: x?.transport_target,
           });
         });
     }
@@ -203,18 +206,21 @@ const EditSubmission = (props) => {
                     period: x?.period ? moment(x?.period) : "",
                     waste_name: x?.waste_name ?? "",
                     waste_code: x?.waste_code ?? "",
+                    waste_id: x?.waste_id ?? "",
                     qty: x?.qty?.toString()?.replace(/[$.]+/g, ",") ?? "",
                     isSelected: true,
-                    waste_cost: x?.waste_cost ? `Rp. ${new Intl.NumberFormat("id-ID", {
+                    waste_cost: x?.waste_cost ? `${new Intl.NumberFormat("id-ID", {
                       style: "currency",
                       currency: "IDR",
-                    }).format(x.waste_cost)}` : '',
+                    }).format(x.waste_cost)}${x?.waste_weight_unit ? `/${x?.waste_weight_unit}` : ''}` : '',
+                    doc_number: x?.doc_number ?? '',
+                    transport_target: x?.transport_target,
                   }))
                 : [],
               client_id: submissionDetail?.client_id
                 ? {
                     value: submissionDetail?.client_id,
-                    label: submissionDetail?.client_name,
+                    label: submissionDetail?.client_company_name,
                   }
                 : null,
               address: submissionDetail?.client_address ?? "",
@@ -226,6 +232,7 @@ const EditSubmission = (props) => {
                 submissionDetail,
                 "service_fee"
               ),
+              transfer_amount: submissionDetail?.transfer_amount?.toString()?.replace(/[$.]+/g, ',') ?? '',
               // invoice_file: getDocumentPath(submissionDetail, "invoice"),
               travel_document_file: getDocumentPath(
                 submissionDetail,
@@ -241,15 +248,15 @@ const EditSubmission = (props) => {
                 "transporter"
               ),
               // provider_file: getDocumentPath(submissionDetail, "provider"),
-              // travel_fee: submissionDetail?.travel_fee
-              //   ? {
-              //       value: true,
-              //       label: "Sudah Ditransfer",
-              //     }
-              //   : {
-              //       value: false,
-              //       label: "Belum Ditransfer",
-              //     },
+              travel_fee_status: submissionDetail?.travel_fee_status
+                ? {
+                    value: true,
+                    label: "Sudah Ditransfer",
+                  }
+                : {
+                    value: false,
+                    label: "Belum Ditransfer",
+                  },
             }}
           />
         )}

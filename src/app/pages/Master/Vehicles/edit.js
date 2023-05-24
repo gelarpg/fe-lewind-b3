@@ -44,17 +44,17 @@ const EditVehicles = (props) => {
       fuel_type: payload.fuel_type,
       year: moment(payload.year).format("YYYY"),
     };
-    if (payload.stnk_file) {
-      if (typeof payload.stnk_file === "string") {
-        // temp.stnk_file = payload.stnk_file.replace(PDF_BASE_URL, '');
-        if (temp.stnk_file) delete temp.stnk_file
-      } else if (typeof payload.stnk_file === "object") {
-        promises.push({
-          key: "stnk_file",
-          payload: payload.stnk_file,
-        });
-      }
-    }
+    // if (payload.stnk_file) {
+    //   if (typeof payload.stnk_file === "string") {
+    //     // temp.stnk_file = payload.stnk_file.replace(PDF_BASE_URL, '');
+    //     if (temp.stnk_file) delete temp.stnk_file
+    //   } else if (typeof payload.stnk_file === "object") {
+    //     promises.push({
+    //       key: "stnk_file",
+    //       payload: payload.stnk_file,
+    //     });
+    //   }
+    // }
     // if (payload.travel_document_file) {
     //   if (typeof payload.travel_document_file === "string") {
     //     // temp.travel_document_file = payload.travel_document_file.replace(PDF_BASE_URL, '');
@@ -66,23 +66,23 @@ const EditVehicles = (props) => {
     //     });
     //   }
     // }
-    uploadFileHandler(promises).then((values) => {
-      let dataToSend = {
-        ...temp,
-        ...values,
-      };
-      axiosFetch({
-        method: "put",
-        url: `/transportation/edit/${params.id}`,
-        requestConfig: {
-          data: dataToSend,
-        },
-        onSuccess: () => {
-          props.snackbarShowMessage("Data kendaraan berhasil diubah");
-          setTimeout(() => navigate("/vehicles"), 1500);
-        },
-        finally: () => setLoading(false)
-      });
+    // uploadFileHandler(promises).then((values) => {
+    //   let dataToSend = {
+    //     ...temp,
+    //     ...values,
+    //   };
+    // });
+    axiosFetch({
+      method: "put",
+      url: `/transportation/edit/${params.id}`,
+      requestConfig: {
+        data: temp,
+      },
+      onSuccess: () => {
+        props.snackbarShowMessage("Data kendaraan berhasil diubah");
+        setTimeout(() => navigate("/vehicles"), 1500);
+      },
+      finally: () => setLoading(false)
     });
   };
 
@@ -118,8 +118,8 @@ const EditVehicles = (props) => {
                   }
                 : null,
               // travel_document_number: getDocumentNumber(vehicleDetail, "travel_document") ?? "",
-              stnk_number: getDocumentNumber(vehicleDetail, "stnk") ?? "",
-              stnk_file: getDocumentPath(vehicleDetail, "stnk") ?? "",
+              // stnk_number: getDocumentNumber(vehicleDetail, "stnk") ?? "",
+              // stnk_file: getDocumentPath(vehicleDetail, "stnk") ?? "",
               // travel_document_file: getDocumentPath(vehicleDetail, "travel_document") ?? "",
             }}
           />

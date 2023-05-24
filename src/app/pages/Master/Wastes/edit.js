@@ -61,7 +61,7 @@ const EditWaste = (props) => {
             isDetail={window.location.pathname.includes('/detail')}
             isLoading={isLoading}
             initialValues={{
-              code: wasteDetail?.code ?? "",
+              code: wasteDetail?.waste_code ?? "",
               name: wasteDetail?.name ?? "",
               type: wasteDetail?.waste_type_id ? { value: wasteDetail?.waste_type_id, label: wasteDetail?.type } : null ,
               weight_unit: wasteDetail?.weight_unit ?? "",

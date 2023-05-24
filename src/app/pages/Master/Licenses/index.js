@@ -22,7 +22,7 @@ import { withRoles } from "app/components/withRoles";
 import moment from "moment";
 
 const Licenses = (props) => {
-  const {isAdminDireksi, isSuperAdmin} = props;
+  const {isAdminDireksi, isSuperAdmin, isAdminPerencanaan} = props;
   const { isLoading, data, error, axiosFetch } = useAxiosFunction();
   const {
     isLoading: isLoadingList,
@@ -121,7 +121,7 @@ const Licenses = (props) => {
               onClick={() => navigate(`/licenses/${params.row.id}/detail`)}
             />
           ];
-          return [
+          if (isSuperAdmin || isAdminPerencanaan) return [
             <CustomEditIconButton
               size="small"
               sx={{ mr: 2 }}
@@ -132,11 +132,12 @@ const Licenses = (props) => {
               onClick={() => deleteData(params.row.id)}
             />,
           ];
+          return [];
         },
         width: 200,
       },
     ];
-  }, [currentPage, rowsPerPage, isAdminDireksi]);
+  }, [currentPage, rowsPerPage, isAdminDireksi, isSuperAdmin, isAdminPerencanaan]);
 
   useEffect(() => {
     if (vehiclesData?.transportation_license && vehiclesData?.paginator) {
@@ -162,7 +163,7 @@ const Licenses = (props) => {
   const deleteData = (id) => {
     axiosFetch({
       method: "delete",
-      url: `/transportation/license/delete/${id}`,
+      url: `/transportation-license/delete/${id}`,
       onSuccess: () => {
         props.snackbarShowMessage('Data berhasil dihapus')
         setRequestParam((curr) => ({
@@ -197,7 +198,7 @@ const Licenses = (props) => {
   return (
     <Fragment>
       <Box display="flex" justifyContent="flex-end" mb={4}>
-      {isSuperAdmin ? (
+      {isSuperAdmin || isAdminPerencanaan ? (
           <Button
             type="button"
             variant="contained"

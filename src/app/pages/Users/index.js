@@ -41,6 +41,7 @@ const Users = () => {
   const tableRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [isFetched, setFetched] = useState(false);
   const [requestParam, setRequestParam] = useState({
     page: 1,
     limit: 10,
@@ -117,12 +118,13 @@ const Users = () => {
   }, []);
 
   useEffect(() => {
-    if (!isEqual(prevParam, requestParam)) {
+    if (isFetched) {
       refetch({
         params: requestParam,
       });
+      setFetched(false);
     }
-  }, [requestParam]);
+  }, [isFetched, requestParam]);
 
   const deleteData = (id) => {
     axiosFetch({
@@ -133,6 +135,7 @@ const Users = () => {
           ...curr,
           page: 1,
         }));
+        setFetched(true);
       },
     });
   };
@@ -143,6 +146,7 @@ const Users = () => {
       ...curr,
       page: page + 1,
     }));
+    setFetched(true);
   }, []);
 
   const onChangeRowsPerPage = useCallback((pageSize) => {
@@ -153,6 +157,7 @@ const Users = () => {
       page: 1,
       limit: pageSize,
     }));
+    setFetched(true);
   }, []);
 
   return (

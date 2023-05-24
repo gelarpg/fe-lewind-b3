@@ -24,35 +24,35 @@ const NewVehicle = (props) => {
       transportation_type_id: payload.transportation_type_id.value,
       year: moment(payload.year).format("YYYY"),
     };
-    if (payload.stnk_file) {
-      promises.push({
-        key: "stnk_file",
-        payload: payload.stnk_file,
-      });
-    }
+    // if (payload.stnk_file) {
+    //   promises.push({
+    //     key: "stnk_file",
+    //     payload: payload.stnk_file,
+    //   });
+    // }
     // if (payload.travel_document_file) {
     //   promises.push({
     //     key: "travel_document_file",
     //     payload: payload.travel_document_file,
     //   });
     // }
-    uploadFileHandler(promises).then((values) => {
-      let dataToSend = {
-        ...temp,
-        ...values,
-      };
-      axiosFetch({
-        method: "post",
-        url: "/transportation/create",
-        requestConfig: {
-          data: dataToSend,
-        },
-        onSuccess: () => {
-          props.snackbarShowMessage("Data kendaraan berhasil ditambahkan");
-          setTimeout(() => navigate("/vehicles"), 1500);
-        },
-        finally: () => setLoading(false)
-      });
+    // uploadFileHandler(promises).then((values) => {
+    //   let dataToSend = {
+    //     ...temp,
+    //     ...values,
+    //   };
+    // });
+    axiosFetch({
+      method: "post",
+      url: "/transportation/create",
+      requestConfig: {
+        data: temp,
+      },
+      onSuccess: () => {
+        props.snackbarShowMessage("Data kendaraan berhasil ditambahkan");
+        setTimeout(() => navigate("/vehicles"), 1500);
+      },
+      finally: () => setLoading(false)
     });
   };
 
@@ -70,8 +70,8 @@ const NewVehicle = (props) => {
             fuel_type: "",
             transportation_type_id: null,
             // travel_document_number: "",
-            stnk_number: "",
-            stnk_file: null,
+            // stnk_number: "",
+            // stnk_file: null,
             // travel_document_file: null,
           }}
         />

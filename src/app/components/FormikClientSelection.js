@@ -49,7 +49,7 @@ const FormikClientSelection = ({
         ...curr,
         ...clientData.clients.map((x) => ({
           value: x.id,
-          label: x.name,
+          label: x.company_name,
           address: x.address,
           waste_name: x.waste_name,
           waste_type: x.waste_type,

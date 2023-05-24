@@ -39,6 +39,10 @@ const EditLicenses = React.lazy(() => import("app/pages/Master/Licenses/edit"));
 const Invoices = React.lazy(() => import("app/pages/Invoices"));
 const EditInvoices = React.lazy(() => import("app/pages/Invoices/edit"));
 
+const DailyAccount = React.lazy(() => import("app/pages/DailyAccount"));
+const LoginActivity = React.lazy(() => import("app/pages/LoginActivity"));
+const GeneratedInvoice = React.lazy(() => import("app/pages/GeneratedInvoice"));
+
 /**
  routes which you want to make accessible to both authenticated and anonymous users
  **/
@@ -200,6 +204,18 @@ const routesForAuthenticatedOnly = [
   {
     path: "/invoices/:id/detail",
     element: <Page component={EditInvoices} />,
+  },
+  {
+    path: "/daily-count",
+    element: <Page component={DailyAccount} />,
+  },
+  {
+    path: "/log-activity",
+    element: <Page component={LoginActivity} />,
+  },
+  {
+    path: "/generated-invoice",
+    element: <Page component={GeneratedInvoice} />,
   },
 ];
 
