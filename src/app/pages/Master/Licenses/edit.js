@@ -12,7 +12,12 @@ import Div from "@jumbo/shared/Div";
 import { CircularProgress } from "@mui/material";
 
 let PDF_BASE_URL = process.env.REACT_APP_API_BASE_URL_EXPORT;
-PDF_BASE_URL = PDF_BASE_URL.substring(0, PDF_BASE_URL.length - 1);
+if (PDF_BASE_URL) {
+  PDF_BASE_URL = PDF_BASE_URL.substring(0, PDF_BASE_URL.length - 1);
+} else {
+  console.error("REACT_APP_API_BASE_URL_EXPORT tidak terdefinisi");
+  PDF_BASE_URL = ''; // atau nilai lain yang sesuai
+}
 
 const EditLicense = (props) => {
   const navigate = useNavigate();

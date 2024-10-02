@@ -53,10 +53,6 @@ const routesForPublic = [];
  **/
 const routesForAuthenticatedOnly = [
   {
-    path: "/",
-    element: <Page component={Home} />,
-  },
-  {
     path: "/dashboard",
     element: <Page component={Home} />,
   },

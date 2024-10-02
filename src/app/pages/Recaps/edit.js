@@ -16,7 +16,13 @@ import { CircularProgress } from "@mui/material";
 import moment from "moment";
 
 let PDF_BASE_URL = process.env.REACT_APP_API_BASE_URL_EXPORT;
-PDF_BASE_URL = PDF_BASE_URL.substring(0, PDF_BASE_URL.length - 1);
+if (PDF_BASE_URL) {
+  PDF_BASE_URL = PDF_BASE_URL.substring(0, PDF_BASE_URL.length - 1);
+} else {
+  console.error("REACT_APP_API_BASE_URL_EXPORT tidak terdefinisi");
+  // Anda bisa memberikan nilai default jika perlu
+  PDF_BASE_URL = ''; // atau nilai lain yang sesuai
+}
 
 const EditOrder = (props) => {
   const navigate = useNavigate();
